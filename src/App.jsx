@@ -6,10 +6,13 @@ import {
   CalendarDots as CalendarDays,
   Check,
   CaretRight as ChevronRight,
+  ChatCircleText,
   Circle as CircleDot,
   Crown,
   Fire as Flame,
+  Heart,
   SquaresFour as LayoutGrid,
+  PaperPlaneTilt,
   SignIn as LogIn,
   SignOut as LogOut,
   Megaphone,
@@ -74,6 +77,7 @@ const CSS = `
 .admin-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:17px 20px;border-radius:22px;border:1px solid var(--line);box-shadow:var(--shadow-xs);margin-bottom:20px;background:#fff}.admin-banner.ok{background:var(--green-soft);border-color:var(--green-line)}.admin-banner.warn{background:var(--amber-soft);border-color:#efd49e}.admin-left{display:flex;align-items:center;gap:13px}.admin-left svg{width:22px}.admin-title{font-size:14px;font-weight:950}.admin-copy{font-size:12px;color:var(--muted);font-weight:650;line-height:1.45;max-width:760px;margin-top:2px}.tabs{display:flex;gap:5px;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:17px;padding:5px;width:fit-content;margin-bottom:20px}.tab-btn{display:flex;align-items:center;gap:8px;border-radius:13px;padding:10px 15px;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;font-weight:950}.tab-btn svg{width:16px;height:16px}.tab-btn.active{background:#fff;color:var(--green-dark);box-shadow:var(--shadow-xs)}.score-input{width:48px;text-align:center;border:1.5px solid var(--line-strong);border-radius:12px;padding:7px 5px;font-family:var(--font-display);font-weight:800;outline:0}.score-input:focus{border-color:var(--green);box-shadow:var(--ring)}.admin-table td{font-size:13px}.eliminate-chip{border:0;background:transparent;display:inline-flex;align-items:center;gap:5px;margin:3px 7px 3px 0;cursor:pointer;font-size:12px;font-weight:850}.eliminate-chip.out{opacity:.42;text-decoration:line-through}.empty{display:grid;place-items:center;text-align:center;padding:58px 20px;color:var(--faint);font-weight:800}.empty svg{width:42px;height:42px;margin-bottom:12px;opacity:.6}.overlay{position:fixed;inset:0;background:rgba(7,16,29,.46);backdrop-filter:blur(8px);z-index:200;display:grid;place-items:center;padding:20px}.modal{width:min(470px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:28px;box-shadow:0 32px 85px rgba(0,0,0,.25);padding:28px}.modal-title{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:950;letter-spacing:-.04em;margin-bottom:6px}.modal-title svg{width:22px;color:var(--green)}.modal-sub{color:var(--muted);font-size:13px;line-height:1.5;font-weight:650;margin-bottom:22px}.profile-head{display:flex;align-items:center;gap:18px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:18px}.profile-name{font-size:25px;font-weight:950;letter-spacing:-.045em}.profile-points{font-family:var(--font-display);font-size:37px;font-weight:800;color:var(--green);line-height:1;margin-top:5px}.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:18px}.profile-stat{padding:14px;text-align:center}.profile-stat+.profile-stat{border-left:1px solid var(--line)}.checkbox{display:flex;align-items:center;gap:10px;margin-bottom:15px;color:var(--muted);font-weight:850;font-size:13px}.checkbox input{width:18px;height:18px;accent-color:var(--green)}.mobile-nav{display:none}
 @media(max-width:1200px){.hero-content{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:1fr}.stand-sticky{position:static}.metric-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:900px){:root{--side:260px}.hero h1{font-size:34px}.hero-metrics{grid-template-columns:repeat(2,1fr)}.vote-grid{grid-template-columns:1fr}.topbar{padding:0 18px}.page{padding:22px 18px 86px}.sidebar{transform:translateX(-100%);transition:.22s ease}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:grid}.top-actions .signin-top{display:none}.mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:7px 4px 9px;box-shadow:0 -14px 34px rgba(9,17,32,.08)}.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;color:var(--faint);font-size:9.5px;font-weight:950;cursor:pointer}.mobile-nav-item svg{width:21px;height:21px}.mobile-nav-item.active{color:var(--green)}}@media(max-width:640px){.top-title{font-size:19px}.top-subtitle{display:none}.sync{padding:8px 10px}.sync span:not(.status-dot){display:none}.hero{padding:22px;border-radius:25px}.hero h1{font-size:30px}.hero-copy{font-size:14px}.hero-content{gap:16px}.metric-grid{grid-template-columns:1fr}.match-card{grid-template-columns:1fr;gap:12px}.team.right{flex-direction:row}.team-name.right{text-align:left}.team-owner.right{flex-direction:row}.match-mid{order:-1;align-items:flex-start;min-width:0}.player-grid{grid-template-columns:1fr}.search{min-width:100%;width:100%}.filter-row{align-items:stretch}.vote-options{grid-template-columns:1fr}.panel-head,.section-head{align-items:flex-start;flex-direction:column}.hero-mini-value{font-size:21px}}
 .onbehalf{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line-strong)}.onbehalf-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:var(--blue);margin-bottom:9px}.onbehalf-label svg{width:13px;height:13px}.onbehalf-btns{display:flex;flex-wrap:wrap;gap:7px}.ob-btn{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--blue-soft);background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:7px 11px;font-size:12px;font-weight:850;cursor:pointer;transition:.14s;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ob-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}.ob-btn svg{width:13px;height:13px;flex:0 0 auto}
+.fan-grid{display:grid;grid-template-columns:minmax(0,390px) minmax(0,1fr);gap:22px;align-items:start}.fan-match-list{display:flex;flex-direction:column;gap:8px;padding:8px}.fan-match-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;border-radius:16px;background:transparent;padding:12px;cursor:pointer;color:var(--ink);transition:.15s}.fan-match-btn:hover{background:var(--surface-soft)}.fan-match-btn.active{background:linear-gradient(135deg,var(--green-soft),#fff);box-shadow:inset 0 0 0 1px var(--green-line)}.fan-match-main{min-width:0}.fan-match-teams{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fan-match-meta{margin-top:5px;color:var(--faint);font-size:11px;font-weight:850}.fan-count{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#fff;border:1px solid var(--line);padding:5px 9px;color:var(--muted);font-size:11px;font-weight:950;flex:0 0 auto}.fan-count svg{width:13px;height:13px;color:var(--green)}.fan-room{display:flex;flex-direction:column;min-height:620px}.fan-room-head{padding:18px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,rgba(247,249,252,.85))}.fan-room-title{display:flex;align-items:center;gap:9px;font-size:20px;font-weight:950;letter-spacing:-.04em}.fan-room-title .vs{font-size:12px;letter-spacing:.1em;color:var(--faint)}.fan-room-sub{margin-top:7px;color:var(--muted);font-size:12.5px;font-weight:750}.fan-feed{flex:1;display:flex;flex-direction:column;gap:12px;padding:18px 20px;background:linear-gradient(180deg,rgba(245,247,250,.42),rgba(255,255,255,.8));max-height:560px;overflow:auto}.fan-msg{display:grid;grid-template-columns:auto minmax(0,1fr);gap:11px;align-items:start}.fan-bubble{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 13px;box-shadow:var(--shadow-xs);min-width:0}.fan-msg.wish .fan-bubble{border-color:var(--green-line);background:linear-gradient(180deg,#fff,var(--green-soft))}.fan-msg.prediction .fan-bubble{border-color:#f1d7a5;background:linear-gradient(180deg,#fff,var(--amber-soft))}.fan-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}.fan-author{font-size:12px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fan-time{font-size:10.5px;color:var(--faint);font-weight:850;white-space:nowrap}.fan-text{font-size:14px;line-height:1.45;font-weight:650;overflow-wrap:anywhere}.fan-kind{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;background:var(--surface-soft);color:var(--muted)}.fan-kind.wish{background:var(--green-soft);color:var(--green-dark)}.fan-kind.prediction{background:var(--amber-soft);color:var(--amber)}.fan-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}.fan-delete{display:inline-flex;align-items:center;gap:5px;background:var(--red-soft);color:var(--red);border-radius:9px;padding:5px 8px;font-size:11px;font-weight:900;cursor:pointer}.fan-delete svg{width:12px;height:12px}.fan-compose{padding:16px 20px;border-top:1px solid var(--line);background:#fff}.fan-compose-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}.fan-type{border:1.5px solid var(--line-strong);background:#fff;color:var(--muted);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:950;cursor:pointer}.fan-type.active{background:var(--green-soft);border-color:var(--green-line);color:var(--green-dark)}.fan-send{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}.fan-note{margin-top:9px;color:var(--faint);font-size:11px;font-weight:750}.fan-empty{min-height:220px;display:grid;place-items:center;text-align:center;color:var(--muted);font-weight:850}.fan-empty svg{width:30px;height:30px;color:var(--green);margin:0 auto 10px}
 .live-screen{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;color:#eaf2f7;font-family:var(--font-body);touch-action:manipulation;overflow:hidden;-webkit-font-smoothing:antialiased;padding:calc(env(safe-area-inset-top) + 26px) calc(env(safe-area-inset-right) + 42px) calc(env(safe-area-inset-bottom) + 22px) calc(env(safe-area-inset-left) + 42px);background:radial-gradient(120% 80% at 82% -12%,rgba(39,224,140,.16),transparent 55%),radial-gradient(95% 75% at -5% 112%,rgba(48,104,236,.2),transparent 55%),linear-gradient(180deg,#0a1120,#070c16 62%,#060a12)}
 .live-screen::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:3px 3px;mix-blend-mode:overlay;opacity:.6}
 .live-top{display:flex;align-items:center;gap:18px;flex:0 0 auto;z-index:1}
@@ -109,7 +113,7 @@ const CSS = `
 .live-foot{flex:0 0 auto;display:flex;align-items:center;gap:18px;z-index:1;padding-top:15px;border-top:1px solid rgba(255,255,255,.07)}
 .live-dots{display:flex;gap:10px}.live-dot{height:6px;width:30px;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden;position:relative}.live-dot.on::after{content:"";position:absolute;inset:0;background:#27e08c;transform-origin:left;animation:dotfill var(--scene-ms,10000ms) linear both}@keyframes dotfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .live-foot-label{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#6f8ba1}.live-meta{margin-left:auto;display:flex;gap:20px;font-size:13px;font-weight:700;color:#7fa0b8;font-variant-numeric:tabular-nums}.live-meta b{color:#cfe0ec}
-@media(max-width:760px){.lv-match{grid-template-columns:1fr;gap:14px;text-align:center}.lv-team,.lv-team.right{flex-direction:column;text-align:center}.lv-mid{order:-1}.live-meta{display:none}}
+@media(max-width:760px){.fan-grid{grid-template-columns:1fr}.fan-room{min-height:0}.fan-feed{max-height:520px}.fan-send{grid-template-columns:1fr}.lv-match{grid-template-columns:1fr;gap:14px;text-align:center}.lv-team,.lv-team.right{flex-direction:column;text-align:center}.lv-mid{order:-1}.live-meta{display:none}}
 `;
 
 const APPROVED = ["Sangay", "Advanced", "Tandin", "Roshan", "Chirag", "Mani", "Kyunchab", "Lhendup", "Buddy", "Manish", "Khorlo", "Cheche", "Zig", "Nirpa", "Lambu", "Tashi"];
@@ -191,6 +195,9 @@ const SCORING = [["Group Win", "3"], ["Draw", "1"], ["Round of 32", "3"], ["Roun
 // Accurate, real-time scores/status for the whole tournament window.
 const API = { enabled: true, url: "/api/espn/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=300", headers: {}, refreshMs: 45000, timeoutMs: 20000, retryMs: 6000 };
 const STORAGE_KEY = "dhi-office-world-cup:v2";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+const FAN_TABLE = "fan_comments";
 
 const NAV = [
   ["dashboard", "Dashboard", LayoutGrid],
@@ -198,6 +205,7 @@ const NAV = [
   ["schedule", "Schedule", CalendarDays],
   ["players", "Players", Users],
   ["voting", "Voting", Vote],
+  ["fanzone", "Fan Zone", ChatCircleText],
   ["admin", "Admin", Settings2],
 ];
 
@@ -207,6 +215,7 @@ const SUBTITLE = {
   schedule: "Fixtures by day",
   players: "Squads & owners",
   voting: "Predictions & polls",
+  fanzone: "Match wishes & live comments",
   admin: "Organizer controls",
 };
 
@@ -349,6 +358,61 @@ async function saveState(state) {
   } catch {
     return false;
   }
+}
+
+const supabaseReady = () => Boolean(SUPABASE_URL && SUPABASE_KEY);
+
+const fanHeaders = () => ({
+  apikey: SUPABASE_KEY,
+  Authorization: `Bearer ${SUPABASE_KEY}`,
+  "Content-Type": "application/json",
+});
+
+const fromFanRow = (row) => ({
+  id: row.id,
+  matchId: row.match_id,
+  type: row.type,
+  text: row.text,
+  author: row.author,
+  role: row.role,
+  hidden: Boolean(row.hidden),
+  createdAt: new Date(row.created_at).getTime(),
+});
+
+async function loadFanComments() {
+  if (!supabaseReady()) return null;
+  const url = `${SUPABASE_URL}/rest/v1/${FAN_TABLE}?select=*&order=created_at.desc&limit=500`;
+  const response = await fetch(url, { headers: fanHeaders() });
+  if (!response.ok) throw new Error("fan comments unavailable");
+  return (await response.json()).map(fromFanRow);
+}
+
+async function createFanComment(comment) {
+  if (!supabaseReady()) return null;
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/${FAN_TABLE}`, {
+    method: "POST",
+    headers: { ...fanHeaders(), Prefer: "return=representation" },
+    body: JSON.stringify({
+      match_id: comment.matchId,
+      type: comment.type,
+      text: comment.text,
+      author: comment.author,
+      role: comment.role,
+    }),
+  });
+  if (!response.ok) throw new Error("fan comment failed");
+  const rows = await response.json();
+  return rows[0] ? fromFanRow(rows[0]) : null;
+}
+
+async function hideFanComment(id) {
+  if (!supabaseReady()) return false;
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/${FAN_TABLE}?id=eq.${encodeURIComponent(id)}`, {
+    method: "PATCH",
+    headers: fanHeaders(),
+    body: JSON.stringify({ hidden: true }),
+  });
+  return response.ok;
 }
 
 function useDocumentFont() {
@@ -644,6 +708,123 @@ function PlayersView({ players, me, onAvatar }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+const FAN_TYPES = [
+  ["comment", "Comment", ChatCircleText],
+  ["wish", "Wish", Heart],
+  ["prediction", "Prediction", Target],
+];
+
+function commentTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete, onSignIn }) {
+  const orderedMatches = useMemo(() => [...matches].sort((a, b) => {
+    const statusWeight = { live: 0, upcoming: 1, completed: 2 };
+    return (statusWeight[a.status] ?? 9) - (statusWeight[b.status] ?? 9) || safeDate(a.date) - safeDate(b.date) || a.id - b.id;
+  }), [matches]);
+  const [selectedId, setSelectedId] = useState(() => orderedMatches[0]?.id ?? null);
+  const [type, setType] = useState("comment");
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    if (!orderedMatches.some((match) => match.id === selectedId)) setSelectedId(orderedMatches[0]?.id ?? null);
+  }, [orderedMatches, selectedId]);
+
+  const selected = orderedMatches.find((match) => match.id === selectedId) || orderedMatches[0];
+  const matchComments = useMemo(() => comments
+    .filter((item) => item.matchId === selected?.id && !item.hidden)
+    .sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0)), [comments, selected?.id]);
+
+  const submit = () => {
+    const clean = text.trim().replace(/\s+/g, " ");
+    if (!selected || !me || clean.length < 2) return;
+    onCommentAdd({
+      id: Date.now(),
+      matchId: selected.id,
+      type,
+      text: clean.slice(0, 220),
+      author: me.name,
+      role: me.role,
+      createdAt: Date.now(),
+    });
+    setText("");
+  };
+
+  const canPost = Boolean(me) && text.trim().length >= 2;
+
+  return (
+    <div className="rise">
+      <div className="fan-grid">
+        <section className="panel">
+          <PanelHeader icon={Swords} title="Match rooms" />
+          <div className="fan-match-list">
+            {orderedMatches.map((match) => {
+              const count = comments.filter((item) => item.matchId === match.id && !item.hidden).length;
+              return (
+                <button type="button" className={`fan-match-btn ${selected?.id === match.id ? "active" : ""}`} key={match.id} onClick={() => setSelectedId(match.id)}>
+                  <div className="fan-match-main">
+                    <div className="fan-match-teams"><Flag country={match.a} size={16} round />{match.a}<span style={{ color: "var(--faint)" }}>v</span>{match.b}<Flag country={match.b} size={16} round /></div>
+                    <div className="fan-match-meta">{fmtDate(match.date)} · {match.stage}</div>
+                  </div>
+                  <span className="fan-count"><ChatCircleText />{count}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="panel fan-room">
+          {selected && (
+            <>
+              <div className="fan-room-head">
+                <div className="fan-room-title"><Flag country={selected.a} size={24} round />{selected.a}<span className="vs">VS</span>{selected.b}<Flag country={selected.b} size={24} round /></div>
+                <div className="fan-room-sub">{fmtDate(selected.date)} · {selected.time} · {selected.stage} · {selected.status === "live" ? "Live now" : selected.status === "completed" ? "Full time" : "Upcoming"}</div>
+              </div>
+
+              <div className="fan-feed">
+                {matchComments.length ? matchComments.map((item) => {
+                  const author = players.find((player) => player.name === item.author);
+                  return (
+                    <article className={`fan-msg ${item.type}`} key={item.id}>
+                      <Avatar name={item.author} size={38} img={author?.avatar} />
+                      <div className="fan-bubble">
+                        <div className="fan-meta"><span className="fan-author">{item.author}</span><span className="fan-time">{commentTime(item.createdAt)}</span></div>
+                        <div className="fan-text">{item.text}</div>
+                        <span className={`fan-kind ${item.type}`}>{item.type}</span>
+                        {me?.role === "admin" && <div className="fan-actions"><button type="button" className="fan-delete" onClick={() => onCommentDelete(item.id)}><Trash2 />Hide</button></div>}
+                      </div>
+                    </article>
+                  );
+                }) : <div className="fan-empty"><div><ChatCircleText />No messages yet.</div></div>}
+              </div>
+
+              <div className="fan-compose">
+                {me ? (
+                  <>
+                    <div className="fan-compose-top">
+                      {FAN_TYPES.map(([id, label, Icon]) => <button type="button" key={id} className={`fan-type ${type === id ? "active" : ""}`} onClick={() => setType(id)}><Icon size={14} />{label}</button>)}
+                    </div>
+                    <div className="fan-send">
+                      <textarea className="textarea" maxLength={220} rows={2} placeholder="Send a match comment, wish, or prediction..." value={text} onChange={(event) => setText(event.target.value)} onKeyDown={(event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") submit(); }} />
+                      <button type="button" className="btn btn-primary" disabled={!canPost} onClick={submit}><PaperPlaneTilt />Send</button>
+                    </div>
+                    <div className="fan-note">{220 - text.length} characters left</div>
+                  </>
+                ) : (
+                  <button type="button" className="btn btn-primary" onClick={onSignIn}><LogIn />Sign in to post</button>
+                )}
+              </div>
+            </>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
@@ -968,6 +1149,7 @@ export default function App() {
   const [announcements, setAnnouncements] = useState(SEED_ANN);
   const [votes, setVotes] = useState({});
   const [pollVotes, setPollVotes] = useState({});
+  const [fanComments, setFanComments] = useState([]);
   const [myVotes, setMyVotes] = useState({});
   const [myPoll, setMyPoll] = useState({});
   const [me, setMe] = useState(null);
@@ -983,12 +1165,14 @@ export default function App() {
   const announcementsRef = useRef(announcements);
   const votesRef = useRef(votes);
   const pollVotesRef = useRef(pollVotes);
+  const fanCommentsRef = useRef(fanComments);
 
   useEffect(() => { matchesRef.current = matches; }, [matches]);
   useEffect(() => { playersRef.current = players; }, [players]);
   useEffect(() => { announcementsRef.current = announcements; }, [announcements]);
   useEffect(() => { votesRef.current = votes; }, [votes]);
   useEffect(() => { pollVotesRef.current = pollVotes; }, [pollVotes]);
+  useEffect(() => { fanCommentsRef.current = fanComments; }, [fanComments]);
   useEffect(() => { setStoreOn(storageAvailable()); }, []);
 
   const pushState = useCallback(async (partial = {}) => {
@@ -1000,6 +1184,7 @@ export default function App() {
       announcements: partial.announcements ?? announcementsRef.current,
       votes: partial.votes ?? votesRef.current,
       pollVotes: partial.pollVotes ?? pollVotesRef.current,
+      fanComments: partial.fanComments ?? fanCommentsRef.current,
     });
     window.setTimeout(() => { writingRef.current = false; }, 250);
   }, []);
@@ -1016,6 +1201,7 @@ export default function App() {
     if (state.announcements) merge(setAnnouncements)(state.announcements);
     if (state.votes) merge(setVotes)(state.votes);
     if (state.pollVotes) merge(setPollVotes)(state.pollVotes);
+    if (state.fanComments) merge(setFanComments)(state.fanComments);
   }, []);
 
   useEffect(() => {
@@ -1028,6 +1214,22 @@ export default function App() {
     }, 5000);
     return () => { alive = false; window.clearInterval(interval); };
   }, [applyRemote]);
+
+  useEffect(() => {
+    if (!supabaseReady()) return undefined;
+    let alive = true;
+    const syncFanComments = async () => {
+      try {
+        const remote = await loadFanComments();
+        if (alive && remote) setFanComments((previous) => (sameData(previous, remote) ? previous : remote));
+      } catch {
+        // Keep the local optimistic feed if the hosted comment backend is unavailable.
+      }
+    };
+    syncFanComments();
+    const interval = window.setInterval(syncFanComments, 4000);
+    return () => { alive = false; window.clearInterval(interval); };
+  }, []);
 
   const fetchLive = useCallback(async () => {
     if (!API.enabled || !autoMode) {
@@ -1122,6 +1324,35 @@ export default function App() {
     return next;
   });
 
+  const onCommentAdd = async (comment) => {
+    if (supabaseReady()) {
+      const optimistic = { ...comment, id: `temp-${comment.id}` };
+      setFanComments((previous) => [optimistic, ...previous].slice(0, 500));
+      try {
+        const saved = await createFanComment(comment);
+        if (saved) setFanComments((previous) => [saved, ...previous.filter((item) => item.id !== optimistic.id)].slice(0, 500));
+      } catch {
+        setFanComments((previous) => previous.filter((item) => item.id !== optimistic.id));
+      }
+      return;
+    }
+    setFanComments((previous) => {
+      const next = [comment, ...previous].slice(0, 500);
+      pushState({ fanComments: next });
+      return next;
+    });
+  };
+
+  const onCommentDelete = (id) => {
+    if (me?.role !== "admin") return;
+    if (supabaseReady()) hideFanComment(id);
+    setFanComments((previous) => {
+      const next = previous.map((item) => (item.id === id ? { ...item, hidden: true } : item));
+      if (!supabaseReady()) pushState({ fanComments: next });
+      return next;
+    });
+  };
+
   const onVote = (matchId, choice) => {
     if (!me || me.role === "guest") return;
     const previousChoice = myVotes[matchId];
@@ -1214,13 +1445,14 @@ export default function App() {
               : tab === "schedule" ? <Schedule matches={matches} players={standings} />
               : tab === "players" ? <PlayersView players={standings} me={me} onAvatar={onAvatar} />
               : tab === "voting" ? <Voting matches={matches} players={standings} votes={votes} myVotes={myVotes} me={me} onVote={onVote} polls={SEED_POLLS} pollVotes={pollVotes} myPoll={myPoll} onPoll={onPoll} onVoteFor={onVoteFor} onPollFor={onPollFor} />
+              : tab === "fanzone" ? <FanZone matches={matches} players={standings} me={me} comments={fanComments} onCommentAdd={onCommentAdd} onCommentDelete={onCommentDelete} onSignIn={() => setShowSignIn(true)} />
               : tab === "admin" ? <Admin players={standings} matches={matches} announcements={announcements} onMatch={onMatch} onPlayer={onPlayer} onAvatar={onAvatar} onAnnAdd={onAnnAdd} onAnnDel={onAnnDel} live={live} autoMode={autoMode} setAutoMode={setAutoMode} storeOn={storeOn} />
               : null}
           </div>
         </main>
 
         <nav className="mobile-nav">
-          {NAV.slice(0, 5).map(([id, label, Icon]) => <button type="button" key={id} className={`mobile-nav-item ${tab === id ? "active" : ""}`} onClick={() => navigate(id)}><Icon /><span>{label}</span></button>)}
+          {NAV.slice(0, 6).map(([id, label, Icon]) => <button type="button" key={id} className={`mobile-nav-item ${tab === id ? "active" : ""}`} onClick={() => navigate(id)}><Icon /><span>{label}</span></button>)}
         </nav>
       </div>
       {showSignIn && <SignIn onClose={() => setShowSignIn(false)} onLogin={(user) => { setMe(user); setShowSignIn(false); }} />}
