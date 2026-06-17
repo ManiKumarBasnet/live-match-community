@@ -199,6 +199,8 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 const FAN_TABLE = "fan_comments";
 const FAN_API = "/api/fan-comments";
+const STATE_API = "/api/app-state";
+const USER_KEY = "dhi-office-world-cup:user";
 
 const NAV = [
   ["dashboard", "Dashboard", LayoutGrid],
@@ -335,9 +337,21 @@ function storageAvailable() {
   return typeof window !== "undefined";
 }
 
+const supabaseReady = () => Boolean(SUPABASE_URL && SUPABASE_KEY);
+const hostedFanApiReady = () => {
+  if (typeof window === "undefined") return false;
+  return !["localhost", "127.0.0.1"].includes(window.location.hostname);
+};
+const hostedStateApiReady = hostedFanApiReady;
+
 async function loadState() {
   if (!storageAvailable()) return null;
   try {
+    if (hostedStateApiReady()) {
+      const response = await fetch(STATE_API, { headers: { Accept: "application/json" } });
+      if (!response.ok) return null;
+      return response.json();
+    }
     if (window.storage?.get) {
       const response = await window.storage.get(STORAGE_KEY, true);
       return response?.value ? JSON.parse(response.value) : null;
@@ -352,7 +366,17 @@ async function loadState() {
 async function saveState(state) {
   if (!storageAvailable()) return false;
   try {
-    const payload = JSON.stringify({ ...state, updatedAt: Date.now() });
+    const cleanState = { ...state };
+    delete cleanState.fanComments;
+    if (hostedStateApiReady()) {
+      const response = await fetch(STATE_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cleanState),
+      });
+      return response.ok;
+    }
+    const payload = JSON.stringify({ ...cleanState, updatedAt: Date.now() });
     if (window.storage?.set) await window.storage.set(STORAGE_KEY, payload, true);
     else window.localStorage?.setItem(STORAGE_KEY, payload);
     return true;
@@ -361,11 +385,25 @@ async function saveState(state) {
   }
 }
 
-const supabaseReady = () => Boolean(SUPABASE_URL && SUPABASE_KEY);
-const hostedFanApiReady = () => {
-  if (typeof window === "undefined") return false;
-  return !["localhost", "127.0.0.1"].includes(window.location.hostname);
-};
+function loadLocalUser() {
+  if (typeof window === "undefined") return null;
+  try {
+    const value = window.localStorage?.getItem(USER_KEY);
+    return value ? JSON.parse(value) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveLocalUser(user) {
+  if (typeof window === "undefined") return;
+  try {
+    if (user) window.localStorage?.setItem(USER_KEY, JSON.stringify(user));
+    else window.localStorage?.removeItem(USER_KEY);
+  } catch {
+    // Identity remains available for this session if browser storage is blocked.
+  }
+}
 
 const fanHeaders = () => ({
   apikey: SUPABASE_KEY,
@@ -1019,40 +1057,54 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
 }
 
 function SignIn({ onClose, onLogin }) {
-  const [name, setName] = useState("");
+  const [mode, setMode] = useState("player");
+  const [name, setName] = useState(APPROVED[0]);
+  const [guestName, setGuestName] = useState("");
   const [password, setPassword] = useState("");
   const [admin, setAdmin] = useState(false);
   const [error, setError] = useState("");
 
   const submit = () => {
-    const cleanName = name.trim();
     setError("");
     if (admin) {
       if (password !== ADMIN_PIN) {
         setError("Admin PIN is incorrect.");
         return;
       }
-      onLogin({ name: cleanName || "Organizer", role: "admin" });
+      onLogin({ name: "Organizer", role: "admin" });
       return;
     }
-    if (!cleanName) {
-      setError("Enter your name to continue.");
+    if (mode === "player") {
+      if (!APPROVED.includes(name)) {
+        setError("Choose one of the official players.");
+        return;
+      }
+      onLogin({ name, role: "player" });
       return;
     }
-    const participant = APPROVED.find((item) => item.toLowerCase() === cleanName.toLowerCase());
-    onLogin({ name: participant || cleanName, role: participant ? "player" : "guest" });
+    const cleanGuest = guestName.trim().slice(0, 32);
+    if (!cleanGuest) {
+      setError("Enter a guest display name.");
+      return;
+    }
+    onLogin({ name: cleanGuest, role: "guest" });
   };
 
   return (
     <div className="overlay" onClick={onClose}>
       <div className="modal" onClick={(event) => event.stopPropagation()}>
         <div className="modal-title"><LogIn />Sign in</div>
-        <div className="modal-sub">Approved participants can vote and upload their own profile image. Non-participants enter as view-only guests.</div>
-        <div className="field"><label>Your name</label><input className="input" autoFocus placeholder="e.g. Mani" value={name} onChange={(event) => setName(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()} /></div>
+        <div className="modal-sub">Players pick their official name to vote and manage their profile photo. Guests can read and comment, but cannot vote.</div>
+        {!admin && <div className="chips" style={{ marginBottom: 14 }}>
+          <button type="button" className={`filter-chip ${mode === "player" ? "active" : ""}`} onClick={() => setMode("player")}>Player</button>
+          <button type="button" className={`filter-chip ${mode === "guest" ? "active" : ""}`} onClick={() => setMode("guest")}>Guest</button>
+        </div>}
+        {!admin && mode === "player" && <div className="field"><label>Official player</label><select className="select" autoFocus value={name} onChange={(event) => setName(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()}>{APPROVED.map((player) => <option key={player} value={player}>{player}</option>)}</select></div>}
+        {!admin && mode === "guest" && <div className="field"><label>Guest name</label><input className="input" autoFocus placeholder="e.g. Karma" value={guestName} onChange={(event) => setGuestName(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()} /></div>}
         <label className="checkbox"><input type="checkbox" checked={admin} onChange={(event) => setAdmin(event.target.checked)} />I am an organizer</label>
         {admin && <div className="field"><label>Admin PIN</label><input className="input" type="password" value={password} onChange={(event) => setPassword(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()} /></div>}
         {error && <div style={{ color: "var(--red)", fontSize: 13, fontWeight: 850, marginBottom: 14 }}>{error}</div>}
-        <div style={{ display: "flex", gap: 10 }}><button type="button" className="btn btn-primary" style={{ flex: 1 }} onClick={submit}><LogIn />Continue</button><button type="button" className="btn btn-soft" onClick={onClose}><X /></button></div>
+        <div style={{ display: "flex", gap: 10 }}><button type="button" className="btn btn-primary" style={{ flex: 1 }} onClick={submit}><LogIn />{admin ? "Enter admin" : mode === "player" ? "Continue as player" : "Enter as guest"}</button><button type="button" className="btn btn-soft" onClick={onClose}><X /></button></div>
       </div>
     </div>
   );
@@ -1202,7 +1254,7 @@ export default function App() {
   const [fanComments, setFanComments] = useState([]);
   const [myVotes, setMyVotes] = useState({});
   const [myPoll, setMyPoll] = useState({});
-  const [me, setMe] = useState(null);
+  const [me, setMe] = useState(() => loadLocalUser());
   const [showSignIn, setShowSignIn] = useState(false);
   const [liveScreen, setLiveScreen] = useState(false);
   const [autoMode, setAutoMode] = useState(true);
@@ -1224,6 +1276,9 @@ export default function App() {
   useEffect(() => { pollVotesRef.current = pollVotes; }, [pollVotes]);
   useEffect(() => { fanCommentsRef.current = fanComments; }, [fanComments]);
   useEffect(() => { setStoreOn(storageAvailable()); }, []);
+  useEffect(() => {
+    if (!me && !loadLocalUser()) setShowSignIn(true);
+  }, [me]);
 
   const pushState = useCallback(async (partial = {}) => {
     if (!storageAvailable()) return;
@@ -1251,7 +1306,7 @@ export default function App() {
     if (state.announcements) merge(setAnnouncements)(state.announcements);
     if (state.votes) merge(setVotes)(state.votes);
     if (state.pollVotes) merge(setPollVotes)(state.pollVotes);
-    if (state.fanComments) merge(setFanComments)(state.fanComments);
+    if (!hostedFanApiReady() && !supabaseReady() && state.fanComments) merge(setFanComments)(state.fanComments);
   }, []);
 
   useEffect(() => {
@@ -1458,6 +1513,16 @@ export default function App() {
   const adminLocked = tab === "admin" && me?.role !== "admin";
   const activeNav = NAV.find(([id]) => id === tab) || NAV[0];
   const upcomingCount = matches.filter((match) => match.status === "upcoming").length;
+  const onLogin = (user) => {
+    setMe(user);
+    saveLocalUser(user);
+    setShowSignIn(false);
+  };
+  const onSignOut = () => {
+    setMe(null);
+    saveLocalUser(null);
+    setShowSignIn(true);
+  };
 
   return (
     <IconContext.Provider value={{ weight: "bold", mirrored: false }}>
@@ -1475,7 +1540,7 @@ export default function App() {
             ))}
           </nav>
           <div className="side-footer">
-            {me ? <div className="account-card"><Avatar name={me.name} size={38} /><div className="account-meta"><div className="account-name">{me.name}</div><div className="account-role">{me.role}</div></div><button type="button" className="icon-btn" onClick={() => setMe(null)} title="Sign out"><LogOut /></button></div> : <button type="button" className="signin-btn" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}
+            {me ? <div className="account-card"><Avatar name={me.name} size={38} /><div className="account-meta"><div className="account-name">{me.name}</div><div className="account-role">{me.role}</div></div><button type="button" className="icon-btn" onClick={onSignOut} title="Sign out"><LogOut /></button></div> : <button type="button" className="signin-btn" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}
           </div>
         </aside>
 
@@ -1505,7 +1570,7 @@ export default function App() {
           {NAV.slice(0, 6).map(([id, label, Icon]) => <button type="button" key={id} className={`mobile-nav-item ${tab === id ? "active" : ""}`} onClick={() => navigate(id)}><Icon /><span>{label}</span></button>)}
         </nav>
       </div>
-      {showSignIn && <SignIn onClose={() => setShowSignIn(false)} onLogin={(user) => { setMe(user); setShowSignIn(false); }} />}
+      {showSignIn && <SignIn onClose={() => setShowSignIn(false)} onLogin={onLogin} />}
       {liveScreen && <LiveDisplay matches={matches} players={standings} announcements={announcements} live={live} onExit={() => setLiveScreen(false)} />}
     </IconContext.Provider>
   );

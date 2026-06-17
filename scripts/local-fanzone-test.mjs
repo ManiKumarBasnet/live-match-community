@@ -85,15 +85,24 @@ try {
         return el;
       };
 
+      if (document.body.innerText.includes("Continue as player") && document.body.innerText.includes("Guest")) {
+        clickByText("button", "Guest");
+        await wait(150);
+        const guest = document.querySelector('input[placeholder="e.g. Karma"]');
+        if (!guest) throw new Error("Missing guest sign-in input");
+        setValue(guest, "Local Tester");
+        clickByText("button", "Enter as guest");
+        await wait(250);
+      }
+
       clickByText("button", "Fan Zone");
       await wait(400);
 
       const name = document.querySelector('input[placeholder="Your display name"]');
       const text = document.querySelector('textarea[placeholder^="Send a match comment"]');
-      if (!name) throw new Error("Missing display name input");
       if (!text) throw new Error("Missing message textarea");
 
-      setValue(name, "Local Tester");
+      if (name) setValue(name, "Local Tester");
       setValue(text, "Local fan zone test message");
       await wait(100);
       clickByText("button", "Send");
