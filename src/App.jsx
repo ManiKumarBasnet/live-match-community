@@ -724,7 +724,7 @@ function commentTime(value) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete, onSignIn }) {
+function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete }) {
   const orderedMatches = useMemo(() => [...matches].sort((a, b) => {
     const statusWeight = { live: 0, upcoming: 1, completed: 2 };
     return (statusWeight[a.status] ?? 9) - (statusWeight[b.status] ?? 9) || safeDate(a.date) - safeDate(b.date) || a.id - b.id;
@@ -732,6 +732,10 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
   const [selectedId, setSelectedId] = useState(() => orderedMatches[0]?.id ?? null);
   const [type, setType] = useState("comment");
   const [text, setText] = useState("");
+  const [guestName, setGuestName] = useState(() => {
+    if (typeof window === "undefined") return "";
+    return window.localStorage?.getItem("dhi-office-world-cup:fan-name") || "";
+  });
 
   useEffect(() => {
     if (!orderedMatches.some((match) => match.id === selectedId)) setSelectedId(orderedMatches[0]?.id ?? null);
@@ -744,20 +748,22 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
 
   const submit = () => {
     const clean = text.trim().replace(/\s+/g, " ");
-    if (!selected || !me || clean.length < 2) return;
+    const author = (me?.name || guestName).trim().slice(0, 32);
+    if (!selected || !author || clean.length < 2) return;
+    if (!me && typeof window !== "undefined") window.localStorage?.setItem("dhi-office-world-cup:fan-name", author);
     onCommentAdd({
       id: Date.now(),
       matchId: selected.id,
       type,
       text: clean.slice(0, 220),
-      author: me.name,
-      role: me.role,
+      author,
+      role: me?.role || "fan",
       createdAt: Date.now(),
     });
     setText("");
   };
 
-  const canPost = Boolean(me) && text.trim().length >= 2;
+  const canPost = Boolean((me?.name || guestName).trim()) && text.trim().length >= 2;
 
   return (
     <div className="rise">
@@ -806,20 +812,16 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
               </div>
 
               <div className="fan-compose">
-                {me ? (
-                  <>
-                    <div className="fan-compose-top">
-                      {FAN_TYPES.map(([id, label, Icon]) => <button type="button" key={id} className={`fan-type ${type === id ? "active" : ""}`} onClick={() => setType(id)}><Icon size={14} />{label}</button>)}
-                    </div>
-                    <div className="fan-send">
-                      <textarea className="textarea" maxLength={220} rows={2} placeholder="Send a match comment, wish, or prediction..." value={text} onChange={(event) => setText(event.target.value)} onKeyDown={(event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") submit(); }} />
-                      <button type="button" className="btn btn-primary" disabled={!canPost} onClick={submit}><PaperPlaneTilt />Send</button>
-                    </div>
-                    <div className="fan-note">{220 - text.length} characters left</div>
-                  </>
-                ) : (
-                  <button type="button" className="btn btn-primary" onClick={onSignIn}><LogIn />Sign in to post</button>
-                )}
+                <div className="fan-compose-top">
+                  {!me && <input className="input" style={{ maxWidth: 220 }} placeholder="Your display name" value={guestName} onChange={(event) => setGuestName(event.target.value)} />}
+                  {me && <span className="fan-count"><LogIn />{me.name}</span>}
+                  {FAN_TYPES.map(([id, label, Icon]) => <button type="button" key={id} className={`fan-type ${type === id ? "active" : ""}`} onClick={() => setType(id)}><Icon size={14} />{label}</button>)}
+                </div>
+                <div className="fan-send">
+                  <textarea className="textarea" maxLength={220} rows={2} placeholder="Send a match comment, wish, or prediction..." value={text} onChange={(event) => setText(event.target.value)} onKeyDown={(event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") submit(); }} />
+                  <button type="button" className="btn btn-primary" disabled={!canPost} onClick={submit}><PaperPlaneTilt />Send</button>
+                </div>
+                <div className="fan-note">{canPost ? `${220 - text.length} characters left` : "Enter a name and message to post."}</div>
               </div>
             </>
           )}
@@ -1445,7 +1447,7 @@ export default function App() {
               : tab === "schedule" ? <Schedule matches={matches} players={standings} />
               : tab === "players" ? <PlayersView players={standings} me={me} onAvatar={onAvatar} />
               : tab === "voting" ? <Voting matches={matches} players={standings} votes={votes} myVotes={myVotes} me={me} onVote={onVote} polls={SEED_POLLS} pollVotes={pollVotes} myPoll={myPoll} onPoll={onPoll} onVoteFor={onVoteFor} onPollFor={onPollFor} />
-              : tab === "fanzone" ? <FanZone matches={matches} players={standings} me={me} comments={fanComments} onCommentAdd={onCommentAdd} onCommentDelete={onCommentDelete} onSignIn={() => setShowSignIn(true)} />
+              : tab === "fanzone" ? <FanZone matches={matches} players={standings} me={me} comments={fanComments} onCommentAdd={onCommentAdd} onCommentDelete={onCommentDelete} />
               : tab === "admin" ? <Admin players={standings} matches={matches} announcements={announcements} onMatch={onMatch} onPlayer={onPlayer} onAvatar={onAvatar} onAnnAdd={onAnnAdd} onAnnDel={onAnnDel} live={live} autoMode={autoMode} setAutoMode={setAutoMode} storeOn={storeOn} />
               : null}
           </div>
