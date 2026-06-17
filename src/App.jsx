@@ -1056,6 +1056,39 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
   );
 }
 
+function ProfileSettings({ me, players, onAvatar, onClose }) {
+  const player = players.find((item) => item.name === me?.name);
+  const uploadAvatar = (event) => {
+    const file = event.target.files?.[0];
+    if (!file || !player) return;
+    const reader = new FileReader();
+    reader.onload = (loadEvent) => onAvatar(player.id, loadEvent.target.result);
+    reader.readAsDataURL(file);
+    event.target.value = "";
+  };
+
+  return (
+    <div className="overlay" onClick={onClose}>
+      <div className="modal" onClick={(event) => event.stopPropagation()}>
+        <div className="modal-title"><Users />Profile</div>
+        <div className="profile-head" style={{ marginBottom: 18 }}>
+          <Avatar name={me.name} size={76} img={player?.avatar} />
+          <div><div className="profile-name">{me.name}</div><div className="modal-sub" style={{ margin: "4px 0 0" }}>{me.role === "player" ? "Official player" : me.role}</div></div>
+        </div>
+        {me.role === "player" && player ? (
+          <>
+            <div className="field"><label>Profile photo</label><button type="button" className="btn btn-soft" onClick={() => document.getElementById("profile-avatar-upload")?.click()}><Upload />Upload or change photo</button><input id="profile-avatar-upload" type="file" accept="image/*" onChange={uploadAvatar} style={{ display: "none" }} /></div>
+            <div className="field"><label>Your countries</label><div className="country-chips" style={{ padding: 0, borderTop: 0 }}>{player.countries.map((country) => <span key={country} className="country-chip"><Flag country={country} size={16} round />{country}</span>)}</div></div>
+          </>
+        ) : (
+          <div className="modal-sub">Guests can comment in Fan Zone. Voting and profile photos are for official players.</div>
+        )}
+        <button type="button" className="btn btn-primary" style={{ width: "100%" }} onClick={onClose}>Done</button>
+      </div>
+    </div>
+  );
+}
+
 function SignIn({ onClose, onLogin }) {
   const [mode, setMode] = useState("player");
   const [name, setName] = useState(APPROVED[0]);
@@ -1256,6 +1289,7 @@ export default function App() {
   const [myPoll, setMyPoll] = useState({});
   const [me, setMe] = useState(() => loadLocalUser());
   const [showSignIn, setShowSignIn] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [liveScreen, setLiveScreen] = useState(false);
   const [autoMode, setAutoMode] = useState(true);
   const [liveStatus, setLiveStatus] = useState("idle");
@@ -1540,7 +1574,7 @@ export default function App() {
             ))}
           </nav>
           <div className="side-footer">
-            {me ? <div className="account-card"><Avatar name={me.name} size={38} /><div className="account-meta"><div className="account-name">{me.name}</div><div className="account-role">{me.role}</div></div><button type="button" className="icon-btn" onClick={onSignOut} title="Sign out"><LogOut /></button></div> : <button type="button" className="signin-btn" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}
+            {me ? <div className="account-card"><button type="button" onClick={() => setShowProfile(true)} style={{ background: "transparent", padding: 0, cursor: "pointer" }} title="Profile settings"><Avatar name={me.name} size={38} img={players.find((player) => player.name === me.name)?.avatar} /></button><button type="button" className="account-meta" style={{ background: "transparent", color: "inherit", textAlign: "left", cursor: "pointer" }} onClick={() => setShowProfile(true)}><div className="account-name">{me.name}</div><div className="account-role">{me.role}</div></button><button type="button" className="icon-btn" onClick={onSignOut} title="Sign out"><LogOut /></button></div> : <button type="button" className="signin-btn" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}
           </div>
         </aside>
 
@@ -1550,7 +1584,7 @@ export default function App() {
               <button type="button" className="icon-btn mobile-menu" style={{ background: "#fff", color: "var(--ink)", border: "1px solid var(--line)" }} onClick={() => setSidebarOpen(true)}><Menu /></button>
               <div><div className="top-title">{activeNav[1]}</div><div className="top-subtitle">{SUBTITLE[tab]}</div></div>
             </div>
-            <div className="top-actions"><button type="button" className="btn btn-soft btn-small" onClick={() => setLiveScreen(true)} title="Open the full-screen live display"><MonitorPlay /><span className="signin-top">Live screen</span></button><SyncStatus live={live} autoMode={autoMode} />{!me && <button type="button" className="btn btn-primary btn-small signin-top" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}</div>
+            <div className="top-actions"><button type="button" className="btn btn-soft btn-small" onClick={() => setLiveScreen(true)} title="Open the full-screen live display"><MonitorPlay /><span className="signin-top">Live screen</span></button><SyncStatus live={live} autoMode={autoMode} />{me ? <button type="button" className="btn btn-soft btn-small signin-top" onClick={() => setShowProfile(true)}><Users />Profile</button> : <button type="button" className="btn btn-primary btn-small signin-top" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}</div>
           </header>
 
           <div className="page">
@@ -1571,6 +1605,7 @@ export default function App() {
         </nav>
       </div>
       {showSignIn && <SignIn onClose={() => setShowSignIn(false)} onLogin={onLogin} />}
+      {showProfile && me && <ProfileSettings me={me} players={players} onAvatar={onAvatar} onClose={() => setShowProfile(false)} />}
       {liveScreen && <LiveDisplay matches={matches} players={standings} announcements={announcements} live={live} onExit={() => setLiveScreen(false)} />}
     </IconContext.Provider>
   );
