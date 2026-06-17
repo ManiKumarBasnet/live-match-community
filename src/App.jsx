@@ -198,6 +198,7 @@ const STORAGE_KEY = "dhi-office-world-cup:v2";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 const FAN_TABLE = "fan_comments";
+const FAN_API = "/api/fan-comments";
 
 const NAV = [
   ["dashboard", "Dashboard", LayoutGrid],
@@ -361,6 +362,10 @@ async function saveState(state) {
 }
 
 const supabaseReady = () => Boolean(SUPABASE_URL && SUPABASE_KEY);
+const hostedFanApiReady = () => {
+  if (typeof window === "undefined") return false;
+  return !["localhost", "127.0.0.1"].includes(window.location.hostname);
+};
 
 const fanHeaders = () => ({
   apikey: SUPABASE_KEY,
@@ -380,6 +385,11 @@ const fromFanRow = (row) => ({
 });
 
 async function loadFanComments() {
+  if (hostedFanApiReady()) {
+    const response = await fetch(FAN_API, { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error("fan comments unavailable");
+    return response.json();
+  }
   if (!supabaseReady()) return null;
   const url = `${SUPABASE_URL}/rest/v1/${FAN_TABLE}?select=*&order=created_at.desc&limit=500`;
   const response = await fetch(url, { headers: fanHeaders() });
@@ -388,6 +398,15 @@ async function loadFanComments() {
 }
 
 async function createFanComment(comment) {
+  if (hostedFanApiReady()) {
+    const response = await fetch(FAN_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(comment),
+    });
+    if (!response.ok) throw new Error("fan comment failed");
+    return response.json();
+  }
   if (!supabaseReady()) return null;
   const response = await fetch(`${SUPABASE_URL}/rest/v1/${FAN_TABLE}`, {
     method: "POST",
@@ -406,6 +425,14 @@ async function createFanComment(comment) {
 }
 
 async function hideFanComment(id) {
+  if (hostedFanApiReady()) {
+    const response = await fetch(FAN_API, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    return response.ok;
+  }
   if (!supabaseReady()) return false;
   const response = await fetch(`${SUPABASE_URL}/rest/v1/${FAN_TABLE}?id=eq.${encodeURIComponent(id)}`, {
     method: "PATCH",
@@ -1239,7 +1266,7 @@ export default function App() {
   }, [applyRemote]);
 
   useEffect(() => {
-    if (!supabaseReady()) return undefined;
+    if (!hostedFanApiReady() && !supabaseReady()) return undefined;
     let alive = true;
     const syncFanComments = async () => {
       try {
@@ -1348,7 +1375,7 @@ export default function App() {
   });
 
   const onCommentAdd = async (comment) => {
-    if (supabaseReady()) {
+    if (hostedFanApiReady() || supabaseReady()) {
       const optimistic = { ...comment, id: `temp-${comment.id}` };
       setFanComments((previous) => [optimistic, ...previous].slice(0, 500));
       try {
@@ -1368,10 +1395,10 @@ export default function App() {
 
   const onCommentDelete = (id) => {
     if (me?.role !== "admin") return;
-    if (supabaseReady()) hideFanComment(id);
+    if (hostedFanApiReady() || supabaseReady()) hideFanComment(id);
     setFanComments((previous) => {
       const next = previous.map((item) => (item.id === id ? { ...item, hidden: true } : item));
-      if (!supabaseReady()) pushState({ fanComments: next });
+      if (!hostedFanApiReady() && !supabaseReady()) pushState({ fanComments: next });
       return next;
     });
   };
