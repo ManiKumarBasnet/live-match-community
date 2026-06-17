@@ -1,0 +1,5 @@
+[[redirects]]
+from = "/api/espn/*"
+to = "https://site.api.espn.com/:splat"
+status = 200
+force = true
