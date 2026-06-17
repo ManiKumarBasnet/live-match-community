@@ -734,8 +734,13 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
   const [text, setText] = useState("");
   const [guestName, setGuestName] = useState(() => {
     if (typeof window === "undefined") return "";
-    return window.localStorage?.getItem("dhi-office-world-cup:fan-name") || "";
+    try {
+      return window.localStorage?.getItem("dhi-office-world-cup:fan-name") || "";
+    } catch {
+      return "";
+    }
   });
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!orderedMatches.some((match) => match.id === selectedId)) setSelectedId(orderedMatches[0]?.id ?? null);
@@ -749,8 +754,25 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
   const submit = () => {
     const clean = text.trim().replace(/\s+/g, " ");
     const author = (me?.name || guestName).trim().slice(0, 32);
-    if (!selected || !author || clean.length < 2) return;
-    if (!me && typeof window !== "undefined") window.localStorage?.setItem("dhi-office-world-cup:fan-name", author);
+    if (!selected) {
+      setError("Choose a match first.");
+      return;
+    }
+    if (!author) {
+      setError("Enter your display name.");
+      return;
+    }
+    if (clean.length < 2) {
+      setError("Type a message first.");
+      return;
+    }
+    if (!me && typeof window !== "undefined") {
+      try {
+        window.localStorage?.setItem("dhi-office-world-cup:fan-name", author);
+      } catch {
+        // Posting still works for this session if the browser blocks storage.
+      }
+    }
     onCommentAdd({
       id: Date.now(),
       matchId: selected.id,
@@ -761,9 +783,8 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
       createdAt: Date.now(),
     });
     setText("");
+    setError("");
   };
-
-  const canPost = Boolean((me?.name || guestName).trim()) && text.trim().length >= 2;
 
   return (
     <div className="rise">
@@ -819,9 +840,9 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
                 </div>
                 <div className="fan-send">
                   <textarea className="textarea" maxLength={220} rows={2} placeholder="Send a match comment, wish, or prediction..." value={text} onChange={(event) => setText(event.target.value)} onKeyDown={(event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") submit(); }} />
-                  <button type="button" className="btn btn-primary" disabled={!canPost} onClick={submit}><PaperPlaneTilt />Send</button>
+                  <button type="button" className="btn btn-primary" onClick={submit}><PaperPlaneTilt />Send</button>
                 </div>
-                <div className="fan-note">{canPost ? `${220 - text.length} characters left` : "Enter a name and message to post."}</div>
+                <div className="fan-note" style={{ color: error ? "var(--red)" : "var(--faint)" }}>{error || `${220 - text.length} characters left`}</div>
               </div>
             </>
           )}
@@ -1334,7 +1355,7 @@ export default function App() {
         const saved = await createFanComment(comment);
         if (saved) setFanComments((previous) => [saved, ...previous.filter((item) => item.id !== optimistic.id)].slice(0, 500));
       } catch {
-        setFanComments((previous) => previous.filter((item) => item.id !== optimistic.id));
+        setFanComments((previous) => previous.map((item) => (item.id === optimistic.id ? { ...comment, localOnly: true } : item)));
       }
       return;
     }
