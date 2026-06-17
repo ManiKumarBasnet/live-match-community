@@ -113,7 +113,7 @@ const CSS = `
 .live-foot{flex:0 0 auto;display:flex;align-items:center;gap:18px;z-index:1;padding-top:15px;border-top:1px solid rgba(255,255,255,.07)}
 .live-dots{display:flex;gap:10px}.live-dot{height:6px;width:30px;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden;position:relative}.live-dot.on::after{content:"";position:absolute;inset:0;background:#27e08c;transform-origin:left;animation:dotfill var(--scene-ms,10000ms) linear both}@keyframes dotfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .live-foot-label{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#6f8ba1}.live-meta{margin-left:auto;display:flex;gap:20px;font-size:13px;font-weight:700;color:#7fa0b8;font-variant-numeric:tabular-nums}.live-meta b{color:#cfe0ec}
-@media(max-width:760px){.fan-grid{grid-template-columns:1fr}.fan-room{min-height:0}.fan-feed{max-height:520px}.fan-send{grid-template-columns:1fr}.lv-match{grid-template-columns:1fr;gap:14px;text-align:center}.lv-team,.lv-team.right{flex-direction:column;text-align:center}.lv-mid{order:-1}.live-meta{display:none}}
+@media(max-width:760px){.fan-grid{display:flex;flex-direction:column}.fan-room{order:-1;min-height:0}.fan-feed{max-height:280px}.fan-match-list{max-height:260px;overflow:auto}.fan-send{grid-template-columns:1fr}.lv-match{grid-template-columns:1fr;gap:14px;text-align:center}.lv-team,.lv-team.right{flex-direction:column;text-align:center}.lv-mid{order:-1}.live-meta{display:none}}
 `;
 
 const APPROVED = ["Sangay", "Advanced", "Tandin", "Roshan", "Chirag", "Mani", "Kyunchab", "Lhendup", "Buddy", "Manish", "Khorlo", "Cheche", "Zig", "Nirpa", "Lambu", "Tashi"];
@@ -834,12 +834,12 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
 
               <div className="fan-compose">
                 <div className="fan-compose-top">
-                  {!me && <input className="input" style={{ maxWidth: 220 }} placeholder="Your display name" value={guestName} onChange={(event) => setGuestName(event.target.value)} />}
+                  {!me && <input className="input" style={{ maxWidth: 220 }} placeholder="Your display name" value={guestName} onChange={(event) => { setGuestName(event.target.value); setError(""); }} />}
                   {me && <span className="fan-count"><LogIn />{me.name}</span>}
                   {FAN_TYPES.map(([id, label, Icon]) => <button type="button" key={id} className={`fan-type ${type === id ? "active" : ""}`} onClick={() => setType(id)}><Icon size={14} />{label}</button>)}
                 </div>
                 <div className="fan-send">
-                  <textarea className="textarea" maxLength={220} rows={2} placeholder="Send a match comment, wish, or prediction..." value={text} onChange={(event) => setText(event.target.value)} onKeyDown={(event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") submit(); }} />
+                  <textarea className="textarea" maxLength={220} rows={2} placeholder="Send a match comment, wish, or prediction..." value={text} onChange={(event) => { setText(event.target.value); setError(""); }} onKeyDown={(event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") submit(); }} />
                   <button type="button" className="btn btn-primary" onClick={submit}><PaperPlaneTilt />Send</button>
                 </div>
                 <div className="fan-note" style={{ color: error ? "var(--red)" : "var(--faint)" }}>{error || `${220 - text.length} characters left`}</div>
