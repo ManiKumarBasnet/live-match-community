@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+﻿import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 // Icons: Phosphor, aliased to the names used throughout so call sites stay put.
 import {
   IconContext,
@@ -122,7 +122,7 @@ const ADMIN_PIN = "admin123";
 const ISO = {
   Mexico: "mx", "South Africa": "za", "South Korea": "kr", Czechia: "cz", Canada: "ca", Bosnia: "ba",
   Qatar: "qa", Switzerland: "ch", USA: "us", Paraguay: "py", Brazil: "br", Morocco: "ma", Haiti: "ht",
-  Scotland: "gb-sct", Germany: "de", "Curaçao": "cw", "Ivory Coast": "ci", Ecuador: "ec", Netherlands: "nl",
+  Scotland: "gb-sct", Germany: "de", "CuraÃ§ao": "cw", "Ivory Coast": "ci", Ecuador: "ec", Netherlands: "nl",
   Japan: "jp", Spain: "es", "Cabo Verde": "cv", "Saudi Arabia": "sa", Uruguay: "uy", Belgium: "be", Egypt: "eg",
   Iran: "ir", "New Zealand": "nz", France: "fr", Senegal: "sn", Norway: "no", Iraq: "iq", Argentina: "ar",
   Algeria: "dz", Austria: "at", Jordan: "jo", Portugal: "pt", Congo: "cd", Uzbekistan: "uz", Colombia: "co",
@@ -140,7 +140,7 @@ const SEED_PLAYERS = [
   { id: 2, name: "Advanced", countries: ["Spain", "Canada", "Qatar"] },
   { id: 3, name: "Tandin", countries: ["France", "South Korea", "Haiti"] },
   { id: 4, name: "Roshan", countries: ["England", "Austria", "South Africa"] },
-  { id: 5, name: "Chirag", countries: ["Portugal", "Sweden", "Curaçao"] },
+  { id: 5, name: "Chirag", countries: ["Portugal", "Sweden", "CuraÃ§ao"] },
   { id: 6, name: "Mani", countries: ["Brazil", "Japan", "Congo"] },
   { id: 7, name: "Kyunchab", countries: ["Morocco", "Egypt", "Scotland"] },
   { id: 8, name: "Lhendup", countries: ["Netherlands", "Panama", "Jordan"] },
@@ -162,7 +162,7 @@ const SEED_MATCHES = [
   { id: 4, a: "Qatar", b: "Switzerland", date: "2026-06-13", time: "00:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group B" },
   { id: 6, a: "Brazil", b: "Morocco", date: "2026-06-13", time: "15:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group C" },
   { id: 7, a: "Haiti", b: "Scotland", date: "2026-06-13", time: "21:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group C" },
-  { id: 8, a: "Germany", b: "Curaçao", date: "2026-06-14", time: "13:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group E" },
+  { id: 8, a: "Germany", b: "CuraÃ§ao", date: "2026-06-14", time: "13:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group E" },
   { id: 9, a: "Ivory Coast", b: "Ecuador", date: "2026-06-14", time: "16:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group E" },
   { id: 10, a: "Netherlands", b: "Japan", date: "2026-06-14", time: "19:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group F" },
   { id: 11, a: "Spain", b: "Cabo Verde", date: "2026-06-15", time: "12:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group H" },
@@ -181,17 +181,17 @@ const SEED_MATCHES = [
 
 const SEED_ANN = [
   { id: 1, text: "Welcome to the DHI InnoTech World Cup pool: 16 colleagues, 48 countries, one department scoreboard.", date: "Jun 11" },
-  { id: 2, text: "Opening office clash: Mexico vs South Africa — Zig vs Roshan starts the race.", date: "Jun 11" },
+  { id: 2, text: "Opening office clash: Mexico vs South Africa â€” Zig vs Roshan starts the race.", date: "Jun 11" },
 ];
 
 const SEED_POLLS = [
-  { id: 1, q: "Who lifts the trophy?", opts: ["Mani · Brazil", "Advanced · Spain", "Chirag · Portugal", "Sangay · Argentina"] },
-  { id: 2, q: "Toughest group draw?", opts: ["Mani · Group C", "Tandin · Group I", "Lhendup · Group F", "Roshan · Group L"] },
+  { id: 1, q: "Who lifts the trophy?", opts: ["Mani Â· Brazil", "Advanced Â· Spain", "Chirag Â· Portugal", "Sangay Â· Argentina"] },
+  { id: 2, q: "Toughest group draw?", opts: ["Mani Â· Group C", "Tandin Â· Group I", "Lhendup Â· Group F", "Roshan Â· Group L"] },
   { id: 3, q: "Best opening-day clash?", opts: ["Mexico v South Africa", "South Korea v Czechia", "Tomorrow's fixtures", "All of them"] },
 ];
 
 const SCORING = [["Group Win", "3"], ["Draw", "1"], ["Round of 32", "3"], ["Round of 16", "5"], ["Quarter-final", "8"], ["Semi-final", "12"], ["Final", "18"], ["Champion", "25"]];
-// ESPN's public scoreboard API (proxied same-origin by vite.config.js → no CORS).
+// ESPN's public scoreboard API (proxied same-origin by vite.config.js â†’ no CORS).
 // Accurate, real-time scores/status for the whole tournament window.
 const API = { enabled: true, url: "/api/espn/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=300", headers: {}, refreshMs: 45000, timeoutMs: 20000, retryMs: 6000 };
 const STORAGE_KEY = "dhi-office-world-cup:v2";
@@ -201,6 +201,7 @@ const FAN_TABLE = "fan_comments";
 const FAN_API = "/api/fan-comments";
 const STATE_API = "/api/app-state";
 const USER_KEY = "dhi-office-world-cup:user";
+const TAB_KEY = "dhi-office-world-cup:tab";
 
 const NAV = [
   ["dashboard", "Dashboard", LayoutGrid],
@@ -224,9 +225,9 @@ const SUBTITLE = {
 
 const NAME_MAP = {
   "United States": "USA", US: "USA", "Korea Republic": "South Korea", "Republic of Korea": "South Korea", Korea: "South Korea",
-  "Czech Republic": "Czechia", "Cape Verde": "Cabo Verde", "Côte d'Ivoire": "Ivory Coast", "Cote d'Ivoire": "Ivory Coast",
+  "Czech Republic": "Czechia", "Cape Verde": "Cabo Verde", "CÃ´te d'Ivoire": "Ivory Coast", "Cote d'Ivoire": "Ivory Coast",
   "DR Congo": "Congo", "Congo DR": "Congo", "Democratic Republic of the Congo": "Congo", "Bosnia and Herzegovina": "Bosnia",
-  "Bosnia & Herzegovina": "Bosnia", "Bosnia-Herzegovina": "Bosnia", Curacao: "Curaçao", Türkiye: "Turkey", Turkiye: "Turkey",
+  "Bosnia & Herzegovina": "Bosnia", "Bosnia-Herzegovina": "Bosnia", Curacao: "CuraÃ§ao", "TÃ¼rkiye": "Turkey", Turkiye: "Turkey",
 };
 
 const normalizeName = (name) => {
@@ -405,6 +406,30 @@ function saveLocalUser(user) {
   }
 }
 
+function loadSavedTab() {
+  if (typeof window === "undefined") return "dashboard";
+  const fromHash = window.location.hash?.replace(/^#\/?/, "");
+  const fromStorage = window.localStorage?.getItem(TAB_KEY);
+  const tab = fromHash || fromStorage || "dashboard";
+  return NAV.some(([id]) => id === tab) ? tab : "dashboard";
+}
+
+function saveCurrentTab(tab) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage?.setItem(TAB_KEY, tab);
+    if (window.location.hash !== `#${tab}`) window.history.replaceState(null, "", `#${tab}`);
+  } catch {
+    // The active tab still works for this session if browser storage is blocked.
+  }
+}
+
+function mergeFanLists(previous, remote) {
+  const remoteIds = new Set(remote.map((item) => String(item.id)));
+  const localPending = previous.filter((item) => String(item.id).startsWith("temp-") || item.localOnly);
+  return [...localPending.filter((item) => !remoteIds.has(String(item.id))), ...remote];
+}
+
 const fanHeaders = () => ({
   apikey: SUPABASE_KEY,
   Authorization: `Bearer ${SUPABASE_KEY}`,
@@ -503,7 +528,7 @@ function Avatar({ name, size = 38, img }) {
 
 function Flag({ country, size = 22, round = false }) {
   const url = flagUrl(country, size > 44);
-  if (!url) return <span aria-label={country}>🏳</span>;
+  if (!url) return <span aria-label={country}>ðŸ³</span>;
   return (
     <img
       className={`flag ${round ? "round" : "rect"}`}
@@ -526,7 +551,7 @@ function StatusTag({ status }) {
 function SyncStatus({ live, autoMode }) {
   const time = live.lastSync ? live.lastSync.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
   if (!autoMode || live.status === "manual") return <button type="button" className="sync" onClick={live.sync}><WifiOff />Manual</button>;
-  if (live.status === "live") return <button type="button" className="sync ok" onClick={live.sync} title={time ? `Synced ${time}` : "Synced"}><span className="status-dot" /><span>Live{time ? ` · ${time}` : ""}</span></button>;
+  if (live.status === "live") return <button type="button" className="sync ok" onClick={live.sync} title={time ? `Synced ${time}` : "Synced"}><span className="status-dot" /><span>Live{time ? ` Â· ${time}` : ""}</span></button>;
   if (live.status === "connecting" || live.status === "idle") return <div className="sync warn"><RefreshCw className="spin" /><span>Syncing</span></div>;
   return <button type="button" className="sync" onClick={live.sync}><WifiOff /><span>Offline</span></button>;
 }
@@ -558,8 +583,8 @@ function MatchCard({ match, players }) {
       </div>
       <div className="match-mid">
         <StatusTag status={match.status} />
-        {hasScore ? <div className="score">{match.sa ?? "–"} : {match.sb ?? "–"}</div> : <div className="vs">VS</div>}
-        <div className="match-time">{match.stage} · {match.time}</div>
+        {hasScore ? <div className="score">{match.sa ?? "â€“"} : {match.sb ?? "â€“"}</div> : <div className="vs">VS</div>}
+        <div className="match-time">{match.stage} Â· {match.time}</div>
         {clash && <div className="clash-note"><Swords />Office clash</div>}
       </div>
       <div className="team right">
@@ -597,7 +622,7 @@ function Dashboard({ players, matches, announcements, go }) {
       <section className="hero">
         <div className="hero-content">
           <div>
-            <div className="eyebrow"><Sparkles />World Cup 2026 · Office Pool</div>
+            <div className="eyebrow"><Sparkles />World Cup 2026 Â· Office Pool</div>
             <h1>Race to the crown.</h1>
             <div className="hero-metrics">
               <div className="hero-mini"><div className="hero-mini-value">{players.length}</div><div className="hero-mini-label">Players</div></div>
@@ -612,8 +637,8 @@ function Dashboard({ players, matches, announcements, go }) {
               <div className="player-cell">
                 <Avatar name={leader?.name} size={58} img={leader?.avatar} />
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <div className="player-name" style={{ fontSize: 22 }}>{leader?.name || "—"}</div>
-                  <div className="player-meta"><Shield />{leader ? getActiveCountries(leader).length : 0} active teams · {leader?.w || 0}W {leader?.d || 0}D {leader?.l || 0}L</div>
+                  <div className="player-name" style={{ fontSize: 22 }}>{leader?.name || "â€”"}</div>
+                  <div className="player-meta"><Shield />{leader ? getActiveCountries(leader).length : 0} active teams Â· {leader?.w || 0}W {leader?.d || 0}D {leader?.l || 0}L</div>
                   <div className="flag-row" style={{ marginTop: 10 }}>{leader?.countries.map((country) => <Flag key={country} country={country} size={18} round />)}</div>
                 </div>
                 <div className="points-block"><strong>{leader?.pts ?? 0}</strong><div className="wdl-label">pts</div></div>
@@ -676,9 +701,9 @@ function Leaderboard({ players }) {
               return (
                 <tr key={player.id}>
                   <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span>{index === 0 && <Crown size={17} color="var(--gold)" />}{(index === 1 || index === 2) && <Medal size={16} color={index === 1 ? "var(--silver)" : "var(--bronze)"} />}</div></td>
-                  <td><div className="player-cell"><span className="color-rail" style={{ background: COLORS[player.name] || "#ccd5df" }} /><Avatar name={player.name} size={42} img={player.avatar} /><div><div className="player-name">{player.name}</div><div className="player-meta"><Shield />{active.length} active{player.elim.length > 0 ? ` · ${player.elim.length} out` : ""}</div></div></div></td>
+                  <td><div className="player-cell"><span className="color-rail" style={{ background: COLORS[player.name] || "#ccd5df" }} /><Avatar name={player.name} size={42} img={player.avatar} /><div><div className="player-name">{player.name}</div><div className="player-meta"><Shield />{active.length} active{player.elim.length > 0 ? ` Â· ${player.elim.length} out` : ""}</div></div></div></td>
                   <td><div className="flag-row">{player.countries.map((country) => <span key={country} style={{ opacity: player.elim.includes(country) ? 0.34 : 1 }}><Flag country={country} size={18} round /></span>)}</div></td>
-                  <td><div className="form-row">{form.length ? form.map((result, i) => <span key={`${result}-${i}`} className={`form-chip ${result.toLowerCase()}`}>{result}</span>) : <span className="form-chip empty">–</span>}</div></td>
+                  <td><div className="form-row">{form.length ? form.map((result, i) => <span key={`${result}-${i}`} className={`form-chip ${result.toLowerCase()}`}>{result}</span>) : <span className="form-chip empty">â€“</span>}</div></td>
                   <td className="right num">{player.w}</td><td className="right num">{player.d}</td><td className="right num">{player.l}</td>
                   <td><div className="points-block"><strong style={{ color: index === 0 ? "var(--green)" : "var(--ink)" }}>{player.pts}</strong><div className="progress"><span style={{ width: `${Math.max(2, (player.pts / max) * 100)}%`, background: index === 0 ? "var(--green)" : COLORS[player.name] || "var(--blue)" }} /></div></div></td>
                 </tr>
@@ -710,7 +735,7 @@ function Schedule({ matches, players }) {
     <div className="rise">
       <div className="filter-row">
         <div className="chips">{[["all", "All"], ["live", "Live"], ["upcoming", "Upcoming"], ["completed", "Completed"]].map(([id, label]) => <button type="button" key={id} className={`filter-chip ${status === id ? "active" : ""}`} onClick={() => setStatus(id)}>{label}</button>)}</div>
-        <div className="search"><Search /><input className="input" placeholder="Search team or group…" value={query} onChange={(e) => setQuery(e.target.value)} /></div>
+        <div className="search"><Search /><input className="input" placeholder="Search team or groupâ€¦" value={query} onChange={(e) => setQuery(e.target.value)} /></div>
       </div>
       {Object.keys(grouped).length ? Object.entries(grouped).map(([date, dayMatches]) => (
         <section className="day" key={date}>
@@ -741,7 +766,7 @@ function PlayersView({ players, me, onAvatar }) {
     <div className="rise">
       <div className="section-head">
         <div className="section-title"><Users />{players.length} participants</div>
-        <div className="search"><Search /><input className="input" placeholder="Search player or country…" value={query} onChange={(e) => setQuery(e.target.value)} /></div>
+        <div className="search"><Search /><input className="input" placeholder="Search player or countryâ€¦" value={query} onChange={(e) => setQuery(e.target.value)} /></div>
       </div>
       <div className="player-grid">
         {visible.map((player) => {
@@ -863,7 +888,7 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
                 <button type="button" className={`fan-match-btn ${selected?.id === match.id ? "active" : ""}`} key={match.id} onClick={() => setSelectedId(match.id)}>
                   <div className="fan-match-main">
                     <div className="fan-match-teams"><Flag country={match.a} size={16} round />{match.a}<span style={{ color: "var(--faint)" }}>v</span>{match.b}<Flag country={match.b} size={16} round /></div>
-                    <div className="fan-match-meta">{fmtDate(match.date)} · {match.stage}</div>
+                    <div className="fan-match-meta">{fmtDate(match.date)} Â· {match.stage}</div>
                   </div>
                   <span className="fan-count"><ChatCircleText />{count}</span>
                 </button>
@@ -877,7 +902,7 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
             <>
               <div className="fan-room-head">
                 <div className="fan-room-title"><Flag country={selected.a} size={24} round />{selected.a}<span className="vs">VS</span>{selected.b}<Flag country={selected.b} size={24} round /></div>
-                <div className="fan-room-sub">{fmtDate(selected.date)} · {selected.time} · {selected.stage} · {selected.status === "live" ? "Live now" : selected.status === "completed" ? "Full time" : "Upcoming"}</div>
+                <div className="fan-room-sub">{fmtDate(selected.date)} Â· {selected.time} Â· {selected.stage} Â· {selected.status === "live" ? "Live now" : selected.status === "completed" ? "Full time" : "Upcoming"}</div>
               </div>
 
               <div className="fan-feed">
@@ -917,45 +942,99 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
   );
 }
 
-function Voting({ matches, players, votes, myVotes, me, onVote, polls, pollVotes, myPoll, onPoll, onVoteFor, onPollFor }) {
-  const upcoming = matches.filter((match) => match.status === "upcoming");
+function voteCounts(current = {}) {
+  if (current.byUser) return Object.values(current.byUser).reduce((acc, choice) => ({ ...acc, [choice]: (acc[choice] || 0) + 1 }), { A: 0, Draw: 0, B: 0 });
+  return { A: current.A || 0, Draw: current.Draw || 0, B: current.B || 0 };
+}
+
+function correctChoice(match) {
+  if (match.status !== "completed" || match.sa == null || match.sb == null) return null;
+  if (match.sa > match.sb) return "A";
+  if (match.sb > match.sa) return "B";
+  return "Draw";
+}
+
+function predictionBoard(players, matches, votes) {
+  return players.map((player) => {
+    let hits = 0;
+    let total = 0;
+    matches.forEach((match) => {
+      const expected = correctChoice(match);
+      const picked = expected ? votes[match.id]?.byUser?.[player.name] : null;
+      if (!picked) return;
+      total += 1;
+      if (picked === expected) hits += 1;
+    });
+    return { ...player, predictionHits: hits, predictionTotal: total };
+  }).sort((a, b) => b.predictionHits - a.predictionHits || b.predictionTotal - a.predictionTotal || a.name.localeCompare(b.name));
+}
+
+function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPolls, pollVotes, myPoll, onPoll, onPollCreate, onVoteFor, onPollFor }) {
+  const upcoming = matches;
   const canVote = me && me.role !== "guest";
   const isAdmin = me?.role === "admin";
+  const [pollQuestion, setPollQuestion] = useState("");
+  const [pollOptions, setPollOptions] = useState("");
+  const allPolls = [...(customPolls || []), ...polls];
+  const board = useMemo(() => predictionBoard(players, matches, votes), [players, matches, votes]);
   const pct = (value, total) => (total ? Math.round((value / total) * 100) : 0);
+  const createPoll = () => {
+    const q = pollQuestion.trim();
+    const opts = pollOptions.split(/\n|,/).map((item) => item.trim()).filter(Boolean).slice(0, 6);
+    if (!q || opts.length < 2 || !canVote) return;
+    onPollCreate({ id: `poll-${Date.now()}`, q, opts, by: me.name, createdAt: Date.now() });
+    setPollQuestion("");
+    setPollOptions("");
+  };
 
   return (
     <div className="rise">
       <div className="section-head"><div className="section-title"><Vote />Match predictions</div></div>
+      <section className="panel pad" style={{ marginBottom: 18 }}>
+        <div className="section-title" style={{ marginBottom: 12 }}><Target />Prediction ranking</div>
+        <div className="player-grid">
+          {board.slice(0, 6).map((player, index) => <div className="metric" key={player.id}><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span><Avatar name={player.name} size={34} img={player.avatar} /><div><div className="player-name">{player.name}</div><div className="metric-note">{player.predictionHits}/{player.predictionTotal || 0} correct predictions</div></div></div></div>)}
+        </div>
+      </section>
       <div className="vote-grid">
         {upcoming.map((match) => {
           const ownerA = getOwner(match.a, players);
           const ownerB = getOwner(match.b, players);
-          const current = votes[match.id] || { A: 0, Draw: 0, B: 0 };
+          const current = voteCounts(votes[match.id]);
           const total = (current.A || 0) + (current.Draw || 0) + (current.B || 0);
-          const mine = myVotes[match.id];
+          const mine = votes[match.id]?.byUser?.[me?.name] || myVotes[match.id];
+          const locked = match.status !== "upcoming";
+          const result = correctChoice(match);
           return (
             <section className="vote-card" key={match.id}>
-              <div className="vote-head"><div className="vote-title"><Flag country={match.a} size={18} round />{match.a}<span style={{ color: "var(--faint)" }}>v</span>{match.b}<Flag country={match.b} size={18} round /></div><div className="vote-date">{fmtDate(match.date)}</div></div>
+              <div className="vote-head"><div className="vote-title"><Flag country={match.a} size={18} round />{match.a}<span style={{ color: "var(--faint)" }}>v</span>{match.b}<Flag country={match.b} size={18} round /></div><div className="vote-date">{locked ? "Closed" : fmtDate(match.date)}</div></div>
               <div className="vote-body">
-                {canVote && <div className="vote-options">{[["A", match.a], ["Draw", "Draw"], ["B", match.b]].map(([choice, label]) => <button type="button" key={choice} className={`vote-option ${mine === choice ? "active" : ""}`} onClick={() => onVote(match.id, choice)} title={label}>{label}</button>)}</div>}
+                {canVote && !locked && <div className="vote-options">{[["A", match.a], ["Draw", "Draw"], ["B", match.b]].map(([choice, label]) => <button type="button" key={choice} className={`vote-option ${mine === choice ? "active" : ""}`} onClick={() => onVote(match.id, choice)} title={label}>{label}</button>)}</div>}
                 {[["A", match.a, "var(--green)"], ["Draw", "Draw", "var(--amber)"], ["B", match.b, "var(--blue)"]].map(([choice, label, color]) => <div className="vote-row" key={choice}><span className="vote-row-label">{label}</span><div className="vote-track"><div className="vote-fill" style={{ width: `${pct(current[choice] || 0, total)}%`, background: color }} /></div><span className="vote-pct">{pct(current[choice] || 0, total)}%</span></div>)}
-                {ownerA && ownerB && ownerA.id !== ownerB.id && <div className="vote-meta"><Swords />{ownerA.name} vs {ownerB.name} · {total} {total === 1 ? "vote" : "votes"}</div>}
-                {isAdmin && <div className="onbehalf"><span className="onbehalf-label"><Shield />Add on behalf</span><div className="onbehalf-btns">{[["A", match.a], ["Draw", "Draw"], ["B", match.b]].map(([choice, label]) => <button type="button" key={choice} className="ob-btn" onClick={() => onVoteFor(match.id, choice)} title={`Add a vote for ${label}`}><Plus />{label}</button>)}</div></div>}
-                {!canVote && <div className="vote-meta"><LogIn />Sign in as a participant to vote.</div>}
+                {ownerA && ownerB && ownerA.id !== ownerB.id && <div className="vote-meta"><Swords />{ownerA.name} vs {ownerB.name} · {total} {total === 1 ? "vote" : "votes"}{result ? ` · result ${result}` : ""}</div>}
+                {isAdmin && !locked && <div className="onbehalf"><span className="onbehalf-label"><Shield />Add on behalf</span><div className="onbehalf-btns">{[["A", match.a], ["Draw", "Draw"], ["B", match.b]].map(([choice, label]) => <button type="button" key={choice} className="ob-btn" onClick={() => onVoteFor(match.id, choice)} title={`Add a vote for ${label}`}><Plus />{label}</button>)}</div></div>}
+                {!canVote && <div className="vote-meta"><LogIn />Guests can view predictions; players can vote before kickoff.</div>}
+                {locked && <div className="vote-meta"><Check />Voting closed when this match started.</div>}
               </div>
             </section>
           );
         })}
         {!upcoming.length && <div className="empty"><CalendarDays />No upcoming matches available for voting.</div>}
       </div>
-      <div className="section-head"><div className="section-title"><Crown />Office polls</div></div>
-      {polls.map((poll) => {
+      <div className="section-head"><div className="section-title"><Crown />Player polls</div></div>
+      {canVote && <section className="panel pad" style={{ marginBottom: 18 }}>
+        <div className="field"><label>Poll question</label><input className="input" value={pollQuestion} onChange={(event) => setPollQuestion(event.target.value)} placeholder="Ask the office..." /></div>
+        <div className="field"><label>Options</label><textarea className="textarea" value={pollOptions} onChange={(event) => setPollOptions(event.target.value)} placeholder="One option per line, or comma separated" /></div>
+        <button type="button" className="btn btn-primary" disabled={!pollQuestion.trim()} onClick={createPoll}><Plus />Create poll</button>
+      </section>}
+      {allPolls.map((poll) => {
         const current = pollVotes[poll.id] || {};
         const total = Object.values(current).reduce((sum, value) => sum + value, 0);
         const mine = myPoll[poll.id];
         return (
           <section className="poll-card" key={poll.id}>
             <div className="poll-question"><Crown />{poll.q}</div>
+            {poll.by && <div className="vote-meta" style={{ padding: "0 18px 10px" }}>Created by {poll.by}</div>}
             {poll.opts.map((option) => {
               const value = current[option] || 0;
               const percentage = pct(value, total);
@@ -963,7 +1042,7 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, pollVotes
               return <button type="button" className={`poll-option ${active ? "active" : ""}`} key={option} onClick={() => canVote && onPoll(poll.id, option)}><div className="poll-bar"><div className="poll-fill" style={{ width: `${percentage}%` }} /><div className="poll-text"><span>{option}</span>{active && <span className="check-bubble"><Check /></span>}{total > 0 && <span className="poll-pct">{percentage}%</span>}</div></div></button>;
             })}
             {isAdmin && <div className="onbehalf"><span className="onbehalf-label"><Shield />Add on behalf</span><div className="onbehalf-btns">{poll.opts.map((option) => <button type="button" key={option} className="ob-btn" onClick={() => onPollFor(poll.id, option)} title={`Add a vote for ${option}`}><Plus />{option}</button>)}</div></div>}
-            {!canVote && <div className="vote-meta"><LogIn />Sign in as a participant to vote.</div>}
+            {!canVote && <div className="vote-meta"><LogIn />Guests can view polls; players can vote and create new polls.</div>}
           </section>
         );
       })}
@@ -990,7 +1069,7 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
   }, [matches]);
 
   const bannerClass = !autoMode ? "" : live.status === "live" ? "ok" : live.status === "error" ? "warn" : "";
-  const bannerTitle = !autoMode ? "Manual control enabled" : live.status === "live" ? "Live feed connected" : live.status === "error" ? "Live feed offline — manual fallback ready" : "Connecting to live feed";
+  const bannerTitle = !autoMode ? "Manual control enabled" : live.status === "live" ? "Live feed connected" : live.status === "error" ? "Live feed offline â€” manual fallback ready" : "Connecting to live feed";
   const tabs = [["matches", CircleDot, "Matches"], ["players", Users, "Players"], ["news", Megaphone, "News"]];
 
   return (
@@ -1029,11 +1108,11 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
               <tr key={player.id}>
                 <td><div className="player-cell"><Avatar name={player.name} size={34} img={player.avatar} /><strong>{player.name}</strong><span className="tag done">{player.pts} pts</span></div></td>
                 <td><button type="button" className="btn btn-soft btn-small" onClick={() => document.getElementById(`adm-av-${player.id}`)?.click()}><Upload />{player.avatar ? "Replace" : "Upload"}</button><input id={`adm-av-${player.id}`} type="file" accept="image/*" onChange={(event) => uploadAvatar(event, player.id)} style={{ display: "none" }} aria-label={`Upload photo for ${player.name}`} /></td>
-                <td style={{ color: "var(--muted)", fontWeight: 800 }}>{player.w}W · {player.d}D · {player.l}L</td>
+                <td style={{ color: "var(--muted)", fontWeight: 800 }}>{player.w}W Â· {player.d}D Â· {player.l}L</td>
                 <td><input className="score-input" style={{ width: 64 }} type="number" value={player._bonus || 0} onChange={(event) => onPlayer(player.id, { _bonus: Number(event.target.value) || 0 })} /></td>
                 <td>{player.countries.map((country) => {
                   const eliminated = player.elim.includes(country);
-                  return <button type="button" key={country} className={`eliminate-chip ${eliminated ? "out" : ""}`} onClick={() => onPlayer(player.id, { elim: eliminated ? player.elim.filter((item) => item !== country) : [...player.elim, country] })}><Flag country={country} size={15} round />{country}{eliminated ? " ×" : ""}</button>;
+                  return <button type="button" key={country} className={`eliminate-chip ${eliminated ? "out" : ""}`} onClick={() => onPlayer(player.id, { elim: eliminated ? player.elim.filter((item) => item !== country) : [...player.elim, country] })}><Flag country={country} size={15} round />{country}{eliminated ? " Ã—" : ""}</button>;
                 })}</td>
               </tr>
             ))}</tbody>
@@ -1044,7 +1123,7 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
       {tab === "news" && (
         <div>
           <section className="panel pad" style={{ marginBottom: 18 }}>
-            <div className="field"><label>Post announcement</label><textarea className="textarea" value={announcement} onChange={(event) => setAnnouncement(event.target.value)} placeholder="Share a fixture update, leaderboard callout or office note…" /></div>
+            <div className="field"><label>Post announcement</label><textarea className="textarea" value={announcement} onChange={(event) => setAnnouncement(event.target.value)} placeholder="Share a fixture update, leaderboard callout or office noteâ€¦" /></div>
             <button type="button" className="btn btn-primary" disabled={!announcement.trim()} onClick={() => { onAnnAdd(announcement.trim()); setAnnouncement(""); }}><Plus />Post update</button>
           </section>
           <section className="panel">
@@ -1207,7 +1286,7 @@ function LiveDisplay({ matches, players, announcements, live, onExit }) {
       <div className="live-top">
         <div className="live-brand">
           <div className="live-mark"><Trophy weight="fill" aria-hidden="true" /></div>
-          <div className="live-bt">DHI World Cup<small>Office Pool · 2026</small></div>
+          <div className="live-bt">DHI World Cup<small>Office Pool Â· 2026</small></div>
         </div>
         <span className={`live-pill ${liveMatches.length ? "" : "idle"}`}><span className="status-dot" />{liveMatches.length ? `${liveMatches.length} live now` : "Live board"}</span>
         <LiveClock />
@@ -1231,7 +1310,7 @@ function LiveDisplay({ matches, players, announcements, live, onExit }) {
                     </div>
                     <div className="lv-mid">
                       <span className={`lv-tag ${m.status === "live" ? "live" : m.status === "completed" ? "ft" : "soon"}`}>{m.status === "live" ? "Live" : m.status === "completed" ? "Full time" : m.time}</span>
-                      {hasScore ? <div className="lv-score">{m.sa ?? 0}<span className="dash">–</span>{m.sb ?? 0}</div> : <div className="lv-vs">VS</div>}
+                      {hasScore ? <div className="lv-score">{m.sa ?? 0}<span className="dash">â€“</span>{m.sb ?? 0}</div> : <div className="lv-vs">VS</div>}
                     </div>
                     <div className="lv-team right">
                       <LiveFlag country={m.b} big />
@@ -1277,13 +1356,14 @@ function LiveDisplay({ matches, players, announcements, live, onExit }) {
 
 export default function App() {
   useDocumentFont();
-  const [tab, setTab] = useState("dashboard");
+  const [tab, setTab] = useState(() => loadSavedTab());
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [players, setPlayers] = useState(SEED_PLAYERS);
   const [matches, setMatches] = useState(SEED_MATCHES);
   const [announcements, setAnnouncements] = useState(SEED_ANN);
   const [votes, setVotes] = useState({});
   const [pollVotes, setPollVotes] = useState({});
+  const [customPolls, setCustomPolls] = useState([]);
   const [fanComments, setFanComments] = useState([]);
   const [myVotes, setMyVotes] = useState({});
   const [myPoll, setMyPoll] = useState({});
@@ -1301,6 +1381,7 @@ export default function App() {
   const announcementsRef = useRef(announcements);
   const votesRef = useRef(votes);
   const pollVotesRef = useRef(pollVotes);
+  const customPollsRef = useRef(customPolls);
   const fanCommentsRef = useRef(fanComments);
 
   useEffect(() => { matchesRef.current = matches; }, [matches]);
@@ -1308,6 +1389,7 @@ export default function App() {
   useEffect(() => { announcementsRef.current = announcements; }, [announcements]);
   useEffect(() => { votesRef.current = votes; }, [votes]);
   useEffect(() => { pollVotesRef.current = pollVotes; }, [pollVotes]);
+  useEffect(() => { customPollsRef.current = customPolls; }, [customPolls]);
   useEffect(() => { fanCommentsRef.current = fanComments; }, [fanComments]);
   useEffect(() => { setStoreOn(storageAvailable()); }, []);
   useEffect(() => {
@@ -1323,6 +1405,7 @@ export default function App() {
       announcements: partial.announcements ?? announcementsRef.current,
       votes: partial.votes ?? votesRef.current,
       pollVotes: partial.pollVotes ?? pollVotesRef.current,
+      customPolls: partial.customPolls ?? customPollsRef.current,
       fanComments: partial.fanComments ?? fanCommentsRef.current,
     });
     window.setTimeout(() => { writingRef.current = false; }, 250);
@@ -1340,6 +1423,7 @@ export default function App() {
     if (state.announcements) merge(setAnnouncements)(state.announcements);
     if (state.votes) merge(setVotes)(state.votes);
     if (state.pollVotes) merge(setPollVotes)(state.pollVotes);
+    if (state.customPolls) merge(setCustomPolls)(state.customPolls);
     if (!hostedFanApiReady() && !supabaseReady() && state.fanComments) merge(setFanComments)(state.fanComments);
   }, []);
 
@@ -1360,7 +1444,10 @@ export default function App() {
     const syncFanComments = async () => {
       try {
         const remote = await loadFanComments();
-        if (alive && remote) setFanComments((previous) => (sameData(previous, remote) ? previous : remote));
+        if (alive && remote) setFanComments((previous) => {
+          const merged = mergeFanLists(previous, remote);
+          return sameData(previous, merged) ? previous : merged;
+        });
       } catch {
         // Keep the local optimistic feed if the hosted comment backend is unavailable.
       }
@@ -1434,6 +1521,7 @@ export default function App() {
 
   const navigate = (id) => {
     setTab(id);
+    saveCurrentTab(id);
     setSidebarOpen(false);
   };
 
@@ -1494,18 +1582,23 @@ export default function App() {
 
   const onVote = (matchId, choice) => {
     if (!me || me.role === "guest") return;
-    const previousChoice = myVotes[matchId];
+    const previousChoice = votes[matchId]?.byUser?.[me.name] || myVotes[matchId];
     if (previousChoice === choice) return;
     setMyVotes((previous) => ({ ...previous, [matchId]: choice }));
     setVotes((previous) => {
-      const current = previous[matchId] || { A: 0, Draw: 0, B: 0 };
-      const nextForMatch = { ...current, [choice]: (current[choice] || 0) + 1 };
-      if (previousChoice) nextForMatch[previousChoice] = Math.max(0, (current[previousChoice] || 0) - 1);
+      const current = previous[matchId] || {};
+      const nextForMatch = { byUser: { ...(current.byUser || {}), [me.name]: choice } };
       const next = { ...previous, [matchId]: nextForMatch };
       pushState({ votes: next });
       return next;
     });
   };
+
+  const onPollCreate = (poll) => setCustomPolls((previous) => {
+    const next = [poll, ...previous].slice(0, 50);
+    pushState({ customPolls: next });
+    return next;
+  });
 
   const onPoll = (pollId, option) => {
     if (!me || me.role === "guest") return;
@@ -1527,8 +1620,9 @@ export default function App() {
   const onVoteFor = (matchId, choice, delta = 1) => {
     if (me?.role !== "admin") return;
     setVotes((previous) => {
-      const current = previous[matchId] || { A: 0, Draw: 0, B: 0 };
-      const next = { ...previous, [matchId]: { ...current, [choice]: Math.max(0, (current[choice] || 0) + delta) } };
+      const current = previous[matchId] || {};
+      const byUser = { ...(current.byUser || {}), [`Admin ${Date.now()}`]: choice };
+      const next = { ...previous, [matchId]: { byUser } };
       pushState({ votes: next });
       return next;
     });
@@ -1593,7 +1687,7 @@ export default function App() {
               : tab === "leaderboard" ? <Leaderboard players={standings} />
               : tab === "schedule" ? <Schedule matches={matches} players={standings} />
               : tab === "players" ? <PlayersView players={standings} me={me} onAvatar={onAvatar} />
-              : tab === "voting" ? <Voting matches={matches} players={standings} votes={votes} myVotes={myVotes} me={me} onVote={onVote} polls={SEED_POLLS} pollVotes={pollVotes} myPoll={myPoll} onPoll={onPoll} onVoteFor={onVoteFor} onPollFor={onPollFor} />
+              : tab === "voting" ? <Voting matches={matches} players={standings} votes={votes} myVotes={myVotes} me={me} onVote={onVote} polls={SEED_POLLS} customPolls={customPolls} pollVotes={pollVotes} myPoll={myPoll} onPoll={onPoll} onPollCreate={onPollCreate} onVoteFor={onVoteFor} onPollFor={onPollFor} />
               : tab === "fanzone" ? <FanZone matches={matches} players={standings} me={me} comments={fanComments} onCommentAdd={onCommentAdd} onCommentDelete={onCommentDelete} />
               : tab === "admin" ? <Admin players={standings} matches={matches} announcements={announcements} onMatch={onMatch} onPlayer={onPlayer} onAvatar={onAvatar} onAnnAdd={onAnnAdd} onAnnDel={onAnnDel} live={live} autoMode={autoMode} setAutoMode={setAutoMode} storeOn={storeOn} />
               : null}
@@ -1610,3 +1704,5 @@ export default function App() {
     </IconContext.Provider>
   );
 }
+
+
