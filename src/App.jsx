@@ -68,14 +68,14 @@ const CSS = `
 .panel{background:rgba(255,255,255,.86);border:1px solid rgba(211,219,230,.78);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden}.panel.pad{padding:20px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,rgba(247,249,252,.78))}.panel-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:900;letter-spacing:-.025em}.panel-title svg{width:18px;height:18px;color:var(--green)}.panel-link{display:flex;align-items:center;gap:4px;color:var(--green-dark);font-size:12px;font-weight:900;cursor:pointer}.panel-link svg{width:14px;height:14px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.section-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:900;letter-spacing:-.035em}.section-title svg{width:19px;height:19px;color:var(--green)}
 .hero{position:relative;overflow:hidden;border-radius:32px;padding:28px;background:linear-gradient(135deg,#08111f 0%,#11243a 54%,#0b3b2b 100%);color:#fff;box-shadow:var(--shadow-md);margin-bottom:22px}.hero::before{content:"";position:absolute;inset:-40% -18% auto auto;width:520px;height:520px;border-radius:999px;background:radial-gradient(circle,rgba(0,220,130,.28),transparent 65%)}.hero::after{content:"";position:absolute;inset:auto auto -48% -18%;width:420px;height:420px;border-radius:999px;background:radial-gradient(circle,rgba(47,111,237,.2),transparent 62%)}.hero-content{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(360px,.8fr);gap:24px;align-items:stretch}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);font-size:11px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#bad0e4}.eyebrow svg{width:14px;height:14px;color:#5ee2a4}.hero h1{font-size:42px;line-height:.98;font-weight:900;letter-spacing:-.075em;margin:16px 0 12px;max-width:760px}.hero-copy{color:#b9c8d7;font-size:15px;line-height:1.65;max-width:720px}.hero-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:22px}.hero-mini{padding:13px 14px;border-radius:18px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.095)}.hero-mini-value{font-family:var(--font-display);font-size:24px;font-weight:800}.hero-mini-label{font-size:11px;color:#95a8bd;font-weight:800;text-transform:uppercase;letter-spacing:.055em;margin-top:3px}.spotlight{background:rgba(255,255,255,.095);border:1px solid rgba(255,255,255,.13);border-radius:26px;padding:18px;display:flex;flex-direction:column;min-height:100%}.spot-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.spot-label{font-size:12px;color:#9db0c5;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.spot-card{background:#fff;color:var(--ink);border-radius:22px;padding:17px;box-shadow:0 24px 45px rgba(0,0,0,.22)}
 .metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}.metric{background:rgba(255,255,255,.88);border:1px solid rgba(211,219,230,.78);border-radius:22px;padding:18px;box-shadow:var(--shadow-xs)}.metric-icon{width:40px;height:40px;border-radius:15px;display:grid;place-items:center;margin-bottom:14px}.metric-icon svg{width:19px;height:19px}.metric-value{font-family:var(--font-display);font-size:30px;line-height:1;font-weight:800;letter-spacing:-.04em}.metric-value.small{font-size:20px}.metric-label{font-size:12px;color:var(--muted);font-weight:800;margin-top:6px}.metric-note{font-size:11px;color:var(--faint);font-weight:700;margin-top:8px}.dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:22px;align-items:start}.stack{display:flex;flex-direction:column;gap:22px}.stand-sticky{position:sticky;top:98px}
-.match-list{padding:8px}.match-card{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;padding:16px;border-radius:18px;transition:.16s ease;position:relative}.match-card+.match-card{border-top:1px solid var(--line)}.match-card:hover{background:var(--surface-soft)}.match-card.clash{background:linear-gradient(90deg,rgba(0,163,92,.12),rgba(255,255,255,.82) 62%)}.match-card.live{box-shadow:inset 0 0 0 1px rgba(224,49,79,.24);background:linear-gradient(90deg,rgba(224,49,79,.11),rgba(255,255,255,.86))}.team{display:flex;gap:11px;align-items:center;min-width:0}.team.right{flex-direction:row-reverse}.team-meta{min-width:0}.team-name{font-size:15px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em}.team-name.right{text-align:right}.team-owner{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:11px;font-weight:850;color:var(--muted)}.team-owner.right{flex-direction:row-reverse}.team-owner svg{width:12px;height:12px}.match-mid{min-width:92px;display:flex;flex-direction:column;align-items:center;gap:7px}.score{font-family:var(--font-display);font-size:28px;font-weight:800;line-height:1;letter-spacing:.02em}.vs{font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--faint);letter-spacing:.12em}.match-time{font-size:10.5px;color:var(--faint);font-weight:850}.clash-note{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--green-dark);font-weight:900}.clash-note svg{width:12px;height:12px}.tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:950;letter-spacing:.07em;text-transform:uppercase}.tag.live{background:var(--red-soft);color:var(--red)}.tag.done{background:var(--green-soft);color:var(--green-dark)}.tag.soon{background:var(--surface-soft);color:var(--muted);border:1px solid var(--line-strong)}.tag.admin{background:var(--blue-soft);color:var(--blue)}
+.match-list{padding:8px}.match-card{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;padding:16px;border-radius:18px;transition:.16s ease;position:relative}.match-card+.match-card{border-top:1px solid var(--line)}.match-card:hover{background:var(--surface-soft)}.match-card.clash{background:linear-gradient(90deg,rgba(0,163,92,.12),rgba(255,255,255,.82) 62%)}.match-card.live{box-shadow:inset 0 0 0 1px rgba(224,49,79,.24);background:linear-gradient(90deg,rgba(224,49,79,.11),rgba(255,255,255,.86))}.team{display:flex;gap:11px;align-items:center;min-width:0}.team.right{flex-direction:row-reverse}.team-meta{min-width:0}.team-name{font-size:15px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em}.team-name.right{text-align:right}.team-owner{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:11px;font-weight:850;color:var(--muted)}.team-owner.right{flex-direction:row-reverse}.team-owner .avatar{box-shadow:0 0 0 1px rgba(255,255,255,.8);font-size:8px}.team-owner svg{width:12px;height:12px}.match-mid{min-width:92px;display:flex;flex-direction:column;align-items:center;gap:7px}.score{font-family:var(--font-display);font-size:28px;font-weight:800;line-height:1;letter-spacing:.02em}.vs{font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--faint);letter-spacing:.12em}.match-time{font-size:10.5px;color:var(--faint);font-weight:850}.clash-note{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--green-dark);font-weight:900}.clash-note svg{width:12px;height:12px}.flag-fallback{font-size:10px;font-weight:900;color:var(--faint)}.tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:950;letter-spacing:.07em;text-transform:uppercase}.tag.live{background:var(--red-soft);color:var(--red)}.tag.done{background:var(--green-soft);color:var(--green-dark)}.tag.soon{background:var(--surface-soft);color:var(--muted);border:1px solid var(--line-strong)}.tag.admin{background:var(--blue-soft);color:var(--blue)}
 .avatar{border-radius:999px;display:grid;place-items:center;position:relative;overflow:hidden;color:#fff;font-family:var(--font-display);font-weight:800;flex:0 0 auto;box-shadow:0 0 0 3px #fff,0 8px 18px rgba(9,17,32,.12)}.avatar img{width:100%;height:100%;object-fit:cover}.flag{object-fit:cover;flex:0 0 auto;box-shadow:0 1px 3px rgba(9,17,32,.18)}.flag.round{border-radius:999px}.flag.rect{border-radius:5px}.stand-row{width:100%;display:flex;align-items:center;gap:13px;padding:13px 18px;cursor:pointer;transition:.16s}.stand-row+.stand-row{border-top:1px solid var(--line)}.stand-row:hover{background:var(--surface-soft)}.rank{width:26px;text-align:center;font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--faint)}.rank.gold{color:var(--gold)}.rank.silver{color:var(--silver)}.rank.bronze{color:var(--bronze)}.stand-info{min-width:0;flex:1}.stand-name{font-size:14.5px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-flags{display:flex;gap:4px;margin-top:5px}.stand-points{text-align:right}.stand-points strong{font-family:var(--font-display);font-size:21px}.stand-points span{display:block;font-size:9.5px;color:var(--faint);font-weight:900;text-transform:uppercase;letter-spacing:.07em}.announcement{display:flex;gap:14px;padding:15px 18px}.announcement+.announcement{border-top:1px solid var(--line)}.announcement-icon{width:34px;height:34px;border-radius:13px;display:grid;place-items:center;background:var(--green-soft);color:var(--green-dark);flex:0 0 auto}.announcement-icon svg{width:16px;height:16px}.announcement-text{font-size:13.5px;line-height:1.55;font-weight:620}.announcement-date{font-size:11px;color:var(--faint);font-weight:800;margin-top:4px}
 .table-wrap{overflow:auto}.leader-table,.admin-table{width:100%;border-collapse:collapse;min-width:860px}.leader-table th,.admin-table th{text-align:left;padding:14px 18px;background:var(--surface-soft);border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);font-weight:950;text-transform:uppercase;letter-spacing:.07em}.leader-table th.right,.admin-table th.right{text-align:right}.leader-table td,.admin-table td{padding:15px 18px;border-bottom:1px solid var(--line);vertical-align:middle}.leader-table tr:last-child td,.admin-table tr:last-child td{border-bottom:0}.leader-table tbody tr{transition:.14s}.leader-table tbody tr:hover{background:var(--surface-soft)}.player-cell{display:flex;align-items:center;gap:13px}.color-rail{width:4px;height:42px;border-radius:99px}.player-name{font-size:15px;font-weight:950;letter-spacing:-.02em}.player-meta{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);font-weight:750;margin-top:3px}.player-meta svg{width:12px;height:12px}.flag-row{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.form-row{display:flex;gap:5px;justify-content:flex-end}.form-chip{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:950}.form-chip.w{background:var(--green)}.form-chip.d{background:var(--amber)}.form-chip.l{background:var(--red)}.form-chip.empty{background:var(--line-strong);color:var(--faint)}.points-block{text-align:right}.points-block strong{font-family:var(--font-display);font-size:26px}.progress{width:130px;height:6px;background:var(--line);border-radius:999px;overflow:hidden;margin-left:auto;margin-top:7px}.progress span{display:block;height:100%;border-radius:999px;min-width:2px}.scoring{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:15px;color:var(--muted);font-size:12px;font-weight:700}.scoring b{color:var(--ink);font-family:var(--font-display)}
 .day{margin-bottom:24px}.day-header{display:flex;align-items:center;gap:13px;margin-bottom:12px}.day-pill{display:flex;align-items:center;gap:8px;border-radius:999px;background:#fff;border:1px solid var(--line);padding:8px 14px;font-size:13px;font-weight:900;box-shadow:var(--shadow-xs)}.day-pill svg{width:15px;height:15px;color:var(--green)}.day-line{height:1px;background:var(--line-strong);flex:1}.day-count{font-size:11px;color:var(--faint);font-weight:900}.filter-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}.chips{display:flex;gap:8px;flex-wrap:wrap}.filter-chip{border:1px solid var(--line-strong);background:#fff;color:var(--muted);border-radius:999px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:900}.filter-chip.active{background:var(--green-soft);border-color:var(--green-line);color:var(--green-dark)}.search{position:relative;min-width:260px}.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--faint)}.input,.select,.textarea{width:100%;border:1.5px solid var(--line-strong);border-radius:14px;background:#fff;color:var(--ink);outline:0;transition:.14s}.input{padding:12px 14px}.search .input{padding-left:39px}.select{padding:9px 12px;font-weight:800}.textarea{padding:12px 14px;resize:vertical;min-height:96px}.input:focus,.select:focus,.textarea:focus{border-color:var(--green);box-shadow:var(--ring)}.field{margin-bottom:15px}.field label{display:block;font-size:11px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
 .player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(286px,1fr));gap:16px}.player-card{background:rgba(255,255,255,.9);border:1px solid rgba(211,219,230,.8);border-radius:24px;box-shadow:var(--shadow-sm);overflow:hidden;cursor:pointer;transition:.18s}.player-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}.player-card-top{padding:20px;display:flex;align-items:center;gap:14px;position:relative}.rank-badge{position:absolute;top:14px;right:14px;padding:4px 10px;border-radius:999px;background:var(--surface-soft);border:1px solid var(--line);color:var(--faint);font-size:12px;font-weight:950;font-family:var(--font-display)}.card-name{font-size:20px;font-weight:950;letter-spacing:-.04em}.card-points{display:flex;align-items:baseline;gap:5px;margin-top:5px}.card-points strong{font-family:var(--font-display);font-size:27px;color:var(--green);line-height:1}.card-points span{font-size:11px;color:var(--faint);font-weight:950;text-transform:uppercase}.country-chips{display:flex;flex-wrap:wrap;gap:7px;padding:12px 20px;border-top:1px solid var(--line)}.country-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);background:var(--surface-soft);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}.country-chip.out{opacity:.45;text-decoration:line-through}.wdl-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}.wdl-box{padding:13px;text-align:center}.wdl-box+.wdl-box{border-left:1px solid var(--line)}.wdl-value{font-family:var(--font-display);font-size:18px;font-weight:800}.wdl-value.w{color:var(--green)}.wdl-value.d{color:var(--amber)}.wdl-value.l{color:var(--red)}.wdl-label{font-size:9.5px;color:var(--faint);font-weight:950;text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
 .vote-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(355px,1fr));gap:16px;margin-bottom:30px}.vote-card,.poll-card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-sm);overflow:hidden}.vote-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);background:var(--surface-soft)}.vote-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:950;min-width:0}.vote-date{font-size:11px;color:var(--faint);font-weight:900;white-space:nowrap}.vote-body{padding:17px 18px}.vote-options{display:grid;grid-template-columns:1fr .8fr 1fr;gap:8px;margin-bottom:16px}.vote-option{border:1.5px solid var(--line-strong);border-radius:14px;background:#fff;color:var(--muted);padding:10px 8px;cursor:pointer;font-size:12px;font-weight:950;transition:.14s;overflow:hidden;text-overflow:ellipsis}.vote-option:hover{border-color:var(--green);color:var(--green-dark)}.vote-option.active{background:var(--green-soft);border-color:var(--green);color:var(--green-dark)}.vote-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}.vote-row-label{width:58px;font-size:12px;color:var(--muted);font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vote-track{height:9px;background:var(--line);border-radius:999px;overflow:hidden;flex:1}.vote-fill{height:100%;border-radius:999px;transition:width .42s cubic-bezier(.16,1,.3,1)}.vote-pct{width:38px;text-align:right;font-family:var(--font-display);font-size:12px;font-weight:800;color:var(--muted)}.vote-meta{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);font-weight:800;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.vote-meta svg{width:13px;height:13px;color:var(--green)}.poll-card{padding:18px;margin-bottom:15px}.poll-question{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:950;margin-bottom:14px}.poll-question svg{width:17px;height:17px;color:var(--green)}.poll-option{border:0;background:transparent;padding:0;width:100%;display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer}.poll-bar{position:relative;min-height:40px;border-radius:15px;background:var(--surface-soft);border:1.5px solid var(--line-strong);overflow:hidden;flex:1}.poll-option:hover .poll-bar{border-color:var(--green)}.poll-option.active .poll-bar{border-color:var(--green)}.poll-fill{position:absolute;inset:0 auto 0 0;background:var(--green-soft);transition:width .42s cubic-bezier(.16,1,.3,1)}.poll-text{position:relative;z-index:1;min-height:40px;display:flex;align-items:center;gap:9px;padding:0 14px;font-size:13px;font-weight:850}.poll-pct{margin-left:auto;font-family:var(--font-display);font-weight:800;color:var(--muted);font-size:12px}.check-bubble{width:20px;height:20px;display:grid;place-items:center;border-radius:999px;background:var(--green);color:#fff}.check-bubble svg{width:12px;height:12px}
 .admin-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:17px 20px;border-radius:22px;border:1px solid var(--line);box-shadow:var(--shadow-xs);margin-bottom:20px;background:#fff}.admin-banner.ok{background:var(--green-soft);border-color:var(--green-line)}.admin-banner.warn{background:var(--amber-soft);border-color:#efd49e}.admin-left{display:flex;align-items:center;gap:13px}.admin-left svg{width:22px}.admin-title{font-size:14px;font-weight:950}.admin-copy{font-size:12px;color:var(--muted);font-weight:650;line-height:1.45;max-width:760px;margin-top:2px}.tabs{display:flex;gap:5px;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:17px;padding:5px;width:fit-content;margin-bottom:20px}.tab-btn{display:flex;align-items:center;gap:8px;border-radius:13px;padding:10px 15px;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;font-weight:950}.tab-btn svg{width:16px;height:16px}.tab-btn.active{background:#fff;color:var(--green-dark);box-shadow:var(--shadow-xs)}.score-input{width:48px;text-align:center;border:1.5px solid var(--line-strong);border-radius:12px;padding:7px 5px;font-family:var(--font-display);font-weight:800;outline:0}.score-input:focus{border-color:var(--green);box-shadow:var(--ring)}.admin-table td{font-size:13px}.eliminate-chip{border:0;background:transparent;display:inline-flex;align-items:center;gap:5px;margin:3px 7px 3px 0;cursor:pointer;font-size:12px;font-weight:850}.eliminate-chip.out{opacity:.42;text-decoration:line-through}.empty{display:grid;place-items:center;text-align:center;padding:58px 20px;color:var(--faint);font-weight:800}.empty svg{width:42px;height:42px;margin-bottom:12px;opacity:.6}.overlay{position:fixed;inset:0;background:rgba(7,16,29,.46);backdrop-filter:blur(8px);z-index:200;display:grid;place-items:center;padding:20px}.modal{width:min(470px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:28px;box-shadow:0 32px 85px rgba(0,0,0,.25);padding:28px}.modal-title{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:950;letter-spacing:-.04em;margin-bottom:6px}.modal-title svg{width:22px;color:var(--green)}.modal-sub{color:var(--muted);font-size:13px;line-height:1.5;font-weight:650;margin-bottom:22px}.profile-head{display:flex;align-items:center;gap:18px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:18px}.profile-name{font-size:25px;font-weight:950;letter-spacing:-.045em}.profile-points{font-family:var(--font-display);font-size:37px;font-weight:800;color:var(--green);line-height:1;margin-top:5px}.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:18px}.profile-stat{padding:14px;text-align:center}.profile-stat+.profile-stat{border-left:1px solid var(--line)}.checkbox{display:flex;align-items:center;gap:10px;margin-bottom:15px;color:var(--muted);font-weight:850;font-size:13px}.checkbox input{width:18px;height:18px;accent-color:var(--green)}.mobile-nav{display:none}
-@media(max-width:1200px){.hero-content{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:1fr}.stand-sticky{position:static}.metric-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:900px){:root{--side:260px}.hero h1{font-size:34px}.hero-metrics{grid-template-columns:repeat(2,1fr)}.vote-grid{grid-template-columns:1fr}.topbar{padding:0 18px}.page{padding:22px 18px 86px}.sidebar{transform:translateX(-100%);transition:.22s ease}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:grid}.top-actions .signin-top{display:none}.mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:7px 4px 9px;box-shadow:0 -14px 34px rgba(9,17,32,.08)}.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;color:var(--faint);font-size:9.5px;font-weight:950;cursor:pointer}.mobile-nav-item svg{width:21px;height:21px}.mobile-nav-item.active{color:var(--green)}}@media(max-width:640px){.top-title{font-size:19px}.top-subtitle{display:none}.sync{padding:8px 10px}.sync span:not(.status-dot){display:none}.hero{padding:22px;border-radius:25px}.hero h1{font-size:30px}.hero-copy{font-size:14px}.hero-content{gap:16px}.metric-grid{grid-template-columns:1fr}.match-card{grid-template-columns:1fr;gap:12px}.team.right{flex-direction:row}.team-name.right{text-align:left}.team-owner.right{flex-direction:row}.match-mid{order:-1;align-items:flex-start;min-width:0}.player-grid{grid-template-columns:1fr}.search{min-width:100%;width:100%}.filter-row{align-items:stretch}.vote-options{grid-template-columns:1fr}.panel-head,.section-head{align-items:flex-start;flex-direction:column}.hero-mini-value{font-size:21px}}
+@media(max-width:1200px){.hero-content{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:1fr}.stand-sticky{position:static}.metric-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:900px){:root{--side:260px}.hero h1{font-size:34px}.hero-metrics{grid-template-columns:repeat(2,1fr)}.vote-grid{grid-template-columns:1fr}.topbar{padding:0 18px}.page{padding:22px 18px 86px}.sidebar{transform:translateX(-100%);transition:.22s ease}.sidebar.open{transform:translateX(0)}.side-footer{padding-bottom:calc(92px + env(safe-area-inset-bottom))}.main{margin-left:0}.mobile-menu{display:grid}.top-actions .signin-top{display:none}.mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:7px 4px 9px;box-shadow:0 -14px 34px rgba(9,17,32,.08)}.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;color:var(--faint);font-size:9.5px;font-weight:950;cursor:pointer}.mobile-nav-item svg{width:21px;height:21px}.mobile-nav-item.active{color:var(--green)}}@media(max-width:640px){.top-title{font-size:19px}.top-subtitle{display:none}.sync{padding:8px 10px}.sync span:not(.status-dot){display:none}.hero{padding:22px;border-radius:25px}.hero h1{font-size:30px}.hero-copy{font-size:14px}.hero-content{gap:16px}.metric-grid{grid-template-columns:1fr}.match-card{grid-template-columns:1fr;gap:12px}.team.right{flex-direction:row}.team-name.right{text-align:left}.team-owner.right{flex-direction:row}.match-mid{order:-1;align-items:flex-start;min-width:0}.player-grid{grid-template-columns:1fr}.search{min-width:100%;width:100%}.filter-row{align-items:stretch}.vote-options{grid-template-columns:1fr}.panel-head,.section-head{align-items:flex-start;flex-direction:column}.hero-mini-value{font-size:21px}}
 .onbehalf{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line-strong)}.onbehalf-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:var(--blue);margin-bottom:9px}.onbehalf-label svg{width:13px;height:13px}.onbehalf-btns{display:flex;flex-wrap:wrap;gap:7px}.ob-btn{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--blue-soft);background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:7px 11px;font-size:12px;font-weight:850;cursor:pointer;transition:.14s;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ob-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}.ob-btn svg{width:13px;height:13px;flex:0 0 auto}
 .fan-grid{display:grid;grid-template-columns:minmax(0,390px) minmax(0,1fr);gap:22px;align-items:start}.fan-match-list{display:flex;flex-direction:column;gap:8px;padding:8px}.fan-match-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;border-radius:16px;background:transparent;padding:12px;cursor:pointer;color:var(--ink);transition:.15s}.fan-match-btn:hover{background:var(--surface-soft)}.fan-match-btn.active{background:linear-gradient(135deg,var(--green-soft),#fff);box-shadow:inset 0 0 0 1px var(--green-line)}.fan-match-main{min-width:0}.fan-match-teams{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fan-match-meta{margin-top:5px;color:var(--faint);font-size:11px;font-weight:850}.fan-count{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#fff;border:1px solid var(--line);padding:5px 9px;color:var(--muted);font-size:11px;font-weight:950;flex:0 0 auto}.fan-count svg{width:13px;height:13px;color:var(--green)}.fan-room{display:flex;flex-direction:column;min-height:620px}.fan-room-head{padding:18px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,rgba(247,249,252,.85))}.fan-room-title{display:flex;align-items:center;gap:9px;font-size:20px;font-weight:950;letter-spacing:-.04em}.fan-room-title .vs{font-size:12px;letter-spacing:.1em;color:var(--faint)}.fan-room-sub{margin-top:7px;color:var(--muted);font-size:12.5px;font-weight:750}.fan-feed{flex:1;display:flex;flex-direction:column;gap:12px;padding:18px 20px;background:linear-gradient(180deg,rgba(245,247,250,.42),rgba(255,255,255,.8));max-height:560px;overflow:auto}.fan-msg{display:grid;grid-template-columns:auto minmax(0,1fr);gap:11px;align-items:start}.fan-bubble{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 13px;box-shadow:var(--shadow-xs);min-width:0}.fan-msg.wish .fan-bubble{border-color:var(--green-line);background:linear-gradient(180deg,#fff,var(--green-soft))}.fan-msg.prediction .fan-bubble{border-color:#f1d7a5;background:linear-gradient(180deg,#fff,var(--amber-soft))}.fan-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}.fan-author{font-size:12px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fan-time{font-size:10.5px;color:var(--faint);font-weight:850;white-space:nowrap}.fan-text{font-size:14px;line-height:1.45;font-weight:650;overflow-wrap:anywhere}.fan-kind{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;background:var(--surface-soft);color:var(--muted)}.fan-kind.wish{background:var(--green-soft);color:var(--green-dark)}.fan-kind.prediction{background:var(--amber-soft);color:var(--amber)}.fan-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}.fan-delete{display:inline-flex;align-items:center;gap:5px;background:var(--red-soft);color:var(--red);border-radius:9px;padding:5px 8px;font-size:11px;font-weight:900;cursor:pointer}.fan-delete svg{width:12px;height:12px}.fan-compose{padding:16px 20px;border-top:1px solid var(--line);background:#fff}.fan-compose-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}.fan-type{border:1.5px solid var(--line-strong);background:#fff;color:var(--muted);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:950;cursor:pointer}.fan-type.active{background:var(--green-soft);border-color:var(--green-line);color:var(--green-dark)}.fan-send{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}.fan-note{margin-top:9px;color:var(--faint);font-size:11px;font-weight:750}.fan-empty{min-height:220px;display:grid;place-items:center;text-align:center;color:var(--muted);font-weight:850}.fan-empty svg{width:30px;height:30px;color:var(--green);margin:0 auto 10px}
 .live-screen{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;color:#eaf2f7;font-family:var(--font-body);touch-action:manipulation;overflow:hidden;-webkit-font-smoothing:antialiased;padding:calc(env(safe-area-inset-top) + 26px) calc(env(safe-area-inset-right) + 42px) calc(env(safe-area-inset-bottom) + 22px) calc(env(safe-area-inset-left) + 42px);background:radial-gradient(120% 80% at 82% -12%,rgba(39,224,140,.16),transparent 55%),radial-gradient(95% 75% at -5% 112%,rgba(48,104,236,.2),transparent 55%),linear-gradient(180deg,#0a1120,#070c16 62%,#060a12)}
@@ -122,7 +122,7 @@ const ADMIN_PIN = "admin123";
 const ISO = {
   Mexico: "mx", "South Africa": "za", "South Korea": "kr", Czechia: "cz", Canada: "ca", Bosnia: "ba",
   Qatar: "qa", Switzerland: "ch", USA: "us", Paraguay: "py", Brazil: "br", Morocco: "ma", Haiti: "ht",
-  Scotland: "gb-sct", Germany: "de", "CuraÃ§ao": "cw", "Ivory Coast": "ci", Ecuador: "ec", Netherlands: "nl",
+  Scotland: "gb-sct", Germany: "de", "Curacao": "cw", "Ivory Coast": "ci", Ecuador: "ec", Netherlands: "nl",
   Japan: "jp", Spain: "es", "Cabo Verde": "cv", "Saudi Arabia": "sa", Uruguay: "uy", Belgium: "be", Egypt: "eg",
   Iran: "ir", "New Zealand": "nz", France: "fr", Senegal: "sn", Norway: "no", Iraq: "iq", Argentina: "ar",
   Algeria: "dz", Austria: "at", Jordan: "jo", Portugal: "pt", Congo: "cd", Uzbekistan: "uz", Colombia: "co",
@@ -140,7 +140,7 @@ const SEED_PLAYERS = [
   { id: 2, name: "Advanced", countries: ["Spain", "Canada", "Qatar"] },
   { id: 3, name: "Tandin", countries: ["France", "South Korea", "Haiti"] },
   { id: 4, name: "Roshan", countries: ["England", "Austria", "South Africa"] },
-  { id: 5, name: "Chirag", countries: ["Portugal", "Sweden", "CuraÃ§ao"] },
+  { id: 5, name: "Chirag", countries: ["Portugal", "Sweden", "Curacao"] },
   { id: 6, name: "Mani", countries: ["Brazil", "Japan", "Congo"] },
   { id: 7, name: "Kyunchab", countries: ["Morocco", "Egypt", "Scotland"] },
   { id: 8, name: "Lhendup", countries: ["Netherlands", "Panama", "Jordan"] },
@@ -162,7 +162,7 @@ const SEED_MATCHES = [
   { id: 4, a: "Qatar", b: "Switzerland", date: "2026-06-13", time: "00:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group B" },
   { id: 6, a: "Brazil", b: "Morocco", date: "2026-06-13", time: "15:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group C" },
   { id: 7, a: "Haiti", b: "Scotland", date: "2026-06-13", time: "21:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group C" },
-  { id: 8, a: "Germany", b: "CuraÃ§ao", date: "2026-06-14", time: "13:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group E" },
+  { id: 8, a: "Germany", b: "Curacao", date: "2026-06-14", time: "13:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group E" },
   { id: 9, a: "Ivory Coast", b: "Ecuador", date: "2026-06-14", time: "16:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group E" },
   { id: 10, a: "Netherlands", b: "Japan", date: "2026-06-14", time: "19:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group F" },
   { id: 11, a: "Spain", b: "Cabo Verde", date: "2026-06-15", time: "12:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group H" },
@@ -181,17 +181,17 @@ const SEED_MATCHES = [
 
 const SEED_ANN = [
   { id: 1, text: "Welcome to the DHI InnoTech World Cup pool: 16 colleagues, 48 countries, one department scoreboard.", date: "Jun 11" },
-  { id: 2, text: "Opening office clash: Mexico vs South Africa â€” Zig vs Roshan starts the race.", date: "Jun 11" },
+  { id: 2, text: "Opening office clash: Mexico vs South Africa - Zig vs Roshan starts the race.", date: "Jun 11" },
 ];
 
 const SEED_POLLS = [
-  { id: 1, q: "Who lifts the trophy?", opts: ["Mani Â· Brazil", "Advanced Â· Spain", "Chirag Â· Portugal", "Sangay Â· Argentina"] },
-  { id: 2, q: "Toughest group draw?", opts: ["Mani Â· Group C", "Tandin Â· Group I", "Lhendup Â· Group F", "Roshan Â· Group L"] },
+  { id: 1, q: "Who lifts the trophy?", opts: ["Mani - Brazil", "Advanced - Spain", "Chirag - Portugal", "Sangay - Argentina"] },
+  { id: 2, q: "Toughest group draw?", opts: ["Mani - Group C", "Tandin - Group I", "Lhendup - Group F", "Roshan - Group L"] },
   { id: 3, q: "Best opening-day clash?", opts: ["Mexico v South Africa", "South Korea v Czechia", "Tomorrow's fixtures", "All of them"] },
 ];
 
 const SCORING = [["Group Win", "3"], ["Draw", "1"], ["Round of 32", "3"], ["Round of 16", "5"], ["Quarter-final", "8"], ["Semi-final", "12"], ["Final", "18"], ["Champion", "25"]];
-// ESPN's public scoreboard API (proxied same-origin by vite.config.js â†’ no CORS).
+// ESPN's public scoreboard API (proxied same-origin by vite.config.js -> no CORS).
 // Accurate, real-time scores/status for the whole tournament window.
 const API = { enabled: true, url: "/api/espn/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=300", headers: {}, refreshMs: 45000, timeoutMs: 20000, retryMs: 6000 };
 const STORAGE_KEY = "dhi-office-world-cup:v2";
@@ -225,9 +225,9 @@ const SUBTITLE = {
 
 const NAME_MAP = {
   "United States": "USA", US: "USA", "Korea Republic": "South Korea", "Republic of Korea": "South Korea", Korea: "South Korea",
-  "Czech Republic": "Czechia", "Cape Verde": "Cabo Verde", "CÃ´te d'Ivoire": "Ivory Coast", "Cote d'Ivoire": "Ivory Coast",
+  "Czech Republic": "Czechia", "Cape Verde": "Cabo Verde", "Cote d'Ivoire": "Ivory Coast",
   "DR Congo": "Congo", "Congo DR": "Congo", "Democratic Republic of the Congo": "Congo", "Bosnia and Herzegovina": "Bosnia",
-  "Bosnia & Herzegovina": "Bosnia", "Bosnia-Herzegovina": "Bosnia", Curacao: "CuraÃ§ao", "TÃ¼rkiye": "Turkey", Turkiye: "Turkey",
+  "Bosnia & Herzegovina": "Bosnia", "Bosnia-Herzegovina": "Bosnia", Curacao: "Curacao", Turkiye: "Turkey",
 };
 
 const normalizeName = (name) => {
@@ -235,6 +235,27 @@ const normalizeName = (name) => {
   const trimmed = String(name).trim();
   return NAME_MAP[trimmed] || trimmed;
 };
+
+function sanitizeText(value) {
+  if (typeof value !== "string") return value;
+  return value
+    .replaceAll("Cura\u00c3\u00a7ao", "Curacao")
+    .replaceAll("Cura\u00e7ao", "Curacao")
+    .replaceAll("C\u00c3\u00b4te d'Ivoire", "Cote d'Ivoire")
+    .replaceAll("T\u00c3\u00bcrkiye", "Turkiye")
+    .replaceAll("\u00c2\u00b7", "-")
+    .replaceAll("\u00e2\u20ac\u201d", "-")
+    .replaceAll("\u00e2\u20ac\u201c", "-")
+    .replaceAll("\u00e2\u20ac\u00a6", "...")
+    .replaceAll("\u00e2\u2020\u2019", "->")
+    .replaceAll("\u00c3\u2014", "x");
+}
+
+function sanitizeData(value) {
+  if (Array.isArray(value)) return value.map(sanitizeData);
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, sanitizeData(item)]));
+  return sanitizeText(value);
+}
 
 const sameData = (a, b) => a === b || JSON.stringify(a) === JSON.stringify(b);
 
@@ -526,9 +547,33 @@ function Avatar({ name, size = 38, img }) {
   );
 }
 
+function readAvatarFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        const max = 360;
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const width = Math.max(1, Math.round(img.width * scale));
+        const height = Math.max(1, Math.round(img.height * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", 0.82));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 function Flag({ country, size = 22, round = false }) {
   const url = flagUrl(country, size > 44);
-  if (!url) return <span aria-label={country}>ðŸ³</span>;
+  if (!url) return <span aria-label={`${country} flag`} className="flag-fallback">Flag</span>;
   return (
     <img
       className={`flag ${round ? "round" : "rect"}`}
@@ -551,7 +596,7 @@ function StatusTag({ status }) {
 function SyncStatus({ live, autoMode }) {
   const time = live.lastSync ? live.lastSync.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
   if (!autoMode || live.status === "manual") return <button type="button" className="sync" onClick={live.sync}><WifiOff />Manual</button>;
-  if (live.status === "live") return <button type="button" className="sync ok" onClick={live.sync} title={time ? `Synced ${time}` : "Synced"}><span className="status-dot" /><span>Live{time ? ` Â· ${time}` : ""}</span></button>;
+  if (live.status === "live") return <button type="button" className="sync ok" onClick={live.sync} title={time ? `Synced ${time}` : "Synced"}><span className="status-dot" /><span>Live{time ? ` - ${time}` : ""}</span></button>;
   if (live.status === "connecting" || live.status === "idle") return <div className="sync warn"><RefreshCw className="spin" /><span>Syncing</span></div>;
   return <button type="button" className="sync" onClick={live.sync}><WifiOff /><span>Offline</span></button>;
 }
@@ -578,20 +623,20 @@ function MatchCard({ match, players }) {
         <Flag country={match.a} size={28} />
         <div className="team-meta">
           <div className="team-name">{match.a}</div>
-          {ownerA && <div className="team-owner" style={{ color: COLORS[ownerA.name] }}><Shield />{ownerA.name}</div>}
+          {ownerA && <div className="team-owner" style={{ color: COLORS[ownerA.name] }}><Avatar name={ownerA.name} size={18} img={ownerA.avatar} />{ownerA.name}</div>}
         </div>
       </div>
       <div className="match-mid">
         <StatusTag status={match.status} />
-        {hasScore ? <div className="score">{match.sa ?? "â€“"} : {match.sb ?? "â€“"}</div> : <div className="vs">VS</div>}
-        <div className="match-time">{match.stage} Â· {match.time}</div>
+        {hasScore ? <div className="score">{match.sa ?? "-"} : {match.sb ?? "-"}</div> : <div className="vs">VS</div>}
+        <div className="match-time">{match.stage} - {match.time}</div>
         {clash && <div className="clash-note"><Swords />Office clash</div>}
       </div>
       <div className="team right">
         <Flag country={match.b} size={28} />
         <div className="team-meta">
           <div className="team-name right">{match.b}</div>
-          {ownerB && <div className="team-owner right" style={{ color: COLORS[ownerB.name] }}><Shield />{ownerB.name}</div>}
+          {ownerB && <div className="team-owner right" style={{ color: COLORS[ownerB.name] }}><Avatar name={ownerB.name} size={18} img={ownerB.avatar} />{ownerB.name}</div>}
         </div>
       </div>
     </div>
@@ -622,7 +667,7 @@ function Dashboard({ players, matches, announcements, go }) {
       <section className="hero">
         <div className="hero-content">
           <div>
-            <div className="eyebrow"><Sparkles />World Cup 2026 Â· Office Pool</div>
+            <div className="eyebrow"><Sparkles />World Cup 2026 - Office Pool</div>
             <h1>Race to the crown.</h1>
             <div className="hero-metrics">
               <div className="hero-mini"><div className="hero-mini-value">{players.length}</div><div className="hero-mini-label">Players</div></div>
@@ -637,8 +682,8 @@ function Dashboard({ players, matches, announcements, go }) {
               <div className="player-cell">
                 <Avatar name={leader?.name} size={58} img={leader?.avatar} />
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <div className="player-name" style={{ fontSize: 22 }}>{leader?.name || "â€”"}</div>
-                  <div className="player-meta"><Shield />{leader ? getActiveCountries(leader).length : 0} active teams Â· {leader?.w || 0}W {leader?.d || 0}D {leader?.l || 0}L</div>
+                  <div className="player-name" style={{ fontSize: 22 }}>{leader?.name || "-"}</div>
+                  <div className="player-meta"><Shield />{leader ? getActiveCountries(leader).length : 0} active teams - {leader?.w || 0}W {leader?.d || 0}D {leader?.l || 0}L</div>
                   <div className="flag-row" style={{ marginTop: 10 }}>{leader?.countries.map((country) => <Flag key={country} country={country} size={18} round />)}</div>
                 </div>
                 <div className="points-block"><strong>{leader?.pts ?? 0}</strong><div className="wdl-label">pts</div></div>
@@ -701,9 +746,9 @@ function Leaderboard({ players }) {
               return (
                 <tr key={player.id}>
                   <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span>{index === 0 && <Crown size={17} color="var(--gold)" />}{(index === 1 || index === 2) && <Medal size={16} color={index === 1 ? "var(--silver)" : "var(--bronze)"} />}</div></td>
-                  <td><div className="player-cell"><span className="color-rail" style={{ background: COLORS[player.name] || "#ccd5df" }} /><Avatar name={player.name} size={42} img={player.avatar} /><div><div className="player-name">{player.name}</div><div className="player-meta"><Shield />{active.length} active{player.elim.length > 0 ? ` Â· ${player.elim.length} out` : ""}</div></div></div></td>
+                  <td><div className="player-cell"><span className="color-rail" style={{ background: COLORS[player.name] || "#ccd5df" }} /><Avatar name={player.name} size={42} img={player.avatar} /><div><div className="player-name">{player.name}</div><div className="player-meta"><Shield />{active.length} active{player.elim.length > 0 ? ` - ${player.elim.length} out` : ""}</div></div></div></td>
                   <td><div className="flag-row">{player.countries.map((country) => <span key={country} style={{ opacity: player.elim.includes(country) ? 0.34 : 1 }}><Flag country={country} size={18} round /></span>)}</div></td>
-                  <td><div className="form-row">{form.length ? form.map((result, i) => <span key={`${result}-${i}`} className={`form-chip ${result.toLowerCase()}`}>{result}</span>) : <span className="form-chip empty">â€“</span>}</div></td>
+                  <td><div className="form-row">{form.length ? form.map((result, i) => <span key={`${result}-${i}`} className={`form-chip ${result.toLowerCase()}`}>{result}</span>) : <span className="form-chip empty">-</span>}</div></td>
                   <td className="right num">{player.w}</td><td className="right num">{player.d}</td><td className="right num">{player.l}</td>
                   <td><div className="points-block"><strong style={{ color: index === 0 ? "var(--green)" : "var(--ink)" }}>{player.pts}</strong><div className="progress"><span style={{ width: `${Math.max(2, (player.pts / max) * 100)}%`, background: index === 0 ? "var(--green)" : COLORS[player.name] || "var(--blue)" }} /></div></div></td>
                 </tr>
@@ -735,7 +780,7 @@ function Schedule({ matches, players }) {
     <div className="rise">
       <div className="filter-row">
         <div className="chips">{[["all", "All"], ["live", "Live"], ["upcoming", "Upcoming"], ["completed", "Completed"]].map(([id, label]) => <button type="button" key={id} className={`filter-chip ${status === id ? "active" : ""}`} onClick={() => setStatus(id)}>{label}</button>)}</div>
-        <div className="search"><Search /><input className="input" placeholder="Search team or groupâ€¦" value={query} onChange={(e) => setQuery(e.target.value)} /></div>
+        <div className="search"><Search /><input className="input" placeholder="Search team or group..." value={query} onChange={(e) => setQuery(e.target.value)} /></div>
       </div>
       {Object.keys(grouped).length ? Object.entries(grouped).map(([date, dayMatches]) => (
         <section className="day" key={date}>
@@ -754,19 +799,19 @@ function PlayersView({ players, me, onAvatar }) {
   const visible = useMemo(() => players.filter((player) => player.name.toLowerCase().includes(query.trim().toLowerCase()) || player.countries.join(" ").toLowerCase().includes(query.trim().toLowerCase())), [players, query]);
   const selected = selectedId ? players.find((player) => player.id === selectedId) : null;
 
-  const uploadAvatar = (event, id) => {
+  const uploadAvatar = async (event, id) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (loadEvent) => onAvatar(id, loadEvent.target.result);
-    reader.readAsDataURL(file);
+    const dataUrl = await readAvatarFile(file);
+    onAvatar(id, dataUrl);
+    event.target.value = "";
   };
 
   return (
     <div className="rise">
       <div className="section-head">
         <div className="section-title"><Users />{players.length} participants</div>
-        <div className="search"><Search /><input className="input" placeholder="Search player or countryâ€¦" value={query} onChange={(e) => setQuery(e.target.value)} /></div>
+        <div className="search"><Search /><input className="input" placeholder="Search player or country..." value={query} onChange={(e) => setQuery(e.target.value)} /></div>
       </div>
       <div className="player-grid">
         {visible.map((player) => {
@@ -888,7 +933,7 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
                 <button type="button" className={`fan-match-btn ${selected?.id === match.id ? "active" : ""}`} key={match.id} onClick={() => setSelectedId(match.id)}>
                   <div className="fan-match-main">
                     <div className="fan-match-teams"><Flag country={match.a} size={16} round />{match.a}<span style={{ color: "var(--faint)" }}>v</span>{match.b}<Flag country={match.b} size={16} round /></div>
-                    <div className="fan-match-meta">{fmtDate(match.date)} Â· {match.stage}</div>
+                    <div className="fan-match-meta">{fmtDate(match.date)} - {match.stage}</div>
                   </div>
                   <span className="fan-count"><ChatCircleText />{count}</span>
                 </button>
@@ -902,7 +947,7 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
             <>
               <div className="fan-room-head">
                 <div className="fan-room-title"><Flag country={selected.a} size={24} round />{selected.a}<span className="vs">VS</span>{selected.b}<Flag country={selected.b} size={24} round /></div>
-                <div className="fan-room-sub">{fmtDate(selected.date)} Â· {selected.time} Â· {selected.stage} Â· {selected.status === "live" ? "Live now" : selected.status === "completed" ? "Full time" : "Upcoming"}</div>
+                <div className="fan-room-sub">{fmtDate(selected.date)} - {selected.time} - {selected.stage} - {selected.status === "live" ? "Live now" : selected.status === "completed" ? "Full time" : "Upcoming"}</div>
               </div>
 
               <div className="fan-feed">
@@ -1011,7 +1056,7 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPol
               <div className="vote-body">
                 {canVote && !locked && <div className="vote-options">{[["A", match.a], ["Draw", "Draw"], ["B", match.b]].map(([choice, label]) => <button type="button" key={choice} className={`vote-option ${mine === choice ? "active" : ""}`} onClick={() => onVote(match.id, choice)} title={label}>{label}</button>)}</div>}
                 {[["A", match.a, "var(--green)"], ["Draw", "Draw", "var(--amber)"], ["B", match.b, "var(--blue)"]].map(([choice, label, color]) => <div className="vote-row" key={choice}><span className="vote-row-label">{label}</span><div className="vote-track"><div className="vote-fill" style={{ width: `${pct(current[choice] || 0, total)}%`, background: color }} /></div><span className="vote-pct">{pct(current[choice] || 0, total)}%</span></div>)}
-                {ownerA && ownerB && ownerA.id !== ownerB.id && <div className="vote-meta"><Swords />{ownerA.name} vs {ownerB.name} · {total} {total === 1 ? "vote" : "votes"}{result ? ` · result ${result}` : ""}</div>}
+                {ownerA && ownerB && ownerA.id !== ownerB.id && <div className="vote-meta"><Swords />{ownerA.name} vs {ownerB.name} - {total} {total === 1 ? "vote" : "votes"}{result ? ` - result ${result}` : ""}</div>}
                 {isAdmin && !locked && <div className="onbehalf"><span className="onbehalf-label"><Shield />Add on behalf</span><div className="onbehalf-btns">{[["A", match.a], ["Draw", "Draw"], ["B", match.b]].map(([choice, label]) => <button type="button" key={choice} className="ob-btn" onClick={() => onVoteFor(match.id, choice)} title={`Add a vote for ${label}`}><Plus />{label}</button>)}</div></div>}
                 {!canVote && <div className="vote-meta"><LogIn />Guests can view predictions; players can vote before kickoff.</div>}
                 {locked && <div className="vote-meta"><Check />Voting closed when this match started.</div>}
@@ -1054,12 +1099,11 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
   const [tab, setTab] = useState("matches");
   const [announcement, setAnnouncement] = useState("");
 
-  const uploadAvatar = (event, id) => {
+  const uploadAvatar = async (event, id) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (loadEvent) => onAvatar(id, loadEvent.target.result);
-    reader.readAsDataURL(file);
+    const dataUrl = await readAvatarFile(file);
+    onAvatar(id, dataUrl);
     event.target.value = "";
   };
   const [scores, setScores] = useState(() => Object.fromEntries(matches.map((match) => [match.id, { sa: match.sa ?? 0, sb: match.sb ?? 0 }])));
@@ -1069,7 +1113,7 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
   }, [matches]);
 
   const bannerClass = !autoMode ? "" : live.status === "live" ? "ok" : live.status === "error" ? "warn" : "";
-  const bannerTitle = !autoMode ? "Manual control enabled" : live.status === "live" ? "Live feed connected" : live.status === "error" ? "Live feed offline â€” manual fallback ready" : "Connecting to live feed";
+  const bannerTitle = !autoMode ? "Manual control enabled" : live.status === "live" ? "Live feed connected" : live.status === "error" ? "Live feed offline - manual fallback ready" : "Connecting to live feed";
   const tabs = [["matches", CircleDot, "Matches"], ["players", Users, "Players"], ["news", Megaphone, "News"]];
 
   return (
@@ -1108,11 +1152,11 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
               <tr key={player.id}>
                 <td><div className="player-cell"><Avatar name={player.name} size={34} img={player.avatar} /><strong>{player.name}</strong><span className="tag done">{player.pts} pts</span></div></td>
                 <td><button type="button" className="btn btn-soft btn-small" onClick={() => document.getElementById(`adm-av-${player.id}`)?.click()}><Upload />{player.avatar ? "Replace" : "Upload"}</button><input id={`adm-av-${player.id}`} type="file" accept="image/*" onChange={(event) => uploadAvatar(event, player.id)} style={{ display: "none" }} aria-label={`Upload photo for ${player.name}`} /></td>
-                <td style={{ color: "var(--muted)", fontWeight: 800 }}>{player.w}W Â· {player.d}D Â· {player.l}L</td>
+                <td style={{ color: "var(--muted)", fontWeight: 800 }}>{player.w}W - {player.d}D - {player.l}L</td>
                 <td><input className="score-input" style={{ width: 64 }} type="number" value={player._bonus || 0} onChange={(event) => onPlayer(player.id, { _bonus: Number(event.target.value) || 0 })} /></td>
                 <td>{player.countries.map((country) => {
                   const eliminated = player.elim.includes(country);
-                  return <button type="button" key={country} className={`eliminate-chip ${eliminated ? "out" : ""}`} onClick={() => onPlayer(player.id, { elim: eliminated ? player.elim.filter((item) => item !== country) : [...player.elim, country] })}><Flag country={country} size={15} round />{country}{eliminated ? " Ã—" : ""}</button>;
+                  return <button type="button" key={country} className={`eliminate-chip ${eliminated ? "out" : ""}`} onClick={() => onPlayer(player.id, { elim: eliminated ? player.elim.filter((item) => item !== country) : [...player.elim, country] })}><Flag country={country} size={15} round />{country}{eliminated ? " x" : ""}</button>;
                 })}</td>
               </tr>
             ))}</tbody>
@@ -1123,7 +1167,7 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
       {tab === "news" && (
         <div>
           <section className="panel pad" style={{ marginBottom: 18 }}>
-            <div className="field"><label>Post announcement</label><textarea className="textarea" value={announcement} onChange={(event) => setAnnouncement(event.target.value)} placeholder="Share a fixture update, leaderboard callout or office noteâ€¦" /></div>
+            <div className="field"><label>Post announcement</label><textarea className="textarea" value={announcement} onChange={(event) => setAnnouncement(event.target.value)} placeholder="Share a fixture update, leaderboard callout or office note..." /></div>
             <button type="button" className="btn btn-primary" disabled={!announcement.trim()} onClick={() => { onAnnAdd(announcement.trim()); setAnnouncement(""); }}><Plus />Post update</button>
           </section>
           <section className="panel">
@@ -1137,12 +1181,11 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
 
 function ProfileSettings({ me, players, onAvatar, onClose }) {
   const player = players.find((item) => item.name === me?.name);
-  const uploadAvatar = (event) => {
+  const uploadAvatar = async (event) => {
     const file = event.target.files?.[0];
     if (!file || !player) return;
-    const reader = new FileReader();
-    reader.onload = (loadEvent) => onAvatar(player.id, loadEvent.target.result);
-    reader.readAsDataURL(file);
+    const dataUrl = await readAvatarFile(file);
+    onAvatar(player.id, dataUrl);
     event.target.value = "";
   };
 
@@ -1286,7 +1329,7 @@ function LiveDisplay({ matches, players, announcements, live, onExit }) {
       <div className="live-top">
         <div className="live-brand">
           <div className="live-mark"><Trophy weight="fill" aria-hidden="true" /></div>
-          <div className="live-bt">DHI World Cup<small>Office Pool Â· 2026</small></div>
+          <div className="live-bt">DHI World Cup<small>Office Pool - 2026</small></div>
         </div>
         <span className={`live-pill ${liveMatches.length ? "" : "idle"}`}><span className="status-dot" />{liveMatches.length ? `${liveMatches.length} live now` : "Live board"}</span>
         <LiveClock />
@@ -1310,7 +1353,7 @@ function LiveDisplay({ matches, players, announcements, live, onExit }) {
                     </div>
                     <div className="lv-mid">
                       <span className={`lv-tag ${m.status === "live" ? "live" : m.status === "completed" ? "ft" : "soon"}`}>{m.status === "live" ? "Live" : m.status === "completed" ? "Full time" : m.time}</span>
-                      {hasScore ? <div className="lv-score">{m.sa ?? 0}<span className="dash">â€“</span>{m.sb ?? 0}</div> : <div className="lv-vs">VS</div>}
+                      {hasScore ? <div className="lv-score">{m.sa ?? 0}<span className="dash">-</span>{m.sb ?? 0}</div> : <div className="lv-vs">VS</div>}
                     </div>
                     <div className="lv-team right">
                       <LiveFlag country={m.b} big />
@@ -1383,6 +1426,7 @@ export default function App() {
   const pollVotesRef = useRef(pollVotes);
   const customPollsRef = useRef(customPolls);
   const fanCommentsRef = useRef(fanComments);
+  const stateUpdatedAtRef = useRef(0);
 
   useEffect(() => { matchesRef.current = matches; }, [matches]);
   useEffect(() => { playersRef.current = players; }, [players]);
@@ -1399,7 +1443,10 @@ export default function App() {
   const pushState = useCallback(async (partial = {}) => {
     if (!storageAvailable()) return;
     writingRef.current = true;
+    const updatedAt = Date.now();
+    stateUpdatedAtRef.current = updatedAt;
     await saveState({
+      updatedAt,
       matches: partial.matches ?? matchesRef.current,
       players: partial.players ?? playersRef.current,
       announcements: partial.announcements ?? announcementsRef.current,
@@ -1413,18 +1460,22 @@ export default function App() {
 
   const applyRemote = useCallback((state) => {
     if (!state) return;
+    const incomingAt = Number(state.updatedAt || 0);
+    if (incomingAt && incomingAt < stateUpdatedAtRef.current) return;
+    if (incomingAt) stateUpdatedAtRef.current = incomingAt;
+    const cleanState = sanitizeData(state);
     // Only swap in a slice when it genuinely differs from what's on screen.
     // Otherwise every poll would hand React brand-new array/object references
     // (identical content) and force a full re-render, making the page twitch
     // and reset hover/selection while the reader is mid-scroll.
     const merge = (setter) => (incoming) => setter((prev) => (sameData(prev, incoming) ? prev : incoming));
-    if (state.matches) merge(setMatches)(state.matches);
-    if (state.players) merge(setPlayers)(state.players);
-    if (state.announcements) merge(setAnnouncements)(state.announcements);
-    if (state.votes) merge(setVotes)(state.votes);
-    if (state.pollVotes) merge(setPollVotes)(state.pollVotes);
-    if (state.customPolls) merge(setCustomPolls)(state.customPolls);
-    if (!hostedFanApiReady() && !supabaseReady() && state.fanComments) merge(setFanComments)(state.fanComments);
+    if (cleanState.matches) merge(setMatches)(cleanState.matches);
+    if (cleanState.players) merge(setPlayers)(cleanState.players);
+    if (cleanState.announcements) merge(setAnnouncements)(cleanState.announcements);
+    if (cleanState.votes) merge(setVotes)(cleanState.votes);
+    if (cleanState.pollVotes) merge(setPollVotes)(cleanState.pollVotes);
+    if (cleanState.customPolls) merge(setCustomPolls)(cleanState.customPolls);
+    if (!hostedFanApiReady() && !supabaseReady() && cleanState.fanComments) merge(setFanComments)(cleanState.fanComments);
   }, []);
 
   useEffect(() => {
@@ -1678,7 +1729,7 @@ export default function App() {
               <button type="button" className="icon-btn mobile-menu" style={{ background: "#fff", color: "var(--ink)", border: "1px solid var(--line)" }} onClick={() => setSidebarOpen(true)}><Menu /></button>
               <div><div className="top-title">{activeNav[1]}</div><div className="top-subtitle">{SUBTITLE[tab]}</div></div>
             </div>
-            <div className="top-actions"><button type="button" className="btn btn-soft btn-small" onClick={() => setLiveScreen(true)} title="Open the full-screen live display"><MonitorPlay /><span className="signin-top">Live screen</span></button><SyncStatus live={live} autoMode={autoMode} />{me ? <button type="button" className="btn btn-soft btn-small signin-top" onClick={() => setShowProfile(true)}><Users />Profile</button> : <button type="button" className="btn btn-primary btn-small signin-top" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}</div>
+            <div className="top-actions"><button type="button" className="btn btn-soft btn-small" onClick={() => setLiveScreen(true)} title="Open the full-screen live display"><MonitorPlay /><span className="signin-top">Live screen</span></button><SyncStatus live={live} autoMode={autoMode} />{me ? <button type="button" className="btn btn-soft btn-small" onClick={() => setShowProfile(true)}><Users />Profile</button> : <button type="button" className="btn btn-primary btn-small signin-top" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}</div>
           </header>
 
           <div className="page">
