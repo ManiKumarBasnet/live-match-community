@@ -1,6 +1,27 @@
 import { get, put } from "@vercel/blob";
 
 const PATHNAME = "app-state.json";
+const ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=300";
+const APP_TIME_ZONE = "Asia/Thimphu";
+
+const NAME_MAP = {
+  "United States": "USA",
+  US: "USA",
+  "Korea Republic": "South Korea",
+  "Republic of Korea": "South Korea",
+  Korea: "South Korea",
+  "Czech Republic": "Czechia",
+  "Cape Verde": "Cabo Verde",
+  "Cote d'Ivoire": "Ivory Coast",
+  "DR Congo": "Congo",
+  "Congo DR": "Congo",
+  "Democratic Republic of the Congo": "Congo",
+  "Bosnia and Herzegovina": "Bosnia",
+  "Bosnia & Herzegovina": "Bosnia",
+  "Bosnia-Herzegovina": "Bosnia",
+  Curacao: "Curacao",
+  Turkiye: "Turkey",
+};
 
 const json = (res, status, body) => {
   res.statusCode = status;
@@ -21,13 +42,102 @@ async function readState() {
   }
 }
 
+const cleanName = (value) => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+const normalizeName = (name) => NAME_MAP[cleanName(name)] || cleanName(name);
+const toScore = (value) => (value == null || value === "" ? null : Number.parseInt(String(value), 10));
+const sameFixture = (left, right) => (
+  (left.a === right.a && left.b === right.b) ||
+  (left.a === right.b && left.b === right.a)
+);
+
+function espnDate(value) {
+  const date = new Date(value);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: APP_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const get = (type) => parts.find((part) => part.type === type)?.value || "";
+  return `${get("year")}-${get("month")}-${get("day")}`;
+}
+
+function espnTime(value) {
+  return `${new Date(value).toLocaleTimeString("en-US", {
+    timeZone: APP_TIME_ZONE,
+    hour: "numeric",
+    minute: "2-digit",
+  })} BTT`;
+}
+
+function espnStage(event) {
+  return String(event.season?.slug || event.season?.type?.name || "World Cup")
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+async function getEspnMatches() {
+  const response = await fetch(ESPN_URL);
+  if (!response.ok) return null;
+  const data = await response.json();
+  return (data.events || []).map((event) => {
+    const teams = event.competitions?.[0]?.competitors || [];
+    const home = teams.find((team) => team.homeAway === "home") || teams[0];
+    const away = teams.find((team) => team.homeAway === "away") || teams[1];
+    if (!home || !away) return null;
+    const state = event.status?.type?.state;
+    return {
+      id: `espn-${event.id}`,
+      a: normalizeName(home.team?.displayName),
+      b: normalizeName(away.team?.displayName),
+      date: espnDate(event.date),
+      time: espnTime(event.date),
+      stage: espnStage(event),
+      status: state === "in" ? "live" : state === "post" ? "completed" : "upcoming",
+      sa: toScore(home.score),
+      sb: toScore(away.score),
+      source: "espn",
+    };
+  }).filter(Boolean);
+}
+
+async function normalizeMatches(state) {
+  if (!Array.isArray(state.matches)) return state;
+  try {
+    const espnMatches = await getEspnMatches();
+    if (!espnMatches?.length) return state;
+    const used = new Set();
+    const matches = espnMatches.map((fixture) => {
+      const existing = state.matches.find((match) => !used.has(match.id) && sameFixture(match, fixture));
+      if (!existing) return fixture;
+      used.add(existing.id);
+      const flipped = existing.a === fixture.b;
+      return {
+        ...existing,
+        date: fixture.date,
+        time: fixture.time,
+        stage: fixture.stage,
+        status: fixture.status,
+        sa: flipped ? fixture.sb : fixture.sa,
+        sb: flipped ? fixture.sa : fixture.sb,
+        source: "espn",
+      };
+    });
+    return { ...state, matches };
+  } catch {
+    return state;
+  }
+}
+
 async function writeState(state) {
   const current = await readState();
-  const safeState = { ...state };
+  let safeState = await normalizeMatches({ ...state });
 
   // Older browser tabs can still be running a previous bundle. Do not let those
   // clients replace the full ESPN fixture list with the old short seed list.
-  if (Array.isArray(current?.matches) && Array.isArray(state.matches) && current.matches.length > state.matches.length) {
+  if (Array.isArray(current?.matches) && Array.isArray(safeState.matches) && current.matches.length > safeState.matches.length) {
     safeState.matches = current.matches;
   }
 
