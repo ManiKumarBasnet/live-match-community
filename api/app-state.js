@@ -22,7 +22,16 @@ async function readState() {
 }
 
 async function writeState(state) {
-  await put(PATHNAME, JSON.stringify({ ...state, updatedAt: Date.now() }), {
+  const current = await readState();
+  const safeState = { ...state };
+
+  // Older browser tabs can still be running a previous bundle. Do not let those
+  // clients replace the full ESPN fixture list with the old short seed list.
+  if (Array.isArray(current?.matches) && Array.isArray(state.matches) && current.matches.length > state.matches.length) {
+    safeState.matches = current.matches;
+  }
+
+  await put(PATHNAME, JSON.stringify({ ...safeState, updatedAt: Date.now() }), {
     access: "private",
     allowOverwrite: true,
     contentType: "application/json",
