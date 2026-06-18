@@ -202,6 +202,8 @@ const FAN_API = "/api/fan-comments";
 const STATE_API = "/api/app-state";
 const USER_KEY = "dhi-office-world-cup:user";
 const TAB_KEY = "dhi-office-world-cup:tab";
+const APP_TIME_ZONE = "Asia/Thimphu";
+const APP_TIME_LABEL = "BTT";
 
 const NAV = [
   ["dashboard", "Dashboard", LayoutGrid],
@@ -269,7 +271,7 @@ function formatEspnDate(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
   const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
+    timeZone: APP_TIME_ZONE,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -281,7 +283,7 @@ function formatEspnDate(value) {
 function formatEspnTime(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "TBD";
-  return `${date.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" })} ET`;
+  return `${date.toLocaleTimeString("en-US", { timeZone: APP_TIME_ZONE, hour: "numeric", minute: "2-digit" })} ${APP_TIME_LABEL}`;
 }
 
 function formatEspnStage(event) {
@@ -719,8 +721,8 @@ function Dashboard({ players, matches, announcements, go }) {
   const completed = matches.filter((m) => m.status === "completed");
   const live = matches.filter((m) => m.status === "live");
   const upcoming = matches.filter((m) => m.status === "upcoming");
-  const focus = live[0] || upcoming[0] || matches[matches.length - 1];
-  const focusDay = focus ? matches.filter((m) => m.date === focus.date).slice(0, 5) : [];
+  const recentResults = [...live, ...completed].sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id))).slice(0, 6);
+  const nextMatches = [...upcoming].sort((a, b) => safeDate(a.date) - safeDate(b.date) || String(a.id).localeCompare(String(b.id))).slice(0, 4);
   const activeTeams = players.reduce((count, player) => count + getActiveCountries(player).length, 0);
 
   return (
@@ -749,7 +751,6 @@ function Dashboard({ players, matches, announcements, go }) {
                 </div>
                 <div className="points-block"><strong>{leader?.pts ?? 0}</strong><div className="wdl-label">pts</div></div>
               </div>
-              {focus && <div style={{ marginTop: 16, paddingTop: 16, borderTop: "1px solid var(--line)" }}><MatchCard match={focus} players={players} /></div>}
             </div>
           </div>
         </div>
@@ -758,8 +759,12 @@ function Dashboard({ players, matches, announcements, go }) {
       <div className="dashboard-grid">
         <div className="stack">
           <section className="panel">
-            <PanelHeader icon={CalendarDays} title={focus ? `${fmtDate(focus.date)} fixtures` : "Fixtures"} action="Full schedule" onAction={() => go("schedule")} />
-            <div className="match-list">{focusDay.map((match) => <MatchCard key={match.id} match={match} players={players} />)}</div>
+            <PanelHeader icon={CalendarDays} title="Recent scores" action="Full schedule" onAction={() => go("schedule")} />
+            <div className="match-list">{recentResults.length ? recentResults.map((match) => <MatchCard key={match.id} match={match} players={players} />) : nextMatches.map((match) => <MatchCard key={match.id} match={match} players={players} />)}</div>
+          </section>
+          <section className="panel">
+            <PanelHeader icon={Swords} title="Next matches" action="See upcoming" onAction={() => go("schedule")} />
+            <div className="match-list">{nextMatches.length ? nextMatches.map((match) => <MatchCard key={match.id} match={match} players={players} />) : <div className="empty"><CalendarDays />No upcoming fixtures.</div>}</div>
           </section>
           <section className="panel">
             <PanelHeader icon={Megaphone} title="Latest updates" />
@@ -824,13 +829,16 @@ function Leaderboard({ players }) {
 }
 
 function Schedule({ matches, players }) {
-  const [status, setStatus] = useState("all");
+  const [view, setView] = useState("results");
   const [query, setQuery] = useState("");
   const filtered = useMemo(() => matches.filter((match) => {
-    const statusOk = status === "all" || match.status === status;
+    const statusOk = view === "all" || (view === "results" ? match.status !== "upcoming" : match.status === "upcoming");
     const haystack = `${match.a} ${match.b} ${match.stage}`.toLowerCase();
     return statusOk && haystack.includes(query.trim().toLowerCase());
-  }), [matches, query, status]);
+  }).sort((a, b) => {
+    const direction = view === "upcoming" ? 1 : -1;
+    return direction * (safeDate(a.date) - safeDate(b.date)) || String(a.id).localeCompare(String(b.id));
+  }), [matches, query, view]);
   const grouped = useMemo(() => filtered.reduce((acc, match) => {
     acc[match.date] = acc[match.date] || [];
     acc[match.date].push(match);
@@ -840,7 +848,7 @@ function Schedule({ matches, players }) {
   return (
     <div className="rise">
       <div className="filter-row">
-        <div className="chips">{[["all", "All"], ["live", "Live"], ["upcoming", "Upcoming"], ["completed", "Completed"]].map(([id, label]) => <button type="button" key={id} className={`filter-chip ${status === id ? "active" : ""}`} onClick={() => setStatus(id)}>{label}</button>)}</div>
+        <div className="chips">{[["results", "Recent scores"], ["upcoming", "Upcoming"], ["all", "Full schedule"]].map(([id, label]) => <button type="button" key={id} className={`filter-chip ${view === id ? "active" : ""}`} onClick={() => setView(id)}>{label}</button>)}</div>
         <div className="search"><Search /><input className="input" placeholder="Search team or group..." value={query} onChange={(e) => setQuery(e.target.value)} /></div>
       </div>
       {Object.keys(grouped).length ? Object.entries(grouped).map(([date, dayMatches]) => (
