@@ -131,9 +131,56 @@ async function normalizeMatches(state) {
   }
 }
 
+function mergePlayers(currentPlayers = [], incomingPlayers = []) {
+  if (!Array.isArray(incomingPlayers)) return currentPlayers;
+  const currentById = new Map(currentPlayers.map((player) => [String(player.id), player]));
+  const currentByName = new Map(currentPlayers.map((player) => [player.name, player]));
+  return incomingPlayers.map((player) => {
+    const current = currentById.get(String(player.id)) || currentByName.get(player.name) || {};
+    return {
+      ...player,
+      avatar: player.avatar || current.avatar || null,
+    };
+  });
+}
+
+function mergeVoteBucket(current = {}, incoming = {}) {
+  const merged = { ...current, ...incoming };
+  const currentByUser = current.byUser || {};
+  const incomingByUser = incoming.byUser || {};
+  if (Object.keys(currentByUser).length || Object.keys(incomingByUser).length) {
+    merged.byUser = { ...currentByUser, ...incomingByUser };
+  }
+  Object.entries(current).forEach(([key, value]) => {
+    if (key === "byUser" || typeof value !== "number") return;
+    merged[key] = Math.max(value, typeof incoming[key] === "number" ? incoming[key] : 0);
+  });
+  return merged;
+}
+
+function mergeVoteMap(current = {}, incoming = {}) {
+  const next = { ...current };
+  Object.entries(incoming || {}).forEach(([key, value]) => {
+    next[key] = mergeVoteBucket(current?.[key] || {}, value || {});
+  });
+  return next;
+}
+
 async function writeState(state) {
   const current = await readState();
   let safeState = await normalizeMatches({ ...state });
+
+  if (current) {
+    safeState = {
+      ...safeState,
+      players: Array.isArray(safeState.players) ? mergePlayers(current.players || [], safeState.players) : current.players,
+      votes: mergeVoteMap(current.votes || {}, safeState.votes || {}),
+      pollVotes: mergeVoteMap(current.pollVotes || {}, safeState.pollVotes || {}),
+      customPolls: Array.isArray(safeState.customPolls)
+        ? [...safeState.customPolls, ...(current.customPolls || []).filter((poll) => !safeState.customPolls.some((item) => item.id === poll.id))]
+        : current.customPolls,
+    };
+  }
 
   // Older browser tabs can still be running a previous bundle. Do not let those
   // clients replace the full ESPN fixture list with the old short seed list.

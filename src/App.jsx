@@ -1053,8 +1053,19 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
 }
 
 function voteCounts(current = {}) {
-  if (current.byUser) return Object.values(current.byUser).reduce((acc, choice) => ({ ...acc, [choice]: (acc[choice] || 0) + 1 }), { A: 0, Draw: 0, B: 0 });
-  return { A: current.A || 0, Draw: current.Draw || 0, B: current.B || 0 };
+  const counts = { A: current.A || 0, Draw: current.Draw || 0, B: current.B || 0 };
+  Object.values(current.byUser || {}).forEach((choice) => {
+    counts[choice] = (counts[choice] || 0) + 1;
+  });
+  return counts;
+}
+
+function pollCounts(current = {}) {
+  const counts = Object.fromEntries(Object.entries(current).filter(([key, value]) => key !== "byUser" && typeof value === "number"));
+  Object.values(current.byUser || {}).forEach((choice) => {
+    counts[choice] = (counts[choice] || 0) + 1;
+  });
+  return counts;
 }
 
 function correctChoice(match) {
@@ -1116,9 +1127,9 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPol
   };
 
   const renderPoll = (poll, featured = false) => {
-    const current = pollVotes[poll.id] || {};
+    const current = pollCounts(pollVotes[poll.id] || {});
     const total = Object.values(current).reduce((sum, value) => sum + value, 0);
-    const mine = myPoll[poll.id];
+    const mine = pollVotes[poll.id]?.byUser?.[me?.name] || myPoll[poll.id];
     return (
       <section className={`poll-card ${featured ? "featured" : ""}`} key={poll.id}>
         <div className="poll-question"><Crown />{poll.q}</div>
@@ -1147,7 +1158,7 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPol
       <section className="panel pad" style={{ marginBottom: 18 }}>
         <div className="section-title" style={{ marginBottom: 12 }}><Target />Prediction ranking</div>
         <div className="player-grid">
-          {board.slice(0, 6).map((player, index) => <div className="metric" key={player.id}><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span><Avatar name={player.name} size={34} img={player.avatar} /><div><div className="player-name">{player.name}</div><div className="metric-note">{player.predictionHits}/{player.predictionTotal || 0} correct predictions</div></div></div></div>)}
+          {board.map((player, index) => <div className="metric" key={player.id}><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span><Avatar name={player.name} size={34} img={player.avatar} /><div><div className="player-name">{player.name}</div><div className="metric-note">{player.predictionHits}/{player.predictionTotal || 0} correct predictions</div></div></div></div>)}
         </div>
       </section>
       <div className="vote-grid">
@@ -1738,13 +1749,12 @@ export default function App() {
 
   const onPoll = (pollId, option) => {
     if (!me || me.role === "guest") return;
-    const previousOption = myPoll[pollId];
+    const previousOption = pollVotes[pollId]?.byUser?.[me.name] || myPoll[pollId];
     if (previousOption === option) return;
     setMyPoll((previous) => ({ ...previous, [pollId]: option }));
     setPollVotes((previous) => {
       const current = previous[pollId] || {};
-      const nextForPoll = { ...current, [option]: (current[option] || 0) + 1 };
-      if (previousOption) nextForPoll[previousOption] = Math.max(0, (current[previousOption] || 0) - 1);
+      const nextForPoll = { ...current, byUser: { ...(current.byUser || {}), [me.name]: option } };
       const next = { ...previous, [pollId]: nextForPoll };
       pushState({ pollVotes: next });
       return next;
@@ -1768,7 +1778,7 @@ export default function App() {
     if (me?.role !== "admin") return;
     setPollVotes((previous) => {
       const current = previous[pollId] || {};
-      const next = { ...previous, [pollId]: { ...current, [option]: Math.max(0, (current[option] || 0) + delta) } };
+      const next = { ...previous, [pollId]: { ...current, byUser: { ...(current.byUser || {}), [`Admin ${Date.now()}`]: option } } };
       pushState({ pollVotes: next });
       return next;
     });
