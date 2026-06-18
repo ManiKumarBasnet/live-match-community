@@ -200,6 +200,7 @@ const FAN_TABLE = "fan_comments";
 const FAN_API = "/api/fan-comments";
 const STATE_API = "/api/app-state";
 const USER_KEY = "dhi-office-world-cup:user";
+const PENDING_KEY = "dhi-office-world-cup:pending-request";
 const TAB_KEY = "dhi-office-world-cup:tab";
 const VISITOR_KEY = "dhi-office-world-cup:visitor";
 const SESSION_KEY = "dhi-office-world-cup:session";
@@ -494,6 +495,26 @@ function saveLocalUser(user) {
     else window.localStorage?.removeItem(USER_KEY);
   } catch {
     // Identity remains available for this session if browser storage is blocked.
+  }
+}
+
+function loadPendingRequest() {
+  if (typeof window === "undefined") return null;
+  try {
+    const value = window.localStorage?.getItem(PENDING_KEY);
+    return value ? JSON.parse(value) : null;
+  } catch {
+    return null;
+  }
+}
+
+function savePendingRequest(request) {
+  if (typeof window === "undefined") return;
+  try {
+    if (request) window.localStorage?.setItem(PENDING_KEY, JSON.stringify(request));
+    else window.localStorage?.removeItem(PENDING_KEY);
+  } catch {
+    // The server request still exists; this only affects local reminder state.
   }
 }
 
@@ -1464,7 +1485,8 @@ function SignIn({ onClose, onLogin, onVerificationRequest }) {
   const [admin, setAdmin] = useState(false);
   const [error, setError] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const [request, setRequest] = useState(null);
+  const [request, setRequest] = useState(() => loadPendingRequest());
+  const [saving, setSaving] = useState(false);
 
   const uploadAvatar = async (event) => {
     const file = event.target.files?.[0];
@@ -1473,7 +1495,7 @@ function SignIn({ onClose, onLogin, onVerificationRequest }) {
     event.target.value = "";
   };
 
-  const submit = () => {
+  const submit = async () => {
     setError("");
     if (admin) {
       if (password !== ADMIN_PIN) {
@@ -1491,7 +1513,14 @@ function SignIn({ onClose, onLogin, onVerificationRequest }) {
       const code = makeVerificationCode();
       const visitorId = loadVisitorId();
       const nextRequest = { id: `${name}-${visitorId}`, visitorId, name, code, avatar, status: "pending", createdAt: Date.now() };
-      onVerificationRequest(nextRequest);
+      setSaving(true);
+      const saved = await onVerificationRequest(nextRequest);
+      setSaving(false);
+      if (!saved) {
+        setError("Request could not be saved. Check connection and try again.");
+        return;
+      }
+      savePendingRequest(nextRequest);
       setRequest(nextRequest);
       return;
     }
@@ -1511,7 +1540,7 @@ function SignIn({ onClose, onLogin, onVerificationRequest }) {
         {request ? (
           <>
             <div className="field"><label>Your verification code</label><div className="metric-value small">{request.code}</div></div>
-            <div className="modal-sub">Send this to Mani on WhatsApp. Until the organizer approves this exact code, you are not signed in as {request.name}. You may enter as guest meanwhile.</div>
+            <div className="modal-sub">Your request for {request.name} is saved. Send this code to Mani on WhatsApp. Until the organizer approves this exact code, you are not signed in as {request.name}. You may enter as guest meanwhile.</div>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <a className="btn btn-primary" href={`https://wa.me/${ORGANIZER_WHATSAPP}?text=${encodeURIComponent(`Hi Mani, please verify my Office World Cup login. Name: ${request.name}. Code: ${request.code}`)}`} target="_blank" rel="noreferrer"><PaperPlaneTilt />Send to organizer</a>
               <button type="button" className="btn btn-soft" onClick={() => navigator.clipboard?.writeText(`Name: ${request.name} Code: ${request.code}`)}><Copy />Copy code</button>
@@ -1529,7 +1558,7 @@ function SignIn({ onClose, onLogin, onVerificationRequest }) {
         <label className="checkbox"><input type="checkbox" checked={admin} onChange={(event) => setAdmin(event.target.checked)} />I am an organizer</label>
         {admin && <div className="field"><label>Admin PIN</label><input className="input" type="password" value={password} onChange={(event) => setPassword(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()} /></div>}
         {error && <div style={{ color: "var(--red)", fontSize: 13, fontWeight: 850, marginBottom: 14 }}>{error}</div>}
-        <div style={{ display: "flex", gap: 10 }}><button type="button" className="btn btn-primary" style={{ flex: 1 }} onClick={submit}><LogIn />{admin ? "Enter admin" : mode === "player" ? "Request player access" : "Enter as guest"}</button><button type="button" className="btn btn-soft" onClick={onClose}><X /></button></div>
+        <div style={{ display: "flex", gap: 10 }}><button type="button" className="btn btn-primary" style={{ flex: 1 }} onClick={submit} disabled={saving}><LogIn />{saving ? "Saving..." : admin ? "Enter admin" : mode === "player" ? "Request player access" : "Enter as guest"}</button><button type="button" className="btn btn-soft" onClick={onClose}><X /></button></div>
         </>}
       </div>
     </div>
@@ -1746,7 +1775,7 @@ export default function App() {
     writingRef.current = true;
     const updatedAt = Date.now();
     stateUpdatedAtRef.current = updatedAt;
-    await saveState({
+    const saved = await saveState({
       updatedAt,
       matches: partial.matches ?? matchesRef.current,
       players: partial.players ?? playersRef.current,
@@ -1759,6 +1788,7 @@ export default function App() {
       fanComments: partial.fanComments ?? fanCommentsRef.current,
     });
     window.setTimeout(() => { writingRef.current = false; }, 250);
+    return saved;
   }, []);
 
   const applyRemote = useCallback((state) => {
@@ -1920,11 +1950,12 @@ export default function App() {
 
   const onAvatar = (id, dataUrl) => onPlayer(id, { avatar: dataUrl });
 
-  const onVerificationRequest = (request) => setVerificationRequests((previous) => {
-    const next = [request, ...previous.filter((item) => !(item.name === request.name && item.status === "pending"))].slice(0, 100);
-    pushState({ verificationRequests: next });
-    return next;
-  });
+  const onVerificationRequest = async (request) => {
+    const next = [request, ...verificationRequestsRef.current.filter((item) => !(item.name === request.name && item.status === "pending"))].slice(0, 100);
+    verificationRequestsRef.current = next;
+    setVerificationRequests(next);
+    return pushState({ verificationRequests: next });
+  };
 
   const onVerifyRequest = (requestId, status) => setVerificationRequests((previous) => {
     let approvedRequest = null;
@@ -1955,25 +1986,35 @@ export default function App() {
       const nextUser = { name: request.name, role: "player", verified: true };
       setMe(nextUser);
       saveLocalUser(nextUser);
+      savePendingRequest(null);
       setShowSignIn(false);
     }
     if (request?.status === "rejected") {
       setMe(null);
       saveLocalUser(null);
+      savePendingRequest(null);
       setShowSignIn(true);
     }
   }, [me, verificationRequests]);
 
   useEffect(() => {
-    if (me || !storageAvailable()) return;
+    if ((me && me.role !== "guest") || !storageAvailable()) return;
     const visitorId = visitorIdRef.current;
     const request = verificationRequests.find((item) => item.visitorId === visitorId && item.status === "approved");
     if (!request) return;
     const nextUser = { name: request.name, role: "player", verified: true, visitorId };
     setMe(nextUser);
     saveLocalUser(nextUser);
+    savePendingRequest(null);
     setShowSignIn(false);
   }, [me, verificationRequests]);
+
+  useEffect(() => {
+    if (!storageAvailable()) return;
+    const visitorId = visitorIdRef.current;
+    const rejected = verificationRequests.find((item) => item.visitorId === visitorId && item.status === "rejected");
+    if (rejected) savePendingRequest(null);
+  }, [verificationRequests]);
 
   const onAnnAdd = (text) => setAnnouncements((previous) => {
     const next = [{ id: Date.now(), text, date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }) }, ...previous];
