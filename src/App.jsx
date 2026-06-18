@@ -200,6 +200,7 @@ const FAN_API = "/api/fan-comments";
 const STATE_API = "/api/app-state";
 const USER_KEY = "dhi-office-world-cup:user";
 const TAB_KEY = "dhi-office-world-cup:tab";
+const VISITOR_KEY = "dhi-office-world-cup:visitor";
 const APP_TIME_ZONE = "Asia/Thimphu";
 const APP_TIME_LABEL = "BTT";
 
@@ -491,6 +492,20 @@ function saveLocalUser(user) {
     else window.localStorage?.removeItem(USER_KEY);
   } catch {
     // Identity remains available for this session if browser storage is blocked.
+  }
+}
+
+function loadVisitorId() {
+  if (typeof window === "undefined") return "server";
+  try {
+    let id = window.localStorage?.getItem(VISITOR_KEY);
+    if (!id) {
+      id = `visitor-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      window.localStorage?.setItem(VISITOR_KEY, id);
+    }
+    return id;
+  } catch {
+    return `session-${Date.now()}`;
   }
 }
 
@@ -1223,8 +1238,67 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPol
   );
 }
 
-function Admin({ players, matches, announcements, verificationRequests, onVerifyRequest, onMatch, onPlayer, onAvatar, onAnnAdd, onAnnDel, live, autoMode, setAutoMode, storeOn }) {
-  const [tab, setTab] = useState("matches");
+function AdminAnalytics({ analytics, verificationRequests }) {
+  const sessions = analytics?.sessions || [];
+  const now = Date.now();
+  const active = sessions.filter((item) => now - Number(item.lastSeenAt || 0) < 5 * 60 * 1000);
+  const today = new Date().toISOString().slice(0, 10);
+  const todaySessions = sessions.filter((item) => new Date(item.startedAt || item.lastSeenAt || 0).toISOString().slice(0, 10) === today);
+  const byRole = sessions.reduce((acc, item) => ({ ...acc, [item.role || "visitor"]: (acc[item.role || "visitor"] || 0) + 1 }), {});
+  const byTab = sessions.reduce((acc, item) => ({ ...acc, [item.tab || "unknown"]: (acc[item.tab || "unknown"] || 0) + 1 }), {});
+  const maxRole = Math.max(1, ...Object.values(byRole));
+  const maxTab = Math.max(1, ...Object.values(byTab));
+  const registered = (verificationRequests || []).filter((item) => item.status === "approved").length;
+  const pending = (verificationRequests || []).filter((item) => item.status === "pending").length;
+  const rows = [...sessions].sort((a, b) => Number(b.lastSeenAt || 0) - Number(a.lastSeenAt || 0)).slice(0, 80);
+
+  const bar = (label, value, max) => (
+    <div className="vote-row" key={label}>
+      <span className="vote-row-label">{label}</span>
+      <div className="vote-track"><div className="vote-fill" style={{ width: `${Math.max(4, (value / max) * 100)}%`, background: "var(--green)" }} /></div>
+      <span className="vote-pct">{value}</span>
+    </div>
+  );
+
+  return (
+    <div>
+      <div className="metric-grid">
+        <Metric icon={Activity} value={active.length} label="Active now" note="Seen in last 5 minutes" />
+        <Metric icon={Users} value={sessions.length} label="Total sessions" note={`${todaySessions.length} today`} />
+        <Metric icon={Shield} value={registered} label="Approved players" note={`${pending} pending requests`} />
+        <Metric icon={ChatCircleText} value={analytics?.events || 0} label="Check-ins" note="Page/login heartbeats" />
+      </div>
+      <div className="dashboard-grid">
+        <section className="panel pad">
+          <div className="section-title" style={{ marginBottom: 12 }}><Users />Sessions by role</div>
+          {Object.entries(byRole).map(([label, value]) => bar(label, value, maxRole))}
+        </section>
+        <section className="panel pad">
+          <div className="section-title" style={{ marginBottom: 12 }}><LayoutGrid />Current page activity</div>
+          {Object.entries(byTab).map(([label, value]) => bar(label, value, maxTab))}
+        </section>
+      </div>
+      <section className="panel table-wrap" style={{ marginTop: 20 }}>
+        <table className="admin-table">
+          <thead><tr><th>Last seen</th><th>Name</th><th>Role</th><th>Page</th><th>Device</th><th>Visitor</th></tr></thead>
+          <tbody>{rows.length ? rows.map((item) => (
+            <tr key={item.id}>
+              <td>{new Date(item.lastSeenAt || item.startedAt).toLocaleString()}</td>
+              <td><strong>{item.name || "Anonymous"}</strong></td>
+              <td>{item.role || "visitor"}</td>
+              <td>{item.tab || "-"}</td>
+              <td>{item.userAgent || "-"}</td>
+              <td className="num">{String(item.visitorId || "").slice(-8)}</td>
+            </tr>
+          )) : <tr><td colSpan="6"><div className="empty"><Activity />No analytics yet.</div></td></tr>}</tbody>
+        </table>
+      </section>
+    </div>
+  );
+}
+
+function Admin({ players, matches, announcements, verificationRequests, analytics, onVerifyRequest, onMatch, onPlayer, onAvatar, onAnnAdd, onAnnDel, live, autoMode, setAutoMode, storeOn }) {
+  const [tab, setTab] = useState("analytics");
   const [announcement, setAnnouncement] = useState("");
 
   const uploadAvatar = async (event, id) => {
@@ -1243,7 +1317,7 @@ function Admin({ players, matches, announcements, verificationRequests, onVerify
   const bannerClass = !autoMode ? "" : live.status === "live" ? "ok" : live.status === "error" ? "warn" : "";
   const bannerTitle = !autoMode ? "Manual control enabled" : live.status === "live" ? "Live feed connected" : live.status === "error" ? "Live feed offline - manual fallback ready" : "Connecting to live feed";
   const pendingRequests = (verificationRequests || []).filter((request) => request.status === "pending");
-  const tabs = [["requests", Shield, `Requests${pendingRequests.length ? ` (${pendingRequests.length})` : ""}`], ["matches", CircleDot, "Matches"], ["players", Users, "Players"], ["news", Megaphone, "News"]];
+  const tabs = [["analytics", Activity, "Analytics"], ["requests", Shield, `Requests${pendingRequests.length ? ` (${pendingRequests.length})` : ""}`], ["matches", CircleDot, "Matches"], ["players", Users, "Players"], ["news", Megaphone, "News"]];
 
   return (
     <div className="rise">
@@ -1255,6 +1329,8 @@ function Admin({ players, matches, announcements, verificationRequests, onVerify
         <div style={{ display: "flex", gap: 8 }}><button type="button" className="btn btn-soft btn-small" onClick={live.sync}><RefreshCw />Sync now</button><button type="button" className={`btn btn-small ${autoMode ? "btn-primary" : "btn-soft"}`} onClick={() => setAutoMode((value) => !value)}>{autoMode ? "Auto on" : "Auto off"}</button></div>
       </section>
       <div className="tabs">{tabs.map(([id, Icon, label]) => <button type="button" key={id} className={`tab-btn ${tab === id ? "active" : ""}`} onClick={() => setTab(id)}><Icon />{label}</button>)}</div>
+
+      {tab === "analytics" && <AdminAnalytics analytics={analytics} verificationRequests={verificationRequests} />}
 
       {tab === "requests" && (
         <section className="panel table-wrap">
@@ -1600,6 +1676,7 @@ export default function App() {
   const [pollVotes, setPollVotes] = useState({});
   const [customPolls, setCustomPolls] = useState([]);
   const [verificationRequests, setVerificationRequests] = useState([]);
+  const [analytics, setAnalytics] = useState({ sessions: [], events: 0 });
   const [fanComments, setFanComments] = useState([]);
   const [myVotes, setMyVotes] = useState({});
   const [myPoll, setMyPoll] = useState({});
@@ -1620,6 +1697,9 @@ export default function App() {
   const pollVotesRef = useRef(pollVotes);
   const customPollsRef = useRef(customPolls);
   const verificationRequestsRef = useRef(verificationRequests);
+  const analyticsRef = useRef(analytics);
+  const visitorIdRef = useRef(loadVisitorId());
+  const sessionIdRef = useRef(`session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`);
   const fanCommentsRef = useRef(fanComments);
   const stateUpdatedAtRef = useRef(0);
 
@@ -1630,6 +1710,7 @@ export default function App() {
   useEffect(() => { pollVotesRef.current = pollVotes; }, [pollVotes]);
   useEffect(() => { customPollsRef.current = customPolls; }, [customPolls]);
   useEffect(() => { verificationRequestsRef.current = verificationRequests; }, [verificationRequests]);
+  useEffect(() => { analyticsRef.current = analytics; }, [analytics]);
   useEffect(() => { fanCommentsRef.current = fanComments; }, [fanComments]);
   useEffect(() => { setStoreOn(storageAvailable()); }, []);
   useEffect(() => {
@@ -1650,6 +1731,7 @@ export default function App() {
       pollVotes: partial.pollVotes ?? pollVotesRef.current,
       customPolls: partial.customPolls ?? customPollsRef.current,
       verificationRequests: partial.verificationRequests ?? verificationRequestsRef.current,
+      analytics: partial.analytics ?? analyticsRef.current,
       fanComments: partial.fanComments ?? fanCommentsRef.current,
     });
     window.setTimeout(() => { writingRef.current = false; }, 250);
@@ -1673,6 +1755,7 @@ export default function App() {
     if (cleanState.pollVotes) merge(setPollVotes)(cleanState.pollVotes);
     if (cleanState.customPolls) merge(setCustomPolls)(cleanState.customPolls);
     if (cleanState.verificationRequests) merge(setVerificationRequests)(cleanState.verificationRequests);
+    if (cleanState.analytics) merge(setAnalytics)(cleanState.analytics);
     if (!hostedFanApiReady() && !supabaseReady() && cleanState.fanComments) merge(setFanComments)(cleanState.fanComments);
   }, []);
 
@@ -1686,6 +1769,40 @@ export default function App() {
     }, 5000);
     return () => { alive = false; window.clearInterval(interval); };
   }, [applyRemote]);
+
+  const trackAnalytics = useCallback((event = "heartbeat") => {
+    if (!storageAvailable()) return;
+    const now = Date.now();
+    const previousSession = analyticsRef.current.sessions?.find((item) => item.id === sessionIdRef.current);
+    const entry = {
+      id: sessionIdRef.current,
+      visitorId: visitorIdRef.current,
+      name: me?.name || "",
+      role: me?.role || "visitor",
+      tab,
+      event,
+      startedAt: previousSession?.startedAt || now,
+      lastSeenAt: now,
+      userAgent: typeof navigator !== "undefined"
+        ? navigator.userAgent.split(")").shift()?.replace("(", "") || navigator.userAgent.slice(0, 80)
+        : "",
+    };
+    setAnalytics((previous) => {
+      const sessions = [entry, ...(previous.sessions || []).filter((item) => item.id !== entry.id)].slice(0, 1000);
+      const next = { sessions, events: (previous.events || 0) + 1 };
+      pushState({ analytics: next });
+      return next;
+    });
+  }, [me, pushState, tab]);
+
+  useEffect(() => {
+    trackAnalytics("pageview");
+  }, [trackAnalytics]);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => trackAnalytics("heartbeat"), 60000);
+    return () => window.clearInterval(interval);
+  }, [trackAnalytics]);
 
   useEffect(() => {
     if (!hostedFanApiReady() && !supabaseReady()) return undefined;
@@ -1978,7 +2095,7 @@ export default function App() {
               : tab === "players" ? <PlayersView players={standings} me={me} onAvatar={onAvatar} />
               : tab === "voting" ? <Voting matches={matches} players={standings} votes={votes} myVotes={myVotes} me={me} onVote={onVote} polls={SEED_POLLS} customPolls={customPolls} pollVotes={pollVotes} myPoll={myPoll} onPoll={onPoll} onPollCreate={onPollCreate} onVoteFor={onVoteFor} onPollFor={onPollFor} />
               : tab === "fanzone" ? <FanZone matches={matches} players={standings} me={me} comments={fanComments} onCommentAdd={onCommentAdd} onCommentDelete={onCommentDelete} />
-              : tab === "admin" ? <Admin players={standings} matches={matches} announcements={announcements} verificationRequests={verificationRequests} onVerifyRequest={onVerifyRequest} onMatch={onMatch} onPlayer={onPlayer} onAvatar={onAvatar} onAnnAdd={onAnnAdd} onAnnDel={onAnnDel} live={live} autoMode={autoMode} setAutoMode={setAutoMode} storeOn={storeOn} />
+              : tab === "admin" ? <Admin players={standings} matches={matches} announcements={announcements} verificationRequests={verificationRequests} analytics={analytics} onVerifyRequest={onVerifyRequest} onMatch={onMatch} onPlayer={onPlayer} onAvatar={onAvatar} onAnnAdd={onAnnAdd} onAnnDel={onAnnDel} live={live} autoMode={autoMode} setAutoMode={setAutoMode} storeOn={storeOn} />
               : null}
           </div>
         </main>

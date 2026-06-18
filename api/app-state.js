@@ -176,6 +176,26 @@ function mergeRequests(current = [], incoming = []) {
   return [...byId.values()].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 100);
 }
 
+function mergeAnalytics(current = {}, incoming = {}) {
+  const byId = new Map();
+  [...(current.sessions || []), ...(incoming.sessions || [])].forEach((session) => {
+    if (!session?.id) return;
+    const previous = byId.get(session.id) || {};
+    byId.set(session.id, {
+      ...previous,
+      ...session,
+      startedAt: previous.startedAt || session.startedAt,
+      lastSeenAt: Math.max(Number(previous.lastSeenAt || 0), Number(session.lastSeenAt || 0)),
+    });
+  });
+  return {
+    sessions: [...byId.values()]
+      .sort((a, b) => Number(b.lastSeenAt || 0) - Number(a.lastSeenAt || 0))
+      .slice(0, 1000),
+    events: Math.max(Number(current.events || 0), Number(incoming.events || 0)),
+  };
+}
+
 async function writeState(state) {
   const current = await readState();
   let safeState = await normalizeMatches({ ...state });
@@ -187,6 +207,7 @@ async function writeState(state) {
       votes: mergeVoteMap(current.votes || {}, safeState.votes || {}),
       pollVotes: mergeVoteMap(current.pollVotes || {}, safeState.pollVotes || {}),
       verificationRequests: mergeRequests(current.verificationRequests || [], safeState.verificationRequests || []),
+      analytics: mergeAnalytics(current.analytics || {}, safeState.analytics || {}),
       customPolls: Array.isArray(safeState.customPolls)
         ? [...safeState.customPolls, ...(current.customPolls || []).filter((poll) => !safeState.customPolls.some((item) => item.id === poll.id))]
         : current.customPolls,
