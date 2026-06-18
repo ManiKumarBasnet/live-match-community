@@ -184,11 +184,7 @@ const SEED_ANN = [
   { id: 2, text: "Opening office clash: Mexico vs South Africa - Zig vs Roshan starts the race.", date: "Jun 11" },
 ];
 
-const SEED_POLLS = [
-  { id: 1, q: "Who lifts the trophy?", opts: ["Mani - Brazil", "Advanced - Spain", "Chirag - Portugal", "Sangay - Argentina"] },
-  { id: 2, q: "Toughest group draw?", opts: ["Mani - Group C", "Tandin - Group I", "Lhendup - Group F", "Roshan - Group L"] },
-  { id: 3, q: "Best opening-day clash?", opts: ["Mexico v South Africa", "South Korea v Czechia", "Tomorrow's fixtures", "All of them"] },
-];
+const SEED_POLLS = [];
 
 const SCORING = [["Group Win", "3"], ["Draw", "1"], ["Round of 32", "3"], ["Round of 16", "5"], ["Quarter-final", "8"], ["Semi-final", "12"], ["Final", "18"], ["Champion", "25"]];
 // ESPN's public scoreboard API (proxied same-origin by vite.config.js -> no CORS).
@@ -1084,12 +1080,30 @@ function predictionBoard(players, matches, votes) {
 }
 
 function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPolls, pollVotes, myPoll, onPoll, onPollCreate, onVoteFor, onPollFor }) {
-  const upcoming = matches;
   const canVote = me && me.role !== "guest";
   const isAdmin = me?.role === "admin";
   const [pollQuestion, setPollQuestion] = useState("");
   const [pollOptions, setPollOptions] = useState("");
-  const allPolls = [...(customPolls || []), ...polls];
+  const [showAllMatches, setShowAllMatches] = useState(false);
+  const officialPolls = useMemo(() => {
+    const playerOptions = players.map((player) => player.name);
+    const countryOptions = [...new Set(players.flatMap((player) => player.countries))].sort((a, b) => a.localeCompare(b));
+    return [
+      { id: "office-player-winner", q: "Which player is going to win the office pool?", opts: playerOptions },
+      { id: "world-cup-country-winner", q: "Which country is going to win the World Cup?", opts: countryOptions },
+    ];
+  }, [players]);
+  const communityPolls = [...(customPolls || []), ...polls];
+  const orderedMatches = useMemo(() => {
+    const upcoming = matches.filter((match) => match.status === "upcoming").sort((a, b) => safeDate(a.date) - safeDate(b.date) || String(a.id).localeCompare(String(b.id)));
+    const live = matches.filter((match) => match.status === "live").sort((a, b) => safeDate(a.date) - safeDate(b.date) || String(a.id).localeCompare(String(b.id)));
+    const completed = matches.filter((match) => match.status === "completed").sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id)));
+    return [...live, ...upcoming, ...completed];
+  }, [matches]);
+  const visibleMatches = showAllMatches ? orderedMatches : [
+    ...orderedMatches.filter((match) => match.status !== "completed").slice(0, 12),
+    ...orderedMatches.filter((match) => match.status === "completed").slice(0, 4),
+  ];
   const board = useMemo(() => predictionBoard(players, matches, votes), [players, matches, votes]);
   const pct = (value, total) => (total ? Math.round((value / total) * 100) : 0);
   const createPoll = () => {
@@ -1101,9 +1115,35 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPol
     setPollOptions("");
   };
 
+  const renderPoll = (poll, featured = false) => {
+    const current = pollVotes[poll.id] || {};
+    const total = Object.values(current).reduce((sum, value) => sum + value, 0);
+    const mine = myPoll[poll.id];
+    return (
+      <section className={`poll-card ${featured ? "featured" : ""}`} key={poll.id}>
+        <div className="poll-question"><Crown />{poll.q}</div>
+        {poll.by && <div className="vote-meta" style={{ padding: "0 18px 10px" }}>Created by {poll.by}</div>}
+        {poll.opts.map((option) => {
+          const value = current[option] || 0;
+          const percentage = pct(value, total);
+          const active = mine === option;
+          return <button type="button" className={`poll-option ${active ? "active" : ""}`} key={option} onClick={() => canVote && onPoll(poll.id, option)}><div className="poll-bar"><div className="poll-fill" style={{ width: `${percentage}%` }} /><div className="poll-text"><span>{option}</span>{active && <span className="check-bubble"><Check /></span>}{total > 0 && <span className="poll-pct">{percentage}%</span>}</div></div></button>;
+        })}
+        {isAdmin && <div className="onbehalf"><span className="onbehalf-label"><Shield />Add on behalf</span><div className="onbehalf-btns">{poll.opts.map((option) => <button type="button" key={option} className="ob-btn" onClick={() => onPollFor(poll.id, option)} title={`Add a vote for ${option}`}><Plus />{option}</button>)}</div></div>}
+        {!canVote && <div className="vote-meta"><LogIn />Guests can view polls; signed players can vote.</div>}
+      </section>
+    );
+  };
+
   return (
     <div className="rise">
-      <div className="section-head"><div className="section-title"><Vote />Match predictions</div></div>
+      <div className="section-head"><div className="section-title"><Crown />1. Player winner</div></div>
+      {renderPoll(officialPolls[0], true)}
+
+      <div className="section-head"><div className="section-title"><Flag country="Brazil" size={18} round />2. Country winner</div></div>
+      {renderPoll(officialPolls[1], true)}
+
+      <div className="section-head"><div className="section-title"><Vote />3. Match voting</div></div>
       <section className="panel pad" style={{ marginBottom: 18 }}>
         <div className="section-title" style={{ marginBottom: 12 }}><Target />Prediction ranking</div>
         <div className="player-grid">
@@ -1111,7 +1151,7 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPol
         </div>
       </section>
       <div className="vote-grid">
-        {upcoming.map((match) => {
+        {visibleMatches.map((match) => {
           const ownerA = getOwner(match.a, players);
           const ownerB = getOwner(match.b, players);
           const current = voteCounts(votes[match.id]);
@@ -1133,33 +1173,18 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPol
             </section>
           );
         })}
-        {!upcoming.length && <div className="empty"><CalendarDays />No upcoming matches available for voting.</div>}
+        {!visibleMatches.length && <div className="empty"><CalendarDays />No matches available for voting.</div>}
       </div>
-      <div className="section-head"><div className="section-title"><Crown />Player polls</div></div>
+      {(showAllMatches || orderedMatches.length > visibleMatches.length) && <div style={{ display: "flex", justifyContent: "center", margin: "0 0 24px" }}><button type="button" className="btn btn-soft" onClick={() => setShowAllMatches((value) => !value)}>{showAllMatches ? "Show fewer match votes" : "Show all match votes, including past matches"}</button></div>}
+
+      <div className="section-head"><div className="section-title"><Sparkles />More polls from players</div></div>
+      {communityPolls.length ? communityPolls.map((poll) => renderPoll(poll)) : <section className="panel pad" style={{ marginBottom: 18 }}><div className="modal-sub" style={{ margin: 0 }}>No player-created polls yet.</div></section>}
       {canVote && <section className="panel pad" style={{ marginBottom: 18 }}>
+        <div className="section-title" style={{ marginBottom: 12 }}><Plus />Create a new poll</div>
         <div className="field"><label>Poll question</label><input className="input" value={pollQuestion} onChange={(event) => setPollQuestion(event.target.value)} placeholder="Ask the office..." /></div>
         <div className="field"><label>Options</label><textarea className="textarea" value={pollOptions} onChange={(event) => setPollOptions(event.target.value)} placeholder="One option per line, or comma separated" /></div>
         <button type="button" className="btn btn-primary" disabled={!pollQuestion.trim()} onClick={createPoll}><Plus />Create poll</button>
       </section>}
-      {allPolls.map((poll) => {
-        const current = pollVotes[poll.id] || {};
-        const total = Object.values(current).reduce((sum, value) => sum + value, 0);
-        const mine = myPoll[poll.id];
-        return (
-          <section className="poll-card" key={poll.id}>
-            <div className="poll-question"><Crown />{poll.q}</div>
-            {poll.by && <div className="vote-meta" style={{ padding: "0 18px 10px" }}>Created by {poll.by}</div>}
-            {poll.opts.map((option) => {
-              const value = current[option] || 0;
-              const percentage = pct(value, total);
-              const active = mine === option;
-              return <button type="button" className={`poll-option ${active ? "active" : ""}`} key={option} onClick={() => canVote && onPoll(poll.id, option)}><div className="poll-bar"><div className="poll-fill" style={{ width: `${percentage}%` }} /><div className="poll-text"><span>{option}</span>{active && <span className="check-bubble"><Check /></span>}{total > 0 && <span className="poll-pct">{percentage}%</span>}</div></div></button>;
-            })}
-            {isAdmin && <div className="onbehalf"><span className="onbehalf-label"><Shield />Add on behalf</span><div className="onbehalf-btns">{poll.opts.map((option) => <button type="button" key={option} className="ob-btn" onClick={() => onPollFor(poll.id, option)} title={`Add a vote for ${option}`}><Plus />{option}</button>)}</div></div>}
-            {!canVote && <div className="vote-meta"><LogIn />Guests can view polls; players can vote and create new polls.</div>}
-          </section>
-        );
-      })}
     </div>
   );
 }
