@@ -1,93 +1,91 @@
 # DHI Office World Cup 2026
 
-A live office World Cup pool dashboard: standings, fixtures, voting, and an
-organizer admin panel, wired to a real live-score feed.
+Public office World Cup pool app for fixtures, standings, Fan Zone comments,
+profile photos, predictions, polls, and organizer controls.
 
-## Run it
+Live app:
+
+https://office-world-cup.vercel.app
+
+## What This Repo Is For
+
+Use the live app link for normal office use. Use this repo for code changes,
+design refinements, bug fixes, new match/poll features, and review through pull
+requests.
+
+Recommended public workflow:
+
+1. Create a public GitHub repository.
+2. Push this project to that repository.
+3. Invite teammates as collaborators, or let anyone fork and open pull requests.
+4. Connect the GitHub repository to Vercel so every merge deploys automatically.
+
+## Run Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the printed URL, usually http://localhost:5173.
+Open the printed local URL, usually:
 
-## Share it online
-
-Use Vercel for the simplest free public URL:
-
-1. Push this folder to a GitHub repository.
-2. Import the repository at https://vercel.com/new.
-3. Keep the default Vite settings:
-   - Build command: `npm run build`
-   - Output directory: `dist`
-4. Deploy.
-
-The included `vercel.json` keeps the live ESPN score feed working by proxying
-`/api/espn/*` on the deployed site.
-
-Netlify also works with the included `netlify.toml`; use the same build command
-and output directory.
-
-## Realtime behaviour
-
-- **Live scores** - the app polls ESPN's public scoreboard feed through
-  `/api/espn/...` every 45s, matches games to the office fixtures by team name,
-  and updates scores/status automatically. The header chip shows Live when the
-  feed is connected, Syncing while connecting, and Offline on error.
-- **Fan Zone** - match rooms let signed-in fans post comments, wishes, and
-  predictions. Without Supabase settings this uses browser storage. With the
-  Supabase settings below it becomes shared for everyone.
-- **Cross-tab sync** - votes, scores, bonuses, and announcements are saved to
-  `localStorage` and re-read every 5s, so two open tabs/windows stay in sync.
-- **Manual fallback** - organizers sign in, tick "I am an organizer", enter PIN
-  `admin123`, edit scores by hand, and toggle the auto feed off.
-
-The local dev proxy is defined in `vite.config.js`. Hosted proxy rules are in
-`vercel.json` and `netlify.toml`.
-
-## Sign in
-
-- Approved participants, listed in `APPROVED` in `src/App.jsx`, sign in by name
-  and can vote and upload a profile photo.
-- Anyone else enters as a view-only guest.
-- Organizer PIN: `admin123`; change `ADMIN_PIN` in `src/App.jsx`.
-
-## Shared Fan Zone
-
-Create a free Supabase project, then run this SQL in the Supabase SQL editor:
-
-```sql
-create table if not exists public.fan_comments (
-  id uuid primary key default gen_random_uuid(),
-  match_id integer not null,
-  type text not null check (type in ('comment', 'wish', 'prediction')),
-  text text not null check (char_length(text) <= 220),
-  author text not null,
-  role text not null default 'guest',
-  hidden boolean not null default false,
-  created_at timestamptz not null default now()
-);
-
-alter table public.fan_comments enable row level security;
-
-create policy "fan comments are readable"
-on public.fan_comments for select
-using (true);
-
-create policy "fans can post comments"
-on public.fan_comments for insert
-with check (true);
-
-create policy "comments can be hidden"
-on public.fan_comments for update
-using (true)
-with check (true);
+```text
+http://localhost:5173
 ```
 
-In Vercel, add these environment variables and redeploy:
+Build check:
 
 ```bash
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-publishable-or-anon-key
+npm run build
 ```
+
+## Deploy
+
+This app is already designed for Vercel.
+
+1. Import the GitHub repository at https://vercel.com/new.
+2. Keep the default Vite settings:
+   - Build command: `npm run build`
+   - Output directory: `dist`
+3. Add a Vercel Blob store and link it to the project.
+4. Deploy.
+
+The app uses:
+
+- `api/fan-comments.js` for shared Fan Zone comments.
+- `api/app-state.js` for shared players, avatars, votes, polls, and match state.
+- `vercel.json` to proxy ESPN scoreboard requests through `/api/espn/*`.
+
+Vercel Blob creates `BLOB_READ_WRITE_TOKEN` automatically when linked. Do not
+commit `.env.local`, `.vercel`, or any secret values.
+
+## Sign In And Roles
+
+- Official participants are listed in `APPROVED` inside `src/App.jsx`.
+- Official participants can vote, create polls, and upload profile photos.
+- Guests can enter with a display name and comment in Fan Zone.
+- Admin mode currently uses the client-side `ADMIN_PIN` in `src/App.jsx`.
+
+Important: client-side admin PINs are not secure in a public repository. Treat it
+as a light office gate only. If this becomes fully public beyond the office, move
+admin actions behind real authentication before trusting the data.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Good first changes:
+
+- Add fixtures, poll ideas, or player display details.
+- Improve mobile layout.
+- Add notification/tagging behavior.
+- Improve ranking and prediction scoring.
+- Add tests for Fan Zone, profile persistence, and voting flows.
+
+## Current Live Data
+
+The production app stores shared comments and app state in Vercel Blob. Local
+development uses browser storage unless it is running on a hosted domain.
+
+If you change the state schema, keep backward compatibility in `src/App.jsx` so
+existing deployed comments, avatars, votes, and polls still load.
