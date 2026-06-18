@@ -232,7 +232,7 @@ const NAME_MAP = {
 
 const normalizeName = (name) => {
   if (!name) return "";
-  const trimmed = String(name).trim();
+  const trimmed = sanitizeText(String(name)).trim();
   return NAME_MAP[trimmed] || trimmed;
 };
 
@@ -265,6 +265,58 @@ const toScore = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+function formatEspnDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const get = (type) => parts.find((part) => part.type === type)?.value || "";
+  return `${get("year")}-${get("month")}-${get("day")}`;
+}
+
+function formatEspnTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "TBD";
+  return `${date.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" })} ET`;
+}
+
+function formatEspnStage(event) {
+  const slug = event.season?.slug || event.season?.type?.name || "";
+  if (!slug) return "World Cup";
+  return String(slug).split("-").filter(Boolean).map((part) => part[0].toUpperCase() + part.slice(1)).join(" ");
+}
+
+const sameFixture = (left, right) => (
+  (left.a === right.a && left.b === right.b) ||
+  (left.a === right.b && left.b === right.a)
+);
+
+function mergeEspnFixtures(previous, parsed) {
+  const used = new Set();
+  return parsed.map((fixture) => {
+    const existing = previous.find((match) => !used.has(match.id) && sameFixture(match, fixture));
+    if (!existing) return fixture;
+    used.add(existing.id);
+    const flipped = existing.a === fixture.b;
+    return {
+      ...existing,
+      a: existing.a,
+      b: existing.b,
+      date: fixture.date || existing.date,
+      time: fixture.time || existing.time,
+      stage: fixture.stage || existing.stage,
+      status: fixture.status || existing.status,
+      sa: flipped ? fixture.sb : fixture.sa,
+      sb: flipped ? fixture.sa : fixture.sb,
+      source: "espn",
+    };
+  });
+}
+
 // ESPN scoreboard: { events: [{ competitions:[{ competitors:[{homeAway,score,team:{displayName}}] }], status:{type:{state}} }] }
 function parseEspn(events) {
   return events
@@ -277,6 +329,15 @@ function parseEspn(events) {
       const state = event.status?.type?.state; // pre | in | post
       const status = state === "in" ? "live" : state === "post" ? "completed" : "upcoming";
       return {
+        id: `espn-${event.id}`,
+        a: normalizeName(home.team?.displayName),
+        b: normalizeName(away.team?.displayName),
+        date: formatEspnDate(event.date),
+        time: formatEspnTime(event.date),
+        stage: formatEspnStage(event),
+        sa: toScore(home.score),
+        sb: toScore(away.score),
+        source: "espn",
         home: normalizeName(home.team?.displayName),
         away: normalizeName(away.team?.displayName),
         homeScore: toScore(home.score),
@@ -862,7 +923,7 @@ function commentTime(value) {
 function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete }) {
   const orderedMatches = useMemo(() => [...matches].sort((a, b) => {
     const statusWeight = { live: 0, upcoming: 1, completed: 2 };
-    return (statusWeight[a.status] ?? 9) - (statusWeight[b.status] ?? 9) || safeDate(a.date) - safeDate(b.date) || a.id - b.id;
+    return (statusWeight[a.status] ?? 9) - (statusWeight[b.status] ?? 9) || safeDate(a.date) - safeDate(b.date) || String(a.id).localeCompare(String(b.id));
   }), [matches]);
   const [selectedId, setSelectedId] = useState(() => orderedMatches[0]?.id ?? null);
   const [type, setType] = useState("comment");
@@ -1523,17 +1584,8 @@ export default function App() {
       const parsed = parseResponse(await response.json());
       if (!parsed.length) throw new Error("empty feed");
       setMatches((previous) => {
-        let changed = false;
-        const next = previous.map((match) => {
-          const hit = parsed.find((item) => (item.home === match.a && item.away === match.b) || (item.home === match.b && item.away === match.a));
-          if (!hit) return match;
-          const flipped = hit.home === match.b;
-          const sa = flipped ? hit.awayScore : hit.homeScore;
-          const sb = flipped ? hit.homeScore : hit.awayScore;
-          if (match.sa === sa && match.sb === sb && match.status === hit.status) return match;
-          changed = true;
-          return { ...match, sa: sa ?? match.sa, sb: sb ?? match.sb, status: hit.status || match.status };
-        });
+        const next = mergeEspnFixtures(previous, parsed);
+        const changed = !sameData(previous, next);
         if (changed) pushState({ matches: next });
         return changed ? next : previous;
       });
