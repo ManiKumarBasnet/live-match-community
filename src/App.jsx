@@ -473,7 +473,12 @@ function loadLocalUser() {
   if (typeof window === "undefined") return null;
   try {
     const value = window.localStorage?.getItem(USER_KEY);
-    return value ? JSON.parse(value) : null;
+    const user = value ? JSON.parse(value) : null;
+    if (user?.role === "player" && !user.verified) {
+      window.localStorage?.removeItem(USER_KEY);
+      return null;
+    }
+    return user;
   } catch {
     return null;
   }
@@ -927,6 +932,19 @@ function commentTime(value) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
+function mentionsUser(text, name) {
+  if (!text || !name) return false;
+  return new RegExp(`@${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(text);
+}
+
+function HighlightMentions({ text, players }) {
+  const names = players.map((player) => player.name).sort((a, b) => b.length - a.length);
+  const pattern = names.length ? new RegExp(`@(${names.map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`, "gi") : null;
+  if (!pattern) return text;
+  const parts = String(text).split(pattern);
+  return parts.map((part, index) => (names.some((name) => name.toLowerCase() === part.toLowerCase()) ? <strong key={`${part}-${index}`}>@{part}</strong> : part));
+}
+
 function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete }) {
   const orderedMatches = useMemo(() => [...matches].sort((a, b) => {
     const statusWeight = { live: 0, upcoming: 1, completed: 2 };
@@ -944,6 +962,7 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
     }
   });
   const [error, setError] = useState("");
+  const addMention = (name) => setText((value) => `${value}${value && !value.endsWith(" ") ? " " : ""}@${name} `);
 
   useEffect(() => {
     if (!orderedMatches.some((match) => match.id === selectedId)) setSelectedId(orderedMatches[0]?.id ?? null);
@@ -1026,7 +1045,7 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
                       <Avatar name={item.author} size={38} img={author?.avatar} />
                       <div className="fan-bubble">
                         <div className="fan-meta"><span className="fan-author">{item.author}</span><span className="fan-time">{commentTime(item.createdAt)}</span></div>
-                        <div className="fan-text">{item.text}</div>
+                        <div className="fan-text"><HighlightMentions text={item.text} players={players} /></div>
                         <span className={`fan-kind ${item.type}`}>{item.type}</span>
                         {me?.role === "admin" && <div className="fan-actions"><button type="button" className="fan-delete" onClick={() => onCommentDelete(item.id)}><Trash2 />Hide</button></div>}
                       </div>
@@ -1041,6 +1060,7 @@ function FanZone({ matches, players, me, comments, onCommentAdd, onCommentDelete
                   {me && <span className="fan-count"><LogIn />{me.name}</span>}
                   {FAN_TYPES.map(([id, label, Icon]) => <button type="button" key={id} className={`fan-type ${type === id ? "active" : ""}`} onClick={() => setType(id)}><Icon size={14} />{label}</button>)}
                 </div>
+                <div className="chips" style={{ margin: "0 0 10px" }}>{players.slice(0, 8).map((player) => <button type="button" key={player.id} className="filter-chip" onClick={() => addMention(player.name)}>@{player.name}</button>)}</div>
                 <div className="fan-send">
                   <textarea className="textarea" maxLength={220} rows={2} placeholder="Send a match comment, wish, or prediction..." value={text} onChange={(event) => { setText(event.target.value); setError(""); }} onKeyDown={(event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") submit(); }} />
                   <button type="button" className="btn btn-primary" onClick={submit}><PaperPlaneTilt />Send</button>
@@ -1416,6 +1436,27 @@ function SignIn({ onClose, onLogin, onVerificationRequest }) {
   );
 }
 
+function Notifications({ items, players, onOpenFanZone }) {
+  return (
+    <div className="overlay" onClick={onOpenFanZone}>
+      <div className="modal" onClick={(event) => event.stopPropagation()}>
+        <div className="modal-title"><Megaphone />Notifications</div>
+        <div className="modal-sub">Comments where you were tagged.</div>
+        {items.length ? items.map((item) => {
+          const author = players.find((player) => player.name === item.author);
+          return (
+            <div className="announcement" key={item.id}>
+              <Avatar name={item.author} size={34} img={author?.avatar} />
+              <div style={{ flex: 1 }}><div className="announcement-text"><strong>{item.author}</strong>: <HighlightMentions text={item.text} players={players} /></div><div className="announcement-date">{commentTime(item.createdAt)}</div></div>
+            </div>
+          );
+        }) : <div className="empty"><Megaphone />No tags yet.</div>}
+        <button type="button" className="btn btn-primary" style={{ width: "100%", marginTop: 14 }} onClick={onOpenFanZone}><ChatCircleText />Open Fan Zone</button>
+      </div>
+    </div>
+  );
+}
+
 const SCENE_MS = 10000;
 
 function LiveClock() {
@@ -1565,6 +1606,7 @@ export default function App() {
   const [me, setMe] = useState(() => loadLocalUser());
   const [showSignIn, setShowSignIn] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [liveScreen, setLiveScreen] = useState(false);
   const [autoMode, setAutoMode] = useState(true);
   const [liveStatus, setLiveStatus] = useState("idle");
@@ -1769,7 +1811,7 @@ export default function App() {
     if (me?.role !== "pending") return;
     const request = verificationRequests.find((item) => item.id === me.requestId || (item.name === me.name && item.code === me.code));
     if (request?.status === "approved") {
-      const nextUser = { name: request.name, role: "player" };
+      const nextUser = { name: request.name, role: "player", verified: true };
       setMe(nextUser);
       saveLocalUser(nextUser);
       setShowSignIn(false);
@@ -1882,6 +1924,12 @@ export default function App() {
   const adminLocked = tab === "admin" && me?.role !== "admin";
   const activeNav = NAV.find(([id]) => id === tab) || NAV[0];
   const upcomingCount = matches.filter((match) => match.status === "upcoming").length;
+  const mentionNotifications = useMemo(() => {
+    if (!me?.name || me.role === "guest") return [];
+    return fanComments
+      .filter((item) => !item.hidden && item.author !== me.name && mentionsUser(item.text, me.name))
+      .sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+  }, [fanComments, me]);
   const onLogin = (user) => {
     setMe(user);
     saveLocalUser(user);
@@ -1919,7 +1967,7 @@ export default function App() {
               <button type="button" className="icon-btn mobile-menu" style={{ background: "#fff", color: "var(--ink)", border: "1px solid var(--line)" }} onClick={() => setSidebarOpen(true)}><Menu /></button>
               <div><div className="top-title">{activeNav[1]}</div><div className="top-subtitle">{SUBTITLE[tab]}</div></div>
             </div>
-            <div className="top-actions"><button type="button" className="btn btn-soft btn-small" onClick={() => setLiveScreen(true)} title="Open the full-screen live display"><MonitorPlay /><span className="signin-top">Live screen</span></button><SyncStatus live={live} autoMode={autoMode} />{me ? <button type="button" className="btn btn-soft btn-small" onClick={() => setShowProfile(true)}><Users />Profile</button> : <button type="button" className="btn btn-primary btn-small signin-top" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}</div>
+            <div className="top-actions"><button type="button" className="btn btn-soft btn-small" onClick={() => setLiveScreen(true)} title="Open the full-screen live display"><MonitorPlay /><span className="signin-top">Live screen</span></button><SyncStatus live={live} autoMode={autoMode} />{me && me.role !== "guest" && <button type="button" className="btn btn-soft btn-small" onClick={() => setShowNotifications(true)}><Megaphone />{mentionNotifications.length}</button>}{me ? <button type="button" className="btn btn-soft btn-small" onClick={() => setShowProfile(true)}><Users />Profile</button> : <button type="button" className="btn btn-primary btn-small signin-top" onClick={() => setShowSignIn(true)}><LogIn />Sign in</button>}</div>
           </header>
 
           <div className="page">
@@ -1941,6 +1989,7 @@ export default function App() {
       </div>
       {showSignIn && <SignIn onClose={() => setShowSignIn(false)} onLogin={onLogin} onVerificationRequest={onVerificationRequest} />}
       {showProfile && me && <ProfileSettings me={me} players={players} onAvatar={onAvatar} onClose={() => setShowProfile(false)} />}
+      {showNotifications && <Notifications items={mentionNotifications} players={players} onOpenFanZone={() => { setShowNotifications(false); navigate("fanzone"); }} />}
       {liveScreen && <LiveDisplay matches={matches} players={standings} announcements={announcements} live={live} onExit={() => setLiveScreen(false)} />}
     </IconContext.Provider>
   );
