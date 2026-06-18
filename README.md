@@ -20,6 +20,16 @@ Recommended public workflow:
 3. Invite teammates as collaborators, or let anyone fork and open pull requests.
 4. Connect the GitHub repository to Vercel so every merge deploys automatically.
 
+Recommended release rule:
+
+- `main` is production.
+- Teammates open pull requests instead of pushing directly to `main`.
+- GitHub Actions runs `npm run build` on every pull request.
+- Vercel creates a preview deployment for every pull request once GitHub is
+  connected to Vercel.
+- Review the preview link, then merge only if it looks good.
+- Merging to `main` deploys production.
+
 ## Run Locally
 
 ```bash
