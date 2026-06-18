@@ -166,6 +166,16 @@ function mergeVoteMap(current = {}, incoming = {}) {
   return next;
 }
 
+function mergeRequests(current = [], incoming = []) {
+  const byId = new Map();
+  [...current, ...incoming].forEach((request) => {
+    if (!request?.id) return;
+    const previous = byId.get(request.id) || {};
+    byId.set(request.id, { ...previous, ...request });
+  });
+  return [...byId.values()].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 100);
+}
+
 async function writeState(state) {
   const current = await readState();
   let safeState = await normalizeMatches({ ...state });
@@ -176,6 +186,7 @@ async function writeState(state) {
       players: Array.isArray(safeState.players) ? mergePlayers(current.players || [], safeState.players) : current.players,
       votes: mergeVoteMap(current.votes || {}, safeState.votes || {}),
       pollVotes: mergeVoteMap(current.pollVotes || {}, safeState.pollVotes || {}),
+      verificationRequests: mergeRequests(current.verificationRequests || [], safeState.verificationRequests || []),
       customPolls: Array.isArray(safeState.customPolls)
         ? [...safeState.customPolls, ...(current.customPolls || []).filter((poll) => !safeState.customPolls.some((item) => item.id === poll.id))]
         : current.customPolls,

@@ -8,6 +8,7 @@ import {
   CaretRight as ChevronRight,
   ChatCircleText,
   Circle as CircleDot,
+  Copy,
   Crown,
   Fire as Flame,
   Heart,
@@ -118,6 +119,7 @@ const CSS = `
 
 const APPROVED = ["Sangay", "Advanced", "Tandin", "Roshan", "Chirag", "Mani", "Kyunchab", "Lhendup", "Buddy", "Manish", "Khorlo", "Cheche", "Zig", "Nirpa", "Lambu", "Tashi"];
 const ADMIN_PIN = "admin123";
+const ORGANIZER_WHATSAPP = "97577438284";
 
 const ISO = {
   Mexico: "mx", "South Africa": "za", "South Korea": "kr", Czechia: "cz", Canada: "ca", Bosnia: "ba",
@@ -256,6 +258,7 @@ function sanitizeData(value) {
 }
 
 const sameData = (a, b) => a === b || JSON.stringify(a) === JSON.stringify(b);
+const makeVerificationCode = () => `OWC-${Math.random().toString(36).slice(2, 6).toUpperCase()}-${Date.now().toString().slice(-4)}`;
 
 const toScore = (value) => {
   if (value == null) return null;
@@ -1091,7 +1094,7 @@ function predictionBoard(players, matches, votes) {
 }
 
 function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPolls, pollVotes, myPoll, onPoll, onPollCreate, onVoteFor, onPollFor }) {
-  const canVote = me && me.role !== "guest";
+  const canVote = me?.role === "player" || me?.role === "admin";
   const isAdmin = me?.role === "admin";
   const [pollQuestion, setPollQuestion] = useState("");
   const [pollOptions, setPollOptions] = useState("");
@@ -1200,7 +1203,7 @@ function Voting({ matches, players, votes, myVotes, me, onVote, polls, customPol
   );
 }
 
-function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, onAnnAdd, onAnnDel, live, autoMode, setAutoMode, storeOn }) {
+function Admin({ players, matches, announcements, verificationRequests, onVerifyRequest, onMatch, onPlayer, onAvatar, onAnnAdd, onAnnDel, live, autoMode, setAutoMode, storeOn }) {
   const [tab, setTab] = useState("matches");
   const [announcement, setAnnouncement] = useState("");
 
@@ -1219,7 +1222,8 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
 
   const bannerClass = !autoMode ? "" : live.status === "live" ? "ok" : live.status === "error" ? "warn" : "";
   const bannerTitle = !autoMode ? "Manual control enabled" : live.status === "live" ? "Live feed connected" : live.status === "error" ? "Live feed offline - manual fallback ready" : "Connecting to live feed";
-  const tabs = [["matches", CircleDot, "Matches"], ["players", Users, "Players"], ["news", Megaphone, "News"]];
+  const pendingRequests = (verificationRequests || []).filter((request) => request.status === "pending");
+  const tabs = [["requests", Shield, `Requests${pendingRequests.length ? ` (${pendingRequests.length})` : ""}`], ["matches", CircleDot, "Matches"], ["players", Users, "Players"], ["news", Megaphone, "News"]];
 
   return (
     <div className="rise">
@@ -1231,6 +1235,23 @@ function Admin({ players, matches, announcements, onMatch, onPlayer, onAvatar, o
         <div style={{ display: "flex", gap: 8 }}><button type="button" className="btn btn-soft btn-small" onClick={live.sync}><RefreshCw />Sync now</button><button type="button" className={`btn btn-small ${autoMode ? "btn-primary" : "btn-soft"}`} onClick={() => setAutoMode((value) => !value)}>{autoMode ? "Auto on" : "Auto off"}</button></div>
       </section>
       <div className="tabs">{tabs.map(([id, Icon, label]) => <button type="button" key={id} className={`tab-btn ${tab === id ? "active" : ""}`} onClick={() => setTab(id)}><Icon />{label}</button>)}</div>
+
+      {tab === "requests" && (
+        <section className="panel table-wrap">
+          <table className="admin-table">
+            <thead><tr><th>Player</th><th>Code</th><th>Photo</th><th>Status</th><th className="right">Action</th></tr></thead>
+            <tbody>{(verificationRequests || []).length ? verificationRequests.map((request) => (
+              <tr key={request.id}>
+                <td><strong>{request.name}</strong></td>
+                <td className="num">{request.code}</td>
+                <td>{request.avatar ? <Avatar name={request.name} size={34} img={request.avatar} /> : <span className="modal-sub" style={{ margin: 0 }}>No photo</span>}</td>
+                <td><span className={`tag ${request.status === "approved" ? "done" : request.status === "rejected" ? "live" : "soon"}`}>{request.status}</span></td>
+                <td className="right"><div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>{request.status === "pending" && <><button type="button" className="btn btn-primary btn-small" onClick={() => onVerifyRequest(request.id, "approved")}><Check />Approve</button><button type="button" className="btn btn-danger btn-small" onClick={() => onVerifyRequest(request.id, "rejected")}><X />Reject</button></>}</div></td>
+              </tr>
+            )) : <tr><td colSpan="5"><div className="empty"><Shield />No verification requests yet.</div></td></tr>}</tbody>
+          </table>
+        </section>
+      )}
 
       {tab === "matches" && (
         <section className="panel table-wrap">
@@ -1316,13 +1337,22 @@ function ProfileSettings({ me, players, onAvatar, onClose }) {
   );
 }
 
-function SignIn({ onClose, onLogin }) {
+function SignIn({ onClose, onLogin, onVerificationRequest }) {
   const [mode, setMode] = useState("player");
   const [name, setName] = useState(APPROVED[0]);
   const [guestName, setGuestName] = useState("");
   const [password, setPassword] = useState("");
   const [admin, setAdmin] = useState(false);
   const [error, setError] = useState("");
+  const [avatar, setAvatar] = useState(null);
+  const [request, setRequest] = useState(null);
+
+  const uploadAvatar = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setAvatar(await readAvatarFile(file));
+    event.target.value = "";
+  };
 
   const submit = () => {
     setError("");
@@ -1339,7 +1369,11 @@ function SignIn({ onClose, onLogin }) {
         setError("Choose one of the official players.");
         return;
       }
-      onLogin({ name, role: "player" });
+      const code = makeVerificationCode();
+      const nextRequest = { id: `${name}-${Date.now()}`, name, code, avatar, status: "pending", createdAt: Date.now() };
+      onVerificationRequest(nextRequest);
+      onLogin({ name, role: "pending", requestId: nextRequest.id, code });
+      setRequest(nextRequest);
       return;
     }
     const cleanGuest = guestName.trim().slice(0, 32);
@@ -1354,17 +1388,29 @@ function SignIn({ onClose, onLogin }) {
     <div className="overlay" onClick={onClose}>
       <div className="modal" onClick={(event) => event.stopPropagation()}>
         <div className="modal-title"><LogIn />Sign in</div>
-        <div className="modal-sub">Players pick their official name to vote and manage their profile photo. Guests can read and comment, but cannot vote.</div>
+        <div className="modal-sub">Guests can enter directly. Official players must send a verification code to the organizer before voting.</div>
+        {request ? (
+          <>
+            <div className="field"><label>Your verification code</label><div className="metric-value small">{request.code}</div></div>
+            <div className="modal-sub">Send this to Mani on WhatsApp. You will become {request.name} after the organizer approves it.</div>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <a className="btn btn-primary" href={`https://wa.me/${ORGANIZER_WHATSAPP}?text=${encodeURIComponent(`Hi Mani, please verify my Office World Cup login. Name: ${request.name}. Code: ${request.code}`)}`} target="_blank" rel="noreferrer"><PaperPlaneTilt />Send to organizer</a>
+              <button type="button" className="btn btn-soft" onClick={() => navigator.clipboard?.writeText(`Name: ${request.name} Code: ${request.code}`)}><Copy />Copy code</button>
+              <button type="button" className="btn btn-soft" onClick={onClose}><X /></button>
+            </div>
+          </>
+        ) : <>
         {!admin && <div className="chips" style={{ marginBottom: 14 }}>
           <button type="button" className={`filter-chip ${mode === "player" ? "active" : ""}`} onClick={() => setMode("player")}>Player</button>
           <button type="button" className={`filter-chip ${mode === "guest" ? "active" : ""}`} onClick={() => setMode("guest")}>Guest</button>
         </div>}
-        {!admin && mode === "player" && <div className="field"><label>Official player</label><select className="select" autoFocus value={name} onChange={(event) => setName(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()}>{APPROVED.map((player) => <option key={player} value={player}>{player}</option>)}</select></div>}
+        {!admin && mode === "player" && <><div className="field"><label>Official player</label><select className="select" autoFocus value={name} onChange={(event) => setName(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()}>{APPROVED.map((player) => <option key={player} value={player}>{player}</option>)}</select></div><div className="field"><label>Profile photo optional</label><button type="button" className="btn btn-soft" onClick={() => document.getElementById("signin-avatar-upload")?.click()}><Upload />{avatar ? "Photo selected" : "Upload photo"}</button><input id="signin-avatar-upload" type="file" accept="image/*" onChange={uploadAvatar} style={{ display: "none" }} /></div></>}
         {!admin && mode === "guest" && <div className="field"><label>Guest name</label><input className="input" autoFocus placeholder="e.g. Karma" value={guestName} onChange={(event) => setGuestName(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()} /></div>}
         <label className="checkbox"><input type="checkbox" checked={admin} onChange={(event) => setAdmin(event.target.checked)} />I am an organizer</label>
         {admin && <div className="field"><label>Admin PIN</label><input className="input" type="password" value={password} onChange={(event) => setPassword(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submit()} /></div>}
         {error && <div style={{ color: "var(--red)", fontSize: 13, fontWeight: 850, marginBottom: 14 }}>{error}</div>}
-        <div style={{ display: "flex", gap: 10 }}><button type="button" className="btn btn-primary" style={{ flex: 1 }} onClick={submit}><LogIn />{admin ? "Enter admin" : mode === "player" ? "Continue as player" : "Enter as guest"}</button><button type="button" className="btn btn-soft" onClick={onClose}><X /></button></div>
+        <div style={{ display: "flex", gap: 10 }}><button type="button" className="btn btn-primary" style={{ flex: 1 }} onClick={submit}><LogIn />{admin ? "Enter admin" : mode === "player" ? "Request player access" : "Enter as guest"}</button><button type="button" className="btn btn-soft" onClick={onClose}><X /></button></div>
+        </>}
       </div>
     </div>
   );
@@ -1512,6 +1558,7 @@ export default function App() {
   const [votes, setVotes] = useState({});
   const [pollVotes, setPollVotes] = useState({});
   const [customPolls, setCustomPolls] = useState([]);
+  const [verificationRequests, setVerificationRequests] = useState([]);
   const [fanComments, setFanComments] = useState([]);
   const [myVotes, setMyVotes] = useState({});
   const [myPoll, setMyPoll] = useState({});
@@ -1530,6 +1577,7 @@ export default function App() {
   const votesRef = useRef(votes);
   const pollVotesRef = useRef(pollVotes);
   const customPollsRef = useRef(customPolls);
+  const verificationRequestsRef = useRef(verificationRequests);
   const fanCommentsRef = useRef(fanComments);
   const stateUpdatedAtRef = useRef(0);
 
@@ -1539,6 +1587,7 @@ export default function App() {
   useEffect(() => { votesRef.current = votes; }, [votes]);
   useEffect(() => { pollVotesRef.current = pollVotes; }, [pollVotes]);
   useEffect(() => { customPollsRef.current = customPolls; }, [customPolls]);
+  useEffect(() => { verificationRequestsRef.current = verificationRequests; }, [verificationRequests]);
   useEffect(() => { fanCommentsRef.current = fanComments; }, [fanComments]);
   useEffect(() => { setStoreOn(storageAvailable()); }, []);
   useEffect(() => {
@@ -1558,6 +1607,7 @@ export default function App() {
       votes: partial.votes ?? votesRef.current,
       pollVotes: partial.pollVotes ?? pollVotesRef.current,
       customPolls: partial.customPolls ?? customPollsRef.current,
+      verificationRequests: partial.verificationRequests ?? verificationRequestsRef.current,
       fanComments: partial.fanComments ?? fanCommentsRef.current,
     });
     window.setTimeout(() => { writingRef.current = false; }, 250);
@@ -1580,6 +1630,7 @@ export default function App() {
     if (cleanState.votes) merge(setVotes)(cleanState.votes);
     if (cleanState.pollVotes) merge(setPollVotes)(cleanState.pollVotes);
     if (cleanState.customPolls) merge(setCustomPolls)(cleanState.customPolls);
+    if (cleanState.verificationRequests) merge(setVerificationRequests)(cleanState.verificationRequests);
     if (!hostedFanApiReady() && !supabaseReady() && cleanState.fanComments) merge(setFanComments)(cleanState.fanComments);
   }, []);
 
@@ -1686,6 +1737,50 @@ export default function App() {
 
   const onAvatar = (id, dataUrl) => onPlayer(id, { avatar: dataUrl });
 
+  const onVerificationRequest = (request) => setVerificationRequests((previous) => {
+    const next = [request, ...previous.filter((item) => !(item.name === request.name && item.status === "pending"))].slice(0, 100);
+    pushState({ verificationRequests: next });
+    return next;
+  });
+
+  const onVerifyRequest = (requestId, status) => setVerificationRequests((previous) => {
+    let approvedRequest = null;
+    const next = previous.map((request) => {
+      if (request.id !== requestId) return request;
+      approvedRequest = { ...request, status, reviewedAt: Date.now() };
+      return approvedRequest;
+    });
+    if (status === "approved" && approvedRequest?.avatar) {
+      const player = playersRef.current.find((item) => item.name === approvedRequest.name);
+      if (player) {
+        const nextPlayers = playersRef.current.map((item) => (item.id === player.id ? { ...item, avatar: approvedRequest.avatar } : item));
+        setPlayers(nextPlayers);
+        pushState({ players: nextPlayers, verificationRequests: next });
+      } else {
+        pushState({ verificationRequests: next });
+      }
+    } else {
+      pushState({ verificationRequests: next });
+    }
+    return next;
+  });
+
+  useEffect(() => {
+    if (me?.role !== "pending") return;
+    const request = verificationRequests.find((item) => item.id === me.requestId || (item.name === me.name && item.code === me.code));
+    if (request?.status === "approved") {
+      const nextUser = { name: request.name, role: "player" };
+      setMe(nextUser);
+      saveLocalUser(nextUser);
+      setShowSignIn(false);
+    }
+    if (request?.status === "rejected") {
+      setMe(null);
+      saveLocalUser(null);
+      setShowSignIn(true);
+    }
+  }, [me, verificationRequests]);
+
   const onAnnAdd = (text) => setAnnouncements((previous) => {
     const next = [{ id: Date.now(), text, date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }) }, ...previous];
     pushState({ announcements: next });
@@ -1728,7 +1823,7 @@ export default function App() {
   };
 
   const onVote = (matchId, choice) => {
-    if (!me || me.role === "guest") return;
+    if (!(me?.role === "player" || me?.role === "admin")) return;
     const previousChoice = votes[matchId]?.byUser?.[me.name] || myVotes[matchId];
     if (previousChoice === choice) return;
     setMyVotes((previous) => ({ ...previous, [matchId]: choice }));
@@ -1748,7 +1843,7 @@ export default function App() {
   });
 
   const onPoll = (pollId, option) => {
-    if (!me || me.role === "guest") return;
+    if (!(me?.role === "player" || me?.role === "admin")) return;
     const previousOption = pollVotes[pollId]?.byUser?.[me.name] || myPoll[pollId];
     if (previousOption === option) return;
     setMyPoll((previous) => ({ ...previous, [pollId]: option }));
@@ -1835,7 +1930,7 @@ export default function App() {
               : tab === "players" ? <PlayersView players={standings} me={me} onAvatar={onAvatar} />
               : tab === "voting" ? <Voting matches={matches} players={standings} votes={votes} myVotes={myVotes} me={me} onVote={onVote} polls={SEED_POLLS} customPolls={customPolls} pollVotes={pollVotes} myPoll={myPoll} onPoll={onPoll} onPollCreate={onPollCreate} onVoteFor={onVoteFor} onPollFor={onPollFor} />
               : tab === "fanzone" ? <FanZone matches={matches} players={standings} me={me} comments={fanComments} onCommentAdd={onCommentAdd} onCommentDelete={onCommentDelete} />
-              : tab === "admin" ? <Admin players={standings} matches={matches} announcements={announcements} onMatch={onMatch} onPlayer={onPlayer} onAvatar={onAvatar} onAnnAdd={onAnnAdd} onAnnDel={onAnnDel} live={live} autoMode={autoMode} setAutoMode={setAutoMode} storeOn={storeOn} />
+              : tab === "admin" ? <Admin players={standings} matches={matches} announcements={announcements} verificationRequests={verificationRequests} onVerifyRequest={onVerifyRequest} onMatch={onMatch} onPlayer={onPlayer} onAvatar={onAvatar} onAnnAdd={onAnnAdd} onAnnDel={onAnnDel} live={live} autoMode={autoMode} setAutoMode={setAutoMode} storeOn={storeOn} />
               : null}
           </div>
         </main>
@@ -1844,7 +1939,7 @@ export default function App() {
           {NAV.slice(0, 6).map(([id, label, Icon]) => <button type="button" key={id} className={`mobile-nav-item ${tab === id ? "active" : ""}`} onClick={() => navigate(id)}><Icon /><span>{label}</span></button>)}
         </nav>
       </div>
-      {showSignIn && <SignIn onClose={() => setShowSignIn(false)} onLogin={onLogin} />}
+      {showSignIn && <SignIn onClose={() => setShowSignIn(false)} onLogin={onLogin} onVerificationRequest={onVerificationRequest} />}
       {showProfile && me && <ProfileSettings me={me} players={players} onAvatar={onAvatar} onClose={() => setShowProfile(false)} />}
       {liveScreen && <LiveDisplay matches={matches} players={standings} announcements={announcements} live={live} onExit={() => setLiveScreen(false)} />}
     </IconContext.Provider>
