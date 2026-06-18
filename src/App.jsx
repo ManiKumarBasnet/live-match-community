@@ -1356,16 +1356,18 @@ function Admin({ players, matches, announcements, verificationRequests, analytic
       {tab === "requests" && (
         <section className="panel table-wrap">
           <table className="admin-table">
-            <thead><tr><th>Player</th><th>Code</th><th>Photo</th><th>Status</th><th className="right">Action</th></tr></thead>
+            <thead><tr><th>Player</th><th>Code</th><th>Device</th><th>Requested</th><th>Photo</th><th>Status</th><th className="right">Action</th></tr></thead>
             <tbody>{(verificationRequests || []).length ? verificationRequests.map((request) => (
               <tr key={request.id}>
                 <td><strong>{request.name}</strong></td>
                 <td className="num">{request.code}</td>
+                <td className="num">{String(request.visitorId || request.id).slice(-8)}</td>
+                <td>{request.createdAt ? new Date(request.createdAt).toLocaleString() : "-"}</td>
                 <td>{request.avatar ? <Avatar name={request.name} size={34} img={request.avatar} /> : <span className="modal-sub" style={{ margin: 0 }}>No photo</span>}</td>
                 <td><span className={`tag ${request.status === "approved" ? "done" : request.status === "rejected" ? "live" : "soon"}`}>{request.status}</span></td>
                 <td className="right"><div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>{request.status === "pending" && <><button type="button" className="btn btn-primary btn-small" onClick={() => onVerifyRequest(request.id, "approved")}><Check />Approve</button><button type="button" className="btn btn-danger btn-small" onClick={() => onVerifyRequest(request.id, "rejected")}><X />Reject</button></>}</div></td>
               </tr>
-            )) : <tr><td colSpan="5"><div className="empty"><Shield />No verification requests yet.</div></td></tr>}</tbody>
+            )) : <tr><td colSpan="7"><div className="empty"><Shield />No verification requests yet.</div></td></tr>}</tbody>
           </table>
         </section>
       )}
@@ -1487,9 +1489,9 @@ function SignIn({ onClose, onLogin, onVerificationRequest }) {
         return;
       }
       const code = makeVerificationCode();
-      const nextRequest = { id: `${name}-${Date.now()}`, name, code, avatar, status: "pending", createdAt: Date.now() };
+      const visitorId = loadVisitorId();
+      const nextRequest = { id: `${name}-${visitorId}`, visitorId, name, code, avatar, status: "pending", createdAt: Date.now() };
       onVerificationRequest(nextRequest);
-      onLogin({ name, role: "pending", requestId: nextRequest.id, code });
       setRequest(nextRequest);
       return;
     }
@@ -1509,10 +1511,11 @@ function SignIn({ onClose, onLogin, onVerificationRequest }) {
         {request ? (
           <>
             <div className="field"><label>Your verification code</label><div className="metric-value small">{request.code}</div></div>
-            <div className="modal-sub">Send this to Mani on WhatsApp. You will become {request.name} after the organizer approves it.</div>
+            <div className="modal-sub">Send this to Mani on WhatsApp. Until the organizer approves this exact code, you are not signed in as {request.name}. You may enter as guest meanwhile.</div>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <a className="btn btn-primary" href={`https://wa.me/${ORGANIZER_WHATSAPP}?text=${encodeURIComponent(`Hi Mani, please verify my Office World Cup login. Name: ${request.name}. Code: ${request.code}`)}`} target="_blank" rel="noreferrer"><PaperPlaneTilt />Send to organizer</a>
               <button type="button" className="btn btn-soft" onClick={() => navigator.clipboard?.writeText(`Name: ${request.name} Code: ${request.code}`)}><Copy />Copy code</button>
+              <button type="button" className="btn btn-soft" onClick={() => { setRequest(null); setMode("guest"); }}><Users />Enter as guest</button>
               <button type="button" className="btn btn-soft" onClick={onClose}><X /></button>
             </div>
           </>
@@ -1959,6 +1962,17 @@ export default function App() {
       saveLocalUser(null);
       setShowSignIn(true);
     }
+  }, [me, verificationRequests]);
+
+  useEffect(() => {
+    if (me || !storageAvailable()) return;
+    const visitorId = visitorIdRef.current;
+    const request = verificationRequests.find((item) => item.visitorId === visitorId && item.status === "approved");
+    if (!request) return;
+    const nextUser = { name: request.name, role: "player", verified: true, visitorId };
+    setMe(nextUser);
+    saveLocalUser(nextUser);
+    setShowSignIn(false);
   }, [me, verificationRequests]);
 
   const onAnnAdd = (text) => setAnnouncements((previous) => {
