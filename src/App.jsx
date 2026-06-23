@@ -1982,6 +1982,7 @@ export default function App() {
   const visitorIdRef = useRef(loadVisitorId());
   const sessionIdRef = useRef(loadSessionId());
   const scoringCacheRef = useRef({});
+  const scoringLoadRef = useRef(false);
   const fanCommentsRef = useRef(fanComments);
   const stateUpdatedAtRef = useRef(0);
 
@@ -2055,13 +2056,13 @@ export default function App() {
 
   useEffect(() => {
     let alive = true;
-    const targets = matches
-      .filter((match) => match.source === "espn" && match.status !== "upcoming" && !match.scoringLoaded && !scoringCacheRef.current[match.id])
-      .slice(0, 8);
-    if (!targets.length) return undefined;
-    targets.forEach((match) => { scoringCacheRef.current[match.id] = true; });
+    const targets = matches.filter((match) => match.source === "espn" && match.status !== "upcoming" && !match.scoringLoaded && !scoringLoadRef.current);
+    if (!targets.length || scoringLoadRef.current) return undefined;
+    scoringLoadRef.current = true;
     Promise.all(targets.map(async (match) => {
       const eventId = String(match.id).replace(/^espn-/, "");
+      if (scoringCacheRef.current[match.id]) return null;
+      scoringCacheRef.current[match.id] = true;
       const scoring = await fetchEspnScoring(eventId);
       return scoring ? [match.id, scoring] : null;
     })).then((results) => {
@@ -2082,6 +2083,8 @@ export default function App() {
       });
     }).catch(() => {
       // Leave the match cards in score-only mode if ESPN summary data is unavailable.
+    }).finally(() => {
+      scoringLoadRef.current = false;
     });
     return () => { alive = false; };
   }, [matches, pushState]);
