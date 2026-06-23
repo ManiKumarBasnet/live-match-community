@@ -69,7 +69,7 @@ const CSS = `
 .panel{background:rgba(255,255,255,.86);border:1px solid rgba(211,219,230,.78);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden}.panel.pad{padding:20px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,rgba(247,249,252,.78))}.panel-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:900;letter-spacing:-.025em}.panel-title svg{width:18px;height:18px;color:var(--green)}.panel-link{display:flex;align-items:center;gap:4px;color:var(--green-dark);font-size:12px;font-weight:900;cursor:pointer}.panel-link svg{width:14px;height:14px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.section-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:900;letter-spacing:-.035em}.section-title svg{width:19px;height:19px;color:var(--green)}
 .hero{position:relative;overflow:hidden;border-radius:32px;padding:28px;background:linear-gradient(135deg,#08111f 0%,#11243a 54%,#0b3b2b 100%);color:#fff;box-shadow:var(--shadow-md);margin-bottom:22px}.hero::before{content:"";position:absolute;inset:-40% -18% auto auto;width:520px;height:520px;border-radius:999px;background:radial-gradient(circle,rgba(0,220,130,.28),transparent 65%)}.hero::after{content:"";position:absolute;inset:auto auto -48% -18%;width:420px;height:420px;border-radius:999px;background:radial-gradient(circle,rgba(47,111,237,.2),transparent 62%)}.hero-content{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(360px,.8fr);gap:24px;align-items:stretch}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);font-size:11px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#bad0e4}.eyebrow svg{width:14px;height:14px;color:#5ee2a4}.hero h1{font-size:42px;line-height:.98;font-weight:900;letter-spacing:-.075em;margin:16px 0 12px;max-width:760px}.hero-copy{color:#b9c8d7;font-size:15px;line-height:1.65;max-width:720px}.hero-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:22px}.hero-mini{padding:13px 14px;border-radius:18px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.095)}.hero-mini-value{font-family:var(--font-display);font-size:24px;font-weight:800}.hero-mini-label{font-size:11px;color:#95a8bd;font-weight:800;text-transform:uppercase;letter-spacing:.055em;margin-top:3px}.spotlight{background:rgba(255,255,255,.095);border:1px solid rgba(255,255,255,.13);border-radius:26px;padding:18px;display:flex;flex-direction:column;min-height:100%}.spot-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.spot-label{font-size:12px;color:#9db0c5;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.spot-card{background:#fff;color:var(--ink);border-radius:22px;padding:17px;box-shadow:0 24px 45px rgba(0,0,0,.22)}
 .metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}.metric{background:rgba(255,255,255,.88);border:1px solid rgba(211,219,230,.78);border-radius:22px;padding:18px;box-shadow:var(--shadow-xs)}.metric-accent{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(245,247,250,.94));border-color:rgba(188,233,209,.95)}.metric-accent::before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:4px;background:linear-gradient(90deg,var(--green),var(--blue),var(--amber));opacity:.92}.metric-icon{width:40px;height:40px;border-radius:15px;display:grid;place-items:center;margin-bottom:14px}.metric-accent .metric-icon{width:46px;height:46px;border-radius:16px}.metric-icon svg{width:19px;height:19px}.metric-accent .metric-icon svg{width:20px;height:20px}.metric-value{font-family:var(--font-display);font-size:30px;line-height:1;font-weight:800;letter-spacing:-.04em}.metric-accent .metric-value{font-size:34px}.metric-value.small{font-size:20px}.metric-label{font-size:12px;color:var(--muted);font-weight:800;margin-top:6px}.metric-note{font-size:11px;color:var(--faint);font-weight:700;margin-top:8px;line-height:1.35}.dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:22px;align-items:start}.stack{display:flex;flex-direction:column;gap:22px}.stand-sticky{position:sticky;top:98px}
-.stats-hero{position:relative;overflow:hidden;padding:22px 24px;margin-bottom:18px;background:linear-gradient(135deg,rgba(7,16,29,.98),rgba(12,72,52,.94));color:#eef7ff;border:0;box-shadow:0 26px 56px rgba(7,16,29,.18)}.stats-hero::before{content:"";position:absolute;inset:-18% -8% auto auto;width:340px;height:340px;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.11),transparent 58%),radial-gradient(circle at 62% 66%,rgba(94,226,164,.16),transparent 58%);filter:blur(2px)}.stats-hero::after{content:"";position:absolute;inset:auto auto -28% -8%;width:320px;height:320px;background:radial-gradient(circle at 45% 45%,rgba(139,184,255,.15),transparent 60%);filter:blur(3px)}.stats-hero-top{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.stats-eyebrow{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:10.5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#b7c9d9}.stats-eyebrow svg{width:14px;height:14px;color:#5ee2a4}.stats-hero h2{font-family:var(--font-display);font-size:30px;line-height:1;letter-spacing:-.05em;margin:12px 0 10px}.stats-copy{max-width:640px;font-size:14px;line-height:1.6;color:#b6c7d7}.stats-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;max-width:430px}.stats-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);font-size:12px;font-weight:850;color:#ecf3f9}.stats-badge svg{width:14px;height:14px;color:#5ee2a4}.stats-badge:nth-child(2) svg{color:#8bb8ff}.stats-badge:nth-child(3) svg{color:#f6c55e}.country-map-chip{--country-tone:#0f766e;display:inline-flex;align-items:center;gap:7px;min-width:0;padding:6px 10px;border-radius:999px;background:color-mix(in srgb, var(--country-tone) 12%, #fff);border:1px solid color-mix(in srgb, var(--country-tone) 24%, #fff);color:var(--ink);font-size:11px;font-weight:850;line-height:1.1}.country-map-chip strong{color:var(--country-tone);font-weight:900;white-space:nowrap}.country-map-chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.country-dot{width:10px;height:10px;border-radius:999px;background:var(--country-tone);box-shadow:0 0 0 4px color-mix(in srgb, var(--country-tone) 18%, transparent)}.player-meta .country-map-chip{padding:5px 9px;font-size:10.5px}.metric-note .country-map-chip{max-width:100%}
+.stats-hero{position:relative;overflow:hidden;padding:22px 24px;margin-bottom:18px;background:linear-gradient(135deg,rgba(7,16,29,.98),rgba(12,72,52,.94));color:#eef7ff;border:0;box-shadow:0 26px 56px rgba(7,16,29,.18)}.stats-hero::before{content:"";position:absolute;inset:-18% -8% auto auto;width:340px;height:340px;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.11),transparent 58%),radial-gradient(circle at 62% 66%,rgba(94,226,164,.16),transparent 58%);filter:blur(2px)}.stats-hero::after{content:"";position:absolute;inset:auto auto -28% -8%;width:320px;height:320px;background:radial-gradient(circle at 45% 45%,rgba(139,184,255,.15),transparent 60%);filter:blur(3px)}.stats-hero-top{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.stats-eyebrow{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:10.5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#b7c9d9}.stats-eyebrow svg{width:14px;height:14px;color:#5ee2a4}.stats-hero h2{font-family:var(--font-display);font-size:30px;line-height:1;letter-spacing:-.05em;margin:12px 0 10px}.stats-copy{max-width:640px;font-size:14px;line-height:1.6;color:#b6c7d7}.stats-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;max-width:430px}.stats-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 10px 8px 9px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);font-size:11.5px;font-weight:850;color:#ecf3f9;max-width:100%}.stats-badge svg{width:12px;height:12px;color:#5ee2a4}.stats-badge:nth-child(2) svg{color:#8bb8ff}.stats-badge:nth-child(3) svg{color:#f6c55e}.stats-mini-icon{width:18px;height:18px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.08);flex:0 0 auto}.country-map-chip{--country-tone:#0f766e;display:inline-flex;align-items:center;gap:7px;min-width:0;padding:6px 10px;border-radius:999px;background:color-mix(in srgb, var(--country-tone) 12%, #fff);border:1px solid color-mix(in srgb, var(--country-tone) 24%, #fff);color:var(--ink);font-size:11px;font-weight:850;line-height:1.1}.country-map-chip strong{color:var(--country-tone);font-weight:900;white-space:nowrap}.country-map-chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.country-dot{width:10px;height:10px;border-radius:999px;background:var(--country-tone);box-shadow:0 0 0 4px color-mix(in srgb, var(--country-tone) 18%, transparent)}.player-meta .country-map-chip{padding:5px 9px;font-size:10.5px}.metric-note .country-map-chip{max-width:100%}.metric-icon-compact{width:34px;height:34px;border-radius:12px}.metric-icon-compact svg{width:16px;height:16px}
 .match-list{padding:8px}.match-card{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;padding:16px;border-radius:18px;transition:.16s ease;position:relative}.match-card+.match-card{border-top:1px solid var(--line)}.match-card:hover{background:var(--surface-soft)}.match-card.clash{background:linear-gradient(90deg,rgba(0,163,92,.12),rgba(255,255,255,.82) 62%)}.match-card.live{box-shadow:inset 0 0 0 1px rgba(224,49,79,.24);background:linear-gradient(90deg,rgba(224,49,79,.11),rgba(255,255,255,.86))}.team{display:flex;gap:11px;align-items:center;min-width:0}.team.right{flex-direction:row-reverse}.team-meta{min-width:0}.team-name{font-size:15px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em}.team-name.right{text-align:right}.team-owner{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:11px;font-weight:850;color:var(--muted)}.team-owner.right{flex-direction:row-reverse}.team-owner .avatar{box-shadow:0 0 0 1px rgba(255,255,255,.8);font-size:8px}.team-owner svg{width:12px;height:12px}.match-mid{min-width:92px;display:flex;flex-direction:column;align-items:center;gap:7px}.score{font-family:var(--font-display);font-size:28px;font-weight:800;line-height:1;letter-spacing:.02em}.vs{font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--faint);letter-spacing:.12em}.match-time{font-size:10.5px;color:var(--faint);font-weight:850}.match-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px;max-width:100%}.match-stat{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:5px 9px;border-radius:999px;background:var(--surface-soft);border:1px solid var(--line)}.match-stat span{font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}.match-stat b{font-size:11px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.clash-note{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--green-dark);font-weight:900}.clash-note svg{width:12px;height:12px}.flag-fallback{font-size:10px;font-weight:900;color:var(--faint)}.tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:950;letter-spacing:.07em;text-transform:uppercase}.tag.live{background:var(--red-soft);color:var(--red)}.tag.done{background:var(--green-soft);color:var(--green-dark)}.tag.soon{background:var(--surface-soft);color:var(--muted);border:1px solid var(--line-strong)}.tag.admin{background:var(--blue-soft);color:var(--blue)}
 .avatar{border-radius:999px;display:grid;place-items:center;position:relative;overflow:hidden;color:#fff;font-family:var(--font-display);font-weight:800;flex:0 0 auto;box-shadow:0 0 0 3px #fff,0 8px 18px rgba(9,17,32,.12)}.avatar img{width:100%;height:100%;object-fit:cover}.flag{object-fit:cover;flex:0 0 auto;box-shadow:0 1px 3px rgba(9,17,32,.18)}.flag.round{border-radius:999px}.flag.rect{border-radius:5px}.stand-row{width:100%;display:flex;align-items:center;gap:13px;padding:13px 18px;cursor:pointer;transition:.16s}.stand-row+.stand-row{border-top:1px solid var(--line)}.stand-row:hover{background:var(--surface-soft)}.rank{width:26px;text-align:center;font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--faint)}.rank.gold{color:var(--gold)}.rank.silver{color:var(--silver)}.rank.bronze{color:var(--bronze)}.stand-info{min-width:0;flex:1}.stand-name{font-size:14.5px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-flags{display:flex;gap:4px;margin-top:5px}.stand-points{text-align:right}.stand-points strong{font-family:var(--font-display);font-size:21px}.stand-points span{display:block;font-size:9.5px;color:var(--faint);font-weight:900;text-transform:uppercase;letter-spacing:.07em}.announcement{display:flex;gap:14px;padding:15px 18px}.announcement+.announcement{border-top:1px solid var(--line)}.announcement-icon{width:34px;height:34px;border-radius:13px;display:grid;place-items:center;background:var(--green-soft);color:var(--green-dark);flex:0 0 auto}.announcement-icon svg{width:16px;height:16px}.announcement-text{font-size:13.5px;line-height:1.55;font-weight:620}.announcement-date{font-size:11px;color:var(--faint);font-weight:800;margin-top:4px}
 .table-wrap{overflow:auto}.leader-table,.admin-table{width:100%;border-collapse:collapse;min-width:920px}.leader-table th,.admin-table th{text-align:left;padding:14px 18px;background:var(--surface-soft);border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);font-weight:950;text-transform:uppercase;letter-spacing:.07em}.leader-table th.right,.admin-table th.right{text-align:right}.leader-table td,.admin-table td{padding:15px 18px;border-bottom:1px solid var(--line);vertical-align:middle}.leader-table tr:last-child td,.admin-table tr:last-child td{border-bottom:0}.leader-table tbody tr{transition:.14s}.leader-table tbody tr:hover{background:var(--surface-soft)}.player-cell{display:flex;align-items:center;gap:13px}.color-rail{width:4px;height:42px;border-radius:99px}.player-name{font-size:15px;font-weight:950;letter-spacing:-.02em}.player-meta{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);font-weight:750;margin-top:3px}.player-meta svg{width:12px;height:12px}.flag-row{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.form-row{display:flex;gap:5px;justify-content:flex-end}.form-chip{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:950}.form-chip.w{background:var(--green)}.form-chip.d{background:var(--amber)}.form-chip.l{background:var(--red)}.form-chip.empty{background:var(--line-strong);color:var(--faint)}.points-block{text-align:right}.points-block strong{font-family:var(--font-display);font-size:26px}.progress{width:130px;height:6px;background:var(--line);border-radius:999px;overflow:hidden;margin-left:auto;margin-top:7px}.progress span{display:block;height:100%;border-radius:999px;min-width:2px}.scoring{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:15px;color:var(--muted);font-size:12px;font-weight:700}.scoring b{color:var(--ink);font-family:var(--font-display)}.stat-input{min-width:0;padding:8px 10px;font-size:12px}
@@ -203,6 +203,8 @@ const STATE_API = "/api/app-state";
 const USER_KEY = "dhi-office-world-cup:user";
 const PENDING_KEY = "dhi-office-world-cup:pending-request";
 const TAB_KEY = "dhi-office-world-cup:tab";
+const MY_VOTES_KEY = "dhi-office-world-cup:my-votes";
+const MY_POLL_KEY = "dhi-office-world-cup:my-poll";
 const VISITOR_KEY = "dhi-office-world-cup:visitor";
 const SESSION_KEY = "dhi-office-world-cup:session";
 const APP_TIME_ZONE = "Asia/Thimphu";
@@ -743,6 +745,47 @@ function saveCurrentTab(tab) {
   }
 }
 
+function loadLocalVotes(key) {
+  if (typeof window === "undefined") return {};
+  try {
+    const value = window.localStorage?.getItem(key);
+    return value ? JSON.parse(value) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveLocalVotes(key, value) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage?.setItem(key, JSON.stringify(value || {}));
+  } catch {
+    // Shared state still persists the vote if browser storage is blocked.
+  }
+}
+
+function loadUserLocalVotes(key, userName) {
+  if (typeof window === "undefined" || !userName) return {};
+  try {
+    const value = window.localStorage?.getItem(key);
+    const parsed = value ? JSON.parse(value) : {};
+    return parsed?.[userName] || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveUserLocalVotes(key, userName, value) {
+  if (typeof window === "undefined" || !userName) return;
+  try {
+    const current = loadLocalVotes(key);
+    current[userName] = value || {};
+    window.localStorage?.setItem(key, JSON.stringify(current));
+  } catch {
+    // Shared state still persists the vote if browser storage is blocked.
+  }
+}
+
 function mergeFanLists(previous, remote) {
   const remoteIds = new Set(remote.map((item) => String(item.id)));
   const localPending = previous.filter((item) => String(item.id).startsWith("temp-") || item.localOnly);
@@ -1134,7 +1177,7 @@ function Stats({ players, matches, stats }) {
     const mapped = renderOwnerLabel(item);
     return (
       <div className="metric metric-accent">
-        <div className="metric-icon" style={{ background: "var(--surface-soft)" }}><Icon style={{ color: "var(--green-dark)" }} /></div>
+        <div className="metric-icon metric-icon-compact" style={{ background: "var(--surface-soft)" }}><Icon style={{ color: "var(--green-dark)" }} /></div>
         <div className="metric-value">{item ? item.count : 0}</div>
         <div className="metric-label">{label}</div>
         <div className="metric-note">
@@ -1166,9 +1209,9 @@ function Stats({ players, matches, stats }) {
             <div className="stats-copy">Live ESPN match summaries drive the scorer table, and each country is tied back to the DHI owner.</div>
           </div>
           <div className="stats-badges">
-            <span className="stats-badge"><Target />{topGoal ? `${topGoal.name} · ${topGoal.count}` : "Waiting for sync"}</span>
-            <span className="stats-badge"><Swords />{topAssist ? `${topAssist.name} · ${topAssist.count}` : "Waiting for sync"}</span>
-            <span className="stats-badge"><Shield />{topPenalty ? `${topPenalty.name} · ${topPenalty.count}` : "Waiting for sync"}</span>
+            <span className="stats-badge"><span className="stats-mini-icon"><Target size={12} /></span>{topGoal ? `${topGoal.name} · ${topGoal.count}` : "Waiting for sync"}</span>
+            <span className="stats-badge"><span className="stats-mini-icon"><Swords size={12} /></span>{topAssist ? `${topAssist.name} · ${topAssist.count}` : "Waiting for sync"}</span>
+            <span className="stats-badge"><span className="stats-mini-icon"><Shield size={12} /></span>{topPenalty ? `${topPenalty.name} · ${topPenalty.count}` : "Waiting for sync"}</span>
           </div>
         </div>
       </section>
@@ -1178,6 +1221,47 @@ function Stats({ players, matches, stats }) {
         {renderTop(topPenalty, "Top penalty scorer", Shield)}
         <Metric icon={CalendarDays} value={stats?.completedMatches ?? matches.filter((match) => match.status === "completed").length} label="Completed matches" note="Only completed games count" />
       </div>
+      <section className="panel pad" style={{ marginBottom: 18 }}>
+        <div className="section-head" style={{ marginBottom: 14 }}>
+          <div className="section-title"><LayoutGrid />Qualification table</div>
+          <div className="modal-sub" style={{ margin: 0 }}>Country mapped to DHI owner.</div>
+        </div>
+        <div className="table-wrap">
+          <table className="leader-table">
+            <thead>
+              <tr><th style={{ width: 72 }}>Rank</th><th>Scorer</th><th>Country / Owner</th><th className="right">Total</th></tr>
+            </thead>
+            <tbody>
+              {current.length ? current.slice(0, 12).map((item, index) => {
+                const player = players.find((entry) => entry.name === item.name);
+                const mapped = renderOwnerLabel(item);
+                return (
+                  <tr key={`qual-${view}-${item.name}`}>
+                    <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span></div></td>
+                    <td>
+                      <div className="player-cell">
+                        <Avatar name={item.name} size={34} img={player?.avatar} />
+                        <div>
+                          <div className="player-name">{item.name}</div>
+                          <div className="player-meta">{item.team || "Country pending"}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="country-map-chip" style={{ "--country-tone": mapped.tone }}>
+                        {item.team ? <Flag country={item.team} size={12} round /> : <span className="country-dot" />}
+                        <span>{mapped.team || item.name}</span>
+                        {mapped.owner ? <strong>{mapped.owner}</strong> : null}
+                      </span>
+                    </td>
+                    <td className="right"><strong style={{ fontFamily: "var(--font-display)", fontSize: 22 }}>{item.count}</strong></td>
+                  </tr>
+                );
+              }) : <tr><td colSpan="4"><div className="empty"><Target />Waiting for verified ESPN scorer data.</div></td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </section>
       <section className="panel pad" style={{ marginBottom: 18 }}>
         <div className="section-head" style={{ marginBottom: 14 }}>
           <div className="section-title"><Target />Scoring board</div>
@@ -2155,6 +2239,11 @@ export default function App() {
   useEffect(() => { fanCommentsRef.current = fanComments; }, [fanComments]);
   useEffect(() => { setStoreOn(storageAvailable()); }, []);
   useEffect(() => {
+    if (!me?.name) return;
+    setMyVotes(loadUserLocalVotes(MY_VOTES_KEY, me.name));
+    setMyPoll(loadUserLocalVotes(MY_POLL_KEY, me.name));
+  }, [me?.name]);
+  useEffect(() => {
     if (!me && !loadLocalUser()) setShowSignIn(true);
   }, [me]);
 
@@ -2422,24 +2511,6 @@ export default function App() {
   });
 
   useEffect(() => {
-    if (me?.role !== "pending") return;
-    const request = verificationRequests.find((item) => item.id === me.requestId || (item.name === me.name && item.code === me.code));
-    if (request?.status === "approved") {
-      const nextUser = { name: request.name, role: "player", verified: true };
-      setMe(nextUser);
-      saveLocalUser(nextUser);
-      savePendingRequest(null);
-      setShowSignIn(false);
-    }
-    if (request?.status === "rejected") {
-      setMe(null);
-      saveLocalUser(null);
-      savePendingRequest(null);
-      setShowSignIn(true);
-    }
-  }, [me, verificationRequests]);
-
-  useEffect(() => {
     if ((me && me.role !== "guest") || !storageAvailable()) return;
     const visitorId = visitorIdRef.current;
     const request = verificationRequests.find((item) => item.visitorId === visitorId && item.status === "approved");
@@ -2450,6 +2521,24 @@ export default function App() {
     savePendingRequest(null);
     setShowSignIn(false);
   }, [me, verificationRequests]);
+
+  useEffect(() => {
+    if (!storageAvailable()) return;
+    const pending = loadPendingRequest();
+    if (!pending?.id && !pending?.visitorId) return;
+    const approved = verificationRequests.find((item) => item.id === pending.id || (item.visitorId === pending.visitorId && item.name === pending.name));
+    if (approved?.status === "approved") {
+      const nextUser = { name: approved.name, role: "player", verified: true, visitorId: approved.visitorId || pending.visitorId };
+      setMe(nextUser);
+      saveLocalUser(nextUser);
+      savePendingRequest(null);
+      setShowSignIn(false);
+      return;
+    }
+    if (approved?.status === "rejected") {
+      savePendingRequest(null);
+    }
+  }, [verificationRequests]);
 
   useEffect(() => {
     if (!storageAvailable()) return;
@@ -2503,7 +2592,11 @@ export default function App() {
     if (!(me?.role === "player" || me?.role === "admin")) return;
     const previousChoice = votes[matchId]?.byUser?.[me.name] || myVotes[matchId];
     if (previousChoice === choice) return;
-    setMyVotes((previous) => ({ ...previous, [matchId]: choice }));
+    setMyVotes((previous) => {
+      const next = { ...previous, [matchId]: choice };
+      saveUserLocalVotes(MY_VOTES_KEY, me.name, next);
+      return next;
+    });
     setVotes((previous) => {
       const current = previous[matchId] || {};
       const nextForMatch = { byUser: { ...(current.byUser || {}), [me.name]: choice } };
@@ -2523,7 +2616,11 @@ export default function App() {
     if (!(me?.role === "player" || me?.role === "admin")) return;
     const previousOption = pollVotes[pollId]?.byUser?.[me.name] || myPoll[pollId];
     if (previousOption === option) return;
-    setMyPoll((previous) => ({ ...previous, [pollId]: option }));
+    setMyPoll((previous) => {
+      const next = { ...previous, [pollId]: option };
+      saveUserLocalVotes(MY_POLL_KEY, me.name, next);
+      return next;
+    });
     setPollVotes((previous) => {
       const current = previous[pollId] || {};
       const nextForPoll = { ...current, byUser: { ...(current.byUser || {}), [me.name]: option } };
