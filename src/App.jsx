@@ -1981,7 +1981,6 @@ export default function App() {
   const analyticsRef = useRef(analytics);
   const visitorIdRef = useRef(loadVisitorId());
   const sessionIdRef = useRef(loadSessionId());
-  const scoringCacheRef = useRef({});
   const scoringLoadRef = useRef(false);
   const fanCommentsRef = useRef(fanComments);
   const stateUpdatedAtRef = useRef(0);
@@ -2061,8 +2060,6 @@ export default function App() {
     scoringLoadRef.current = true;
     Promise.all(targets.map(async (match) => {
       const eventId = String(match.id).replace(/^espn-/, "");
-      if (scoringCacheRef.current[match.id]) return null;
-      scoringCacheRef.current[match.id] = true;
       const scoring = await fetchEspnScoring(eventId);
       return scoring ? [match.id, scoring] : null;
     })).then((results) => {
