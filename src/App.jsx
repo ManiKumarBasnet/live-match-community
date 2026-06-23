@@ -191,6 +191,23 @@ const SEED_ANN = [
   { id: 2, text: "Opening office clash: Mexico vs South Africa - Zig vs Roshan starts the race.", date: "Jun 11" },
 ];
 
+const GROUP_ORDER = ["Group A", "Group B", "Group C", "Group D", "Group E", "Group F", "Group G", "Group H", "Group I", "Group J", "Group K", "Group L"];
+
+const GROUP_ASSIGNMENTS = {
+  Mexico: "Group A", "South Africa": "Group A", "South Korea": "Group A", Czechia: "Group A",
+  Canada: "Group B", Bosnia: "Group B", Qatar: "Group B", Switzerland: "Group B",
+  Brazil: "Group C", Morocco: "Group C", Haiti: "Group C", Scotland: "Group C",
+  USA: "Group D", Paraguay: "Group D", Australia: "Group D", Turkey: "Group D",
+  Germany: "Group E", Curacao: "Group E", "Ivory Coast": "Group E", Ecuador: "Group E",
+  Netherlands: "Group F", Japan: "Group F", Sweden: "Group F", Tunisia: "Group F",
+  Belgium: "Group G", Egypt: "Group G", Iran: "Group G", "New Zealand": "Group G",
+  Spain: "Group H", "Cape Verde": "Group H", "Saudi Arabia": "Group H", Uruguay: "Group H",
+  France: "Group I", Senegal: "Group I", Iraq: "Group I", Norway: "Group I",
+  Argentina: "Group J", Algeria: "Group J", Austria: "Group J", Jordan: "Group J",
+  Portugal: "Group K", Congo: "Group K", Uzbekistan: "Group K", Colombia: "Group K",
+  England: "Group L", Croatia: "Group L", Ghana: "Group L", Panama: "Group L",
+};
+
 const SEED_POLLS = [];
 
 const SCORING = [["Group Win", "3"], ["Draw", "1"], ["Round of 32", "3"], ["Round of 16", "5"], ["Quarter-final", "8"], ["Semi-final", "12"], ["Final", "18"], ["Champion", "25"]];
@@ -1172,15 +1189,7 @@ function Stats({ players, matches, stats }) {
   const sourceLabel = stats?.source || "waiting for live ESPN sync";
   const refreshedLabel = stats?.updatedAt ? new Date(stats.updatedAt).toLocaleString() : null;
 
-  const countryGroupMap = useMemo(() => {
-    const map = new Map();
-    matches.forEach((match) => {
-      if (!match.stage?.startsWith("Group")) return;
-      if (match.a) map.set(match.a, match.stage);
-      if (match.b) map.set(match.b, match.stage);
-    });
-    return map;
-  }, [matches]);
+  const countryGroupMap = useMemo(() => new Map(Object.entries(GROUP_ASSIGNMENTS)), []);
 
   const countryRows = useMemo(() => {
     const rows = [];
@@ -1251,7 +1260,8 @@ function Stats({ players, matches, stats }) {
       const match = String(name || "").match(/^Group ([A-Z])$/);
       return match ? match[1].charCodeAt(0) - 65 : 99;
     };
-    return [...buckets.entries()]
+    const ordered = GROUP_ORDER.filter((group) => buckets.has(group)).map((group) => [group, buckets.get(group)]);
+    return ordered
       .sort((a, b) => groupRank(a[0]) - groupRank(b[0]) || a[0].localeCompare(b[0]))
       .map(([group, rows]) => {
         const totalMatches = matches.filter((match) => match.stage === group).length;
@@ -1271,22 +1281,6 @@ function Stats({ players, matches, stats }) {
         };
       });
   }, [countryRows, matches]);
-
-  const outsideFixtureRows = useMemo(
-    () => countryRows.filter((row) => !row.group).sort((a, b) => a.country.localeCompare(b.country)),
-    [countryRows],
-  );
-
-  const activeCountryRows = useMemo(
-    () => countryRows.filter((row) => row.active && row.group).sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd) || Number(b.gf) - Number(a.gf) || a.country.localeCompare(b.country)),
-    [countryRows],
-  );
-
-  const qualifiedRows = useMemo(() => groupBuckets.flatMap((group) => group.rows.filter((row) => row.status === "Advancing")), [groupBuckets]);
-  const bracketSeeds = useMemo(() => qualifiedRows.slice(0, 8), [qualifiedRows]);
-  const roundOf16 = useMemo(() => bracketSeeds.slice(0, 8), [bracketSeeds]);
-  const quarterFinals = useMemo(() => bracketSeeds.slice(0, 4), [bracketSeeds]);
-  const semiFinals = useMemo(() => bracketSeeds.slice(0, 2), [bracketSeeds]);
 
   const renderOwnerLabel = (item) => {
     if (!item) return null;
@@ -1418,7 +1412,47 @@ function Stats({ players, matches, stats }) {
       <div className="section-head" style={{ marginBottom: 14 }}>
         <div className="section-title"><LayoutGrid />Country qualification</div>
       </div>
-      <div className="modal-sub" style={{ marginTop: 0 }}>Grouped by stage, sorted by points inside each group. Countries without a group fixture are kept out of the qualification tables instead of being mixed into a fake ranking.</div>
+      <div className="modal-sub" style={{ marginTop: 0 }}>Grouped by stage and ranked only inside each group using points, goal difference and goals for. No cross-group ranking is shown here.</div>
+      <div className="group-card" style={{ marginBottom: 14 }}>
+        <div className="group-card-head">
+          <div>
+            <div className="group-title">Qualified for next stage</div>
+            <div className="group-sub">Only completed groups appear here. No group is projected early.</div>
+          </div>
+          <span className="tag soon">{groupBuckets.filter(({ finished }) => finished).length ? "Locked" : "Waiting"}</span>
+        </div>
+        <div style={{ padding: 16 }}>
+          {groupBuckets.some(({ finished }) => finished) ? (
+            <div style={{ display: "grid", gap: 12 }}>
+              {groupBuckets.filter(({ finished }) => finished).map(({ group, rows }) => {
+                const advancing = rows.filter((row) => row.status === "Advancing");
+                return (
+                  <div key={`qualified-${group}`} style={{ display: "grid", gap: 8 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                      <strong style={{ fontSize: 13, fontWeight: 950 }}>{group}</strong>
+                      <span className="tag done">{advancing.length} qualified</span>
+                    </div>
+                    <div className="country-chips" style={{ padding: 0, borderTop: 0 }}>
+                      {advancing.map((row) => (
+                        <span key={`qualified-chip-${group}-${row.country}-${row.owner}`} className="country-chip">
+                          <Flag country={row.country} size={15} round />
+                          {row.country}
+                          <strong>{row.owner}</strong>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="empty" style={{ padding: "28px 20px" }}>
+              <LayoutGrid />
+              No group has qualified yet.
+            </div>
+          )}
+        </div>
+      </div>
       <div className="group-grid">
         {groupBuckets.map(({ group, rows, completedMatches, totalMatches, finished }) => (
           <article className="group-card" key={group}>
@@ -1454,23 +1488,6 @@ function Stats({ players, matches, stats }) {
           </article>
         ))}
       </div>
-      {outsideFixtureRows.length ? (
-        <div className="panel" style={{ marginTop: 14, padding: 16, background: "var(--surface-soft)" }}>
-          <div className="section-head" style={{ marginBottom: 10 }}>
-            <div className="section-title" style={{ fontSize: 15 }}><Users />Outside fixture set</div>
-          </div>
-          <div className="modal-sub" style={{ marginTop: 0, marginBottom: 10 }}>These countries are still in the pool, but the current fixture feed does not map them to a group stage yet.</div>
-          <div className="country-chips">
-            {outsideFixtureRows.map((row) => (
-              <span className="country-chip" key={`outside-${row.country}-${row.owner}`}>
-                <Flag country={row.country} size={15} round />
-                {row.country}
-                <strong>{row.owner}</strong>
-              </span>
-            ))}
-          </div>
-        </div>
-      ) : null}
     </section>
   );
 
@@ -1496,11 +1513,11 @@ function Stats({ players, matches, stats }) {
       <div className="section-head" style={{ marginBottom: 14 }}>
         <div className="section-title"><Trophy />Knockout bracket</div>
       </div>
-      <div className="modal-sub" style={{ marginTop: 0 }}>Nothing is projected into the later rounds until the group tables produce completed qualifiers. That keeps the bracket honest and stops the fake finalists from appearing.</div>
+      <div className="modal-sub" style={{ marginTop: 0 }}>This view stays empty until the group stage produces real qualifiers. It should not invent later-round pairings from unfinished standings.</div>
       <div className="bracket-shell">
-        <BracketMatch title="Round of 16" rows={roundOf16} accent="#8bb8ff" hint={roundOf16.length ? "Current advancing seeds" : "Waiting for completed groups"} />
-        <BracketMatch title="Quarter-finals" rows={quarterFinals} accent="#67d7a0" hint={quarterFinals.length ? "Projected from current seeds" : "Waiting for Round of 16 qualifiers"} />
-        <BracketMatch title="Semi-finals" rows={semiFinals} accent="#d98506" hint={semiFinals.length ? "Projected from current seeds" : "Waiting for Quarter-final qualifiers"} />
+        <BracketMatch title="Round of 16" rows={[]} accent="#8bb8ff" hint="TBD until all groups are complete" />
+        <BracketMatch title="Quarter-finals" rows={[]} accent="#67d7a0" hint="TBD until the Round of 16 is set" />
+        <BracketMatch title="Semi-finals" rows={[]} accent="#d98506" hint="TBD until the Quarter-finals are set" />
         <div className="bracket-final-card">
           <div className="bracket-final-badge"><Trophy /></div>
           <div className="bracket-final-title">Final</div>
