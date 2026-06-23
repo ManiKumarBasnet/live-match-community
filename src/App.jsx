@@ -355,6 +355,78 @@ async function fetchEspnScoring(eventId) {
   return extractEspnScoring(await response.json());
 }
 
+async function fetchTournamentStats() {
+  const response = await fetch("/api/espn/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=300");
+  if (!response.ok) return null;
+  const raw = await response.json();
+  const matches = parseEspn(raw.events || []);
+  const completed = matches.filter((match) => match.status === "completed");
+  const byId = new Map(matches.map((match) => [String(match.id), match]));
+
+  if (!completed.length) {
+    return {
+      updatedAt: Date.now(),
+      matches: [],
+      goals: [],
+      assists: [],
+      penalties: [],
+      completedMatches: 0,
+      source: "ESPN scoreboard",
+    };
+  }
+
+  const summaries = [];
+  for (let index = 0; index < completed.length; index += 6) {
+    const batch = completed.slice(index, index + 6);
+    const batchResults = await Promise.all(batch.map(async (match) => {
+      const eventId = String(match.id).replace(/^espn-/, "");
+      try {
+        const scoring = await fetchEspnScoring(eventId);
+        if (!scoring) return null;
+        return { match, scoring };
+      } catch {
+        return null;
+      }
+    }));
+    summaries.push(...batchResults.filter(Boolean));
+  }
+
+  const counters = {
+    goals: new Map(),
+    assists: new Map(),
+    penalties: new Map(),
+  };
+  const scoredMatches = [];
+  const add = (bucket, name) => {
+    const key = sanitizeText(name || "").trim();
+    if (!key) return;
+    bucket.set(key, (bucket.get(key) || 0) + 1);
+  };
+  const toBoard = (bucket) => [...bucket.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
+  summaries.filter(Boolean).forEach(({ match, scoring }) => {
+    const fullMatch = byId.get(String(match.id)) || match;
+    scoredMatches.push({ ...fullMatch, scoring, scoringLoaded: true });
+    scoring.goals.forEach((name) => add(counters.goals, name));
+    scoring.assists.forEach((name) => add(counters.assists, name));
+    scoring.penalties.forEach((name) => add(counters.penalties, name));
+  });
+
+  if (scoredMatches.length !== completed.length) return null;
+
+  return {
+    updatedAt: Date.now(),
+    matches: scoredMatches.sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id))),
+    goals: toBoard(counters.goals),
+    assists: toBoard(counters.assists),
+    penalties: toBoard(counters.penalties),
+    completedMatches: completed.length,
+    source: "ESPN scoreboard + match summaries",
+  };
+}
+
 // ESPN scoreboard: { events: [{ competitions:[{ competitors:[{homeAway,score,team:{displayName}}] }], status:{type:{state}} }] }
 function parseEspn(events) {
   return events
@@ -852,7 +924,7 @@ function PanelHeader({ icon: Icon, title, action, onAction }) {
   );
 }
 
-function Dashboard({ players, matches, announcements, go }) {
+function Dashboard({ players, matches, announcements, go, stats }) {
   const sorted = useMemo(() => [...players].sort(comparePlayers), [players]);
   const leader = sorted[0];
   const completed = matches.filter((m) => m.status === "completed");
@@ -861,11 +933,11 @@ function Dashboard({ players, matches, announcements, go }) {
   const recentResults = [...live, ...completed].sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id))).slice(0, 6);
   const nextMatches = [...upcoming].sort((a, b) => safeDate(a.date) - safeDate(b.date) || String(a.id).localeCompare(String(b.id))).slice(0, 4);
   const activeTeams = players.reduce((count, player) => count + getActiveCountries(player).length, 0);
-  const boards = useMemo(() => ({
-    goals: buildStatLeaderboard(matches, "goals"),
-    assists: buildStatLeaderboard(matches, "assists"),
-    penalties: buildStatLeaderboard(matches, "penalties"),
-  }), [matches]);
+  const boards = stats ? {
+    goals: stats.goals || [],
+    assists: stats.assists || [],
+    penalties: stats.penalties || [],
+  } : { goals: [], assists: [], penalties: [] };
 
   return (
     <div className="rise">
@@ -902,6 +974,7 @@ function Dashboard({ players, matches, announcements, go }) {
         <div className="stack">
           <section className="panel">
             <PanelHeader icon={Target} title="Scoring leaders" action="Open stats" onAction={() => go("stats")} />
+            {!stats && <div className="modal-sub" style={{ marginTop: 0, marginBottom: 12 }}>Waiting for verified ESPN scorer data.</div>}
             <div className="metric-grid" style={{ marginBottom: 0 }}>
               {[
                 ["Goals", boards.goals[0], Target],
@@ -990,23 +1063,26 @@ function Leaderboard({ players }) {
   );
 }
 
-function Stats({ players, matches }) {
+function Stats({ players, matches, stats }) {
   const [view, setView] = useState("goals");
   const tabs = [
     ["goals", "Goals", Target],
     ["assists", "Assists", Swords],
     ["penalties", "Penalty goals", Shield],
   ];
-  const boards = useMemo(() => ({
-    goals: buildStatLeaderboard(matches, "goals"),
-    assists: buildStatLeaderboard(matches, "assists"),
-    penalties: buildStatLeaderboard(matches, "penalties"),
-  }), [matches]);
+  const boards = stats ? {
+    goals: stats.goals || [],
+    assists: stats.assists || [],
+    penalties: stats.penalties || [],
+  } : { goals: [], assists: [], penalties: [] };
+  const statMatches = stats?.matches || [];
   const current = boards[view] || [];
   const currentLabel = tabs.find(([id]) => id === view)?.[1] || "Goals";
   const topGoal = boards.goals[0];
   const topAssist = boards.assists[0];
   const topPenalty = boards.penalties[0];
+  const sourceLabel = stats?.source || "waiting for live ESPN sync";
+  const refreshedLabel = stats?.updatedAt ? new Date(stats.updatedAt).toLocaleString() : null;
 
   const renderTop = (item, label, Icon) => {
     const player = players.find((entry) => entry.name === item?.name);
@@ -1021,7 +1097,7 @@ function Stats({ players, matches }) {
               <Avatar name={item.name} size={18} img={player?.avatar} />
               <span>{item.name}</span>
             </span>
-          ) : "No data yet"}
+          ) : stats ? "No data yet" : "Waiting for ESPN sync"}
         </div>
       </div>
     );
@@ -1033,7 +1109,7 @@ function Stats({ players, matches }) {
         {renderTop(topGoal, "Top goal scorer", Target)}
         {renderTop(topAssist, "Top assist maker", Swords)}
         {renderTop(topPenalty, "Top penalty scorer", Shield)}
-        <Metric icon={CalendarDays} value={matches.filter((match) => match.status === "completed").length} label="Completed matches" note="Only completed games count" />
+        <Metric icon={CalendarDays} value={stats?.completedMatches ?? matches.filter((match) => match.status === "completed").length} label="Completed matches" note="Only completed games count" />
       </div>
       <section className="panel pad" style={{ marginBottom: 18 }}>
         <div className="section-head" style={{ marginBottom: 14 }}>
@@ -1044,7 +1120,7 @@ function Stats({ players, matches }) {
             ))}
           </div>
         </div>
-        <div className="modal-sub" style={{ marginTop: 0 }}>These ranks use the actual World Cup players pulled from ESPN match summaries. The office-pool names stay in the main leaderboard.</div>
+        <div className="modal-sub" style={{ marginTop: 0 }}>Verified from {sourceLabel}{refreshedLabel ? `, refreshed ${refreshedLabel}` : ""}. The office-pool names stay in the main leaderboard.</div>
         <div className="table-wrap">
           <table className="leader-table">
             <thead>
@@ -1060,7 +1136,7 @@ function Stats({ players, matches }) {
                     <td className="right"><strong style={{ fontFamily: "var(--font-display)", fontSize: 24 }}>{item.count}</strong></td>
                   </tr>
                 );
-              }) : <tr><td colSpan="3"><div className="empty"><Target />No scorer data entered yet.</div></td></tr>}
+              }) : <tr><td colSpan="3"><div className="empty"><Target />Waiting for verified ESPN scorer data.</div></td></tr>}
             </tbody>
           </table>
         </div>
@@ -1068,7 +1144,7 @@ function Stats({ players, matches }) {
       <section className="panel">
         <PanelHeader icon={CalendarDays} title="Match scorer log" />
         <div className="match-list">
-          {matches
+          {statMatches
             .filter((match) => matchStatList(match, "goals").length || matchStatList(match, "assists").length || matchStatList(match, "penalties").length)
             .sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id)))
             .slice(0, 10)
@@ -1962,6 +2038,7 @@ export default function App() {
   const [myVotes, setMyVotes] = useState({});
   const [myPoll, setMyPoll] = useState({});
   const [me, setMe] = useState(() => loadLocalUser());
+  const [tournamentStats, setTournamentStats] = useState(null);
   const [showSignIn, setShowSignIn] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -2052,6 +2129,24 @@ export default function App() {
     }, 5000);
     return () => { alive = false; window.clearInterval(interval); };
   }, [applyRemote]);
+
+  useEffect(() => {
+    let alive = true;
+    const loadStats = async () => {
+      try {
+        const stats = await fetchTournamentStats();
+        if (alive && stats) setTournamentStats(stats);
+      } catch {
+        // Keep the fallback data on screen if ESPN is temporarily unavailable.
+      }
+    };
+    loadStats();
+    const interval = window.setInterval(loadStats, 180000);
+    return () => {
+      alive = false;
+      window.clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -2430,9 +2525,9 @@ export default function App() {
 
           <div className="page">
             {adminLocked ? <div className="empty"><Settings2 /><div style={{ color: "var(--muted)", fontSize: 15 }}>Admin access required.</div><button type="button" className="btn btn-primary" style={{ marginTop: 16 }} onClick={() => setShowSignIn(true)}><LogIn />Sign in as organizer</button></div>
-              : tab === "dashboard" ? <Dashboard players={standings} matches={matches} announcements={announcements} go={navigate} />
+              : tab === "dashboard" ? <Dashboard players={standings} matches={matches} announcements={announcements} go={navigate} stats={tournamentStats} />
               : tab === "leaderboard" ? <Leaderboard players={standings} />
-              : tab === "stats" ? <Stats players={standings} matches={matches} />
+              : tab === "stats" ? <Stats players={standings} matches={matches} stats={tournamentStats} />
               : tab === "schedule" ? <Schedule matches={matches} players={standings} />
               : tab === "players" ? <PlayersView players={standings} me={me} onAvatar={onAvatar} />
               : tab === "voting" ? <Voting matches={matches} players={standings} votes={votes} myVotes={myVotes} me={me} onVote={onVote} polls={SEED_POLLS} customPolls={customPolls} pollVotes={pollVotes} myPoll={myPoll} onPoll={onPoll} onPollCreate={onPollCreate} onVoteFor={onVoteFor} onPollFor={onPollFor} />
