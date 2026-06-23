@@ -2058,13 +2058,18 @@ export default function App() {
     const targets = matches.filter((match) => match.source === "espn" && match.status !== "upcoming" && !match.scoringLoaded && !scoringLoadRef.current);
     if (!targets.length || scoringLoadRef.current) return undefined;
     scoringLoadRef.current = true;
-    Promise.all(targets.map(async (match) => {
-      const eventId = String(match.id).replace(/^espn-/, "");
-      const scoring = await fetchEspnScoring(eventId);
-      return scoring ? [match.id, scoring] : null;
-    })).then((results) => {
+    (async () => {
+      const nextById = new Map();
+      for (const match of targets) {
+        const eventId = String(match.id).replace(/^espn-/, "");
+        try {
+          const scoring = await fetchEspnScoring(eventId);
+          if (scoring) nextById.set(match.id, scoring);
+        } catch {
+          // Keep going. A single summary timeout should not block the rest.
+        }
+      }
       if (!alive) return;
-      const nextById = new Map(results.filter(Boolean));
       if (!nextById.size) return;
       setMatches((previous) => {
         let changed = false;
@@ -2078,9 +2083,7 @@ export default function App() {
         if (changed) pushState({ matches: next });
         return changed ? next : previous;
       });
-    }).catch(() => {
-      // Leave the match cards in score-only mode if ESPN summary data is unavailable.
-    }).finally(() => {
+    })().finally(() => {
       scoringLoadRef.current = false;
     });
     return () => { alive = false; };
