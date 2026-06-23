@@ -82,7 +82,7 @@ const CSS = `
 .knockout-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}.knockout-panel,.knockout-map{padding:18px}.knockout-panel-head,.knockout-map-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.knockout-panel-title{font-size:18px;font-weight:950;letter-spacing:-.03em}.knockout-panel-sub{font-size:12px;color:var(--muted);font-weight:750;margin-top:4px}.knockout-table{min-width:760px}.knockout-map{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,rgba(246,248,251,.96))}.knockout-map::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 12%,rgba(2,162,92,.08),transparent 30%),radial-gradient(circle at 50% 88%,rgba(216,162,0,.09),transparent 28%);pointer-events:none}.knockout-track{position:relative;display:grid;gap:12px;padding:4px 2px 2px}.knockout-track::before{content:"";position:absolute;left:27px;top:22px;bottom:84px;width:2px;background:linear-gradient(180deg,rgba(2,162,92,.0),rgba(2,162,92,.26),rgba(216,162,0,.22));}.knockout-node{position:relative;padding:15px 16px 15px 46px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-xs);overflow:hidden}.knockout-node::before{content:"";position:absolute;left:19px;top:18px;width:16px;height:16px;border-radius:999px;background:var(--stage-tone,#0f766e);box-shadow:0 0 0 4px color-mix(in srgb, var(--stage-tone, #0f766e) 16%, transparent)}.knockout-node-head{display:flex;align-items:flex-start;gap:11px}.knockout-step{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:color-mix(in srgb, var(--stage-tone, #0f766e) 12%, #fff);border:1px solid color-mix(in srgb, var(--stage-tone, #0f766e) 24%, #fff);font-size:11px;font-weight:950;color:var(--stage-tone, #0f766e);flex:0 0 auto}.knockout-stage{font-size:15px;font-weight:950;letter-spacing:-.02em}.knockout-note{font-size:12px;color:var(--muted);font-weight:750;margin-top:3px}.knockout-count{margin-left:auto;font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--ink);line-height:1}.knockout-chip-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.knockout-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:6px 9px;border-radius:999px;background:var(--surface-soft);border:1px solid var(--line);font-size:11px;font-weight:850;color:var(--muted)}.knockout-chip strong{color:var(--ink);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.knockout-chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.knockout-final{position:relative;margin-top:2px;padding:16px 18px 18px;border-radius:22px;background:linear-gradient(135deg,rgba(2,162,92,.1),rgba(216,162,0,.12));border:1px solid color-mix(in srgb, var(--gold) 28%, #fff);display:grid;place-items:center;text-align:center;gap:7px;min-height:140px}.knockout-final-badge{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f5d46f);color:#1c1300;box-shadow:0 18px 34px rgba(216,162,0,.22)}.knockout-final-badge svg{width:28px;height:28px}.knockout-final .knockout-stage{font-size:20px}.knockout-final .knockout-note{max-width:220px}
 @media(max-width:900px){.knockout-grid{grid-template-columns:1fr}.knockout-table{min-width:920px}.knockout-track::before{left:22px}.knockout-node{padding-left:44px}}
 @media(max-width:640px){.knockout-panel,.knockout-map{padding:16px}.knockout-node{padding:14px 14px 14px 42px}.knockout-final{min-height:120px}.knockout-chip,.knockout-node{border-radius:18px}}
-.onbehalf{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line-strong)}.onbehalf-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:var(--blue);margin-bottom:9px}.onbehalf-label svg{width:13px;height:13px}.onbehalf-btns{display:flex;flex-wrap:wrap;gap:7px}.ob-btn{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--blue-soft);background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:7px 11px;font-size:12px;font-weight:850;cursor:pointer;transition:.14s;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ob-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}.ob-btn svg{width:13px;height:13px;flex:0 0 auto}
+.group-table thead th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}.group-table tbody td{font-size:12px}.bracket-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(280px,.9fr);gap:14px;align-items:stretch}.bracket-match{position:relative;padding:16px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-xs);overflow:hidden;display:grid;gap:10px}.bracket-match::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--bracket-tone,#0f766e)}.bracket-match-head{display:flex;align-items:center;gap:10px}.bracket-stage{font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.bracket-line{flex:1;height:1px;background:var(--line-strong)}.bracket-hint{font-size:12px;color:var(--muted);font-weight:700;line-height:1.45}.bracket-teams{display:grid;gap:8px}.bracket-team{display:flex}.bracket-empty{display:grid;place-items:center;min-height:64px;color:var(--faint);font-weight:850;background:var(--surface-soft);border:1px dashed var(--line-strong);border-radius:14px}.bracket-final-card{height:100%;display:grid;place-items:center;text-align:center;padding:22px 18px;border-radius:18px;background:linear-gradient(135deg,rgba(2,162,92,.1),rgba(216,162,0,.12));border:1px solid color-mix(in srgb, var(--gold) 26%, #fff);box-shadow:var(--shadow-sm)}.bracket-final-badge{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f5d46f);color:#1c1300;box-shadow:0 18px 34px rgba(216,162,0,.22);margin-bottom:12px}.bracket-final-badge svg{width:28px;height:28px}.bracket-final-title{font-size:19px;font-weight:950;letter-spacing:-.03em}.bracket-final-sub{font-size:12px;color:var(--muted);font-weight:750;margin-top:4px}.bracket-final-empty{width:100%;margin-top:14px}.bracket-final-empty .bracket-empty{min-height:72px}.bracket-final-teams{display:grid;gap:8px;margin-top:16px;width:100%}.bracket-final-chip{display:inline-flex;align-items:center;gap:6px;justify-content:center;padding:7px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:11px;font-weight:850;color:var(--muted)}.bracket-final-chip strong{color:var(--ink);font-weight:900}@media(max-width:1200px){.group-grid{grid-template-columns:1fr}.bracket-shell{grid-template-columns:1fr}}@media(max-width:640px){.bracket-shell{gap:12px}.bracket-final-card{padding:18px}.bracket-final-badge{width:52px;height:52px}.bracket-final-title{font-size:18px}}.onbehalf{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line-strong)}.onbehalf-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:var(--blue);margin-bottom:9px}.onbehalf-label svg{width:13px;height:13px}.onbehalf-btns{display:flex;flex-wrap:wrap;gap:7px}.ob-btn{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--blue-soft);background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:7px 11px;font-size:12px;font-weight:850;cursor:pointer;transition:.14s;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ob-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}.ob-btn svg{width:13px;height:13px;flex:0 0 auto}
 .fan-grid{display:grid;grid-template-columns:minmax(0,390px) minmax(0,1fr);gap:22px;align-items:start}.fan-match-list{display:flex;flex-direction:column;gap:8px;padding:8px}.fan-match-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;border-radius:16px;background:transparent;padding:12px;cursor:pointer;color:var(--ink);transition:.15s}.fan-match-btn:hover{background:var(--surface-soft)}.fan-match-btn.active{background:linear-gradient(135deg,var(--green-soft),#fff);box-shadow:inset 0 0 0 1px var(--green-line)}.fan-match-main{min-width:0}.fan-match-teams{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fan-match-meta{margin-top:5px;color:var(--faint);font-size:11px;font-weight:850}.fan-count{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#fff;border:1px solid var(--line);padding:5px 9px;color:var(--muted);font-size:11px;font-weight:950;flex:0 0 auto}.fan-count svg{width:13px;height:13px;color:var(--green)}.fan-room{display:flex;flex-direction:column;min-height:620px}.fan-room-head{padding:18px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,rgba(247,249,252,.85))}.fan-room-title{display:flex;align-items:center;gap:9px;font-size:20px;font-weight:950;letter-spacing:-.04em}.fan-room-title .vs{font-size:12px;letter-spacing:.1em;color:var(--faint)}.fan-room-sub{margin-top:7px;color:var(--muted);font-size:12.5px;font-weight:750}.fan-feed{flex:1;display:flex;flex-direction:column;gap:12px;padding:18px 20px;background:linear-gradient(180deg,rgba(245,247,250,.42),rgba(255,255,255,.8));max-height:560px;overflow:auto}.fan-msg{display:grid;grid-template-columns:auto minmax(0,1fr);gap:11px;align-items:start}.fan-bubble{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 13px;box-shadow:var(--shadow-xs);min-width:0}.fan-msg.wish .fan-bubble{border-color:var(--green-line);background:linear-gradient(180deg,#fff,var(--green-soft))}.fan-msg.prediction .fan-bubble{border-color:#f1d7a5;background:linear-gradient(180deg,#fff,var(--amber-soft))}.fan-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}.fan-author{font-size:12px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fan-time{font-size:10.5px;color:var(--faint);font-weight:850;white-space:nowrap}.fan-text{font-size:14px;line-height:1.45;font-weight:650;overflow-wrap:anywhere}.fan-kind{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;background:var(--surface-soft);color:var(--muted)}.fan-kind.wish{background:var(--green-soft);color:var(--green-dark)}.fan-kind.prediction{background:var(--amber-soft);color:var(--amber)}.fan-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}.fan-delete{display:inline-flex;align-items:center;gap:5px;background:var(--red-soft);color:var(--red);border-radius:9px;padding:5px 8px;font-size:11px;font-weight:900;cursor:pointer}.fan-delete svg{width:12px;height:12px}.fan-compose{padding:16px 20px;border-top:1px solid var(--line);background:#fff}.fan-compose-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}.fan-type{border:1.5px solid var(--line-strong);background:#fff;color:var(--muted);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:950;cursor:pointer}.fan-type.active{background:var(--green-soft);border-color:var(--green-line);color:var(--green-dark)}.fan-send{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}.fan-note{margin-top:9px;color:var(--faint);font-size:11px;font-weight:750}.fan-empty{min-height:220px;display:grid;place-items:center;text-align:center;color:var(--muted);font-weight:850}.fan-empty svg{width:30px;height:30px;color:var(--green);margin:0 auto 10px}
 .live-screen{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;color:#eaf2f7;font-family:var(--font-body);touch-action:manipulation;overflow:hidden;-webkit-font-smoothing:antialiased;padding:calc(env(safe-area-inset-top) + 26px) calc(env(safe-area-inset-right) + 42px) calc(env(safe-area-inset-bottom) + 22px) calc(env(safe-area-inset-left) + 42px);background:radial-gradient(120% 80% at 82% -12%,rgba(39,224,140,.16),transparent 55%),radial-gradient(95% 75% at -5% 112%,rgba(48,104,236,.2),transparent 55%),linear-gradient(180deg,#0a1120,#070c16 62%,#060a12)}
 .live-screen::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:3px 3px;mix-blend-mode:overlay;opacity:.6}
@@ -1172,15 +1172,24 @@ function Stats({ players, matches, stats }) {
   const sourceLabel = stats?.source || "waiting for live ESPN sync";
   const refreshedLabel = stats?.updatedAt ? new Date(stats.updatedAt).toLocaleString() : null;
 
+  const countryGroupMap = useMemo(() => {
+    const map = new Map();
+    matches.forEach((match) => {
+      if (!match.stage?.startsWith("Group")) return;
+      if (match.a) map.set(match.a, match.stage);
+      if (match.b) map.set(match.b, match.stage);
+    });
+    return map;
+  }, [matches]);
+
   const countryRows = useMemo(() => {
     const rows = [];
     players.forEach((player) => {
       player.countries.forEach((country) => {
-        const groupMatch = matches.find((match) => match.stage?.startsWith("Group") && (match.a === country || match.b === country));
         rows.push({
           country,
           owner: player.name,
-          group: groupMatch?.stage || "Ungrouped",
+          group: countryGroupMap.get(country) || null,
           active: !player.elim.includes(country),
           tone: countryTone(country),
           w: 0,
@@ -1229,11 +1238,11 @@ function Stats({ players, matches, stats }) {
       return match ? match[1].charCodeAt(0) - 65 : 99;
     };
     return rows.sort((a, b) => groupRank(a.group) - groupRank(b.group) || Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd) || Number(b.gf) - Number(a.gf) || a.country.localeCompare(b.country) || a.owner.localeCompare(b.owner));
-  }, [matches, players]);
+  }, [countryGroupMap, matches, players]);
 
   const groupBuckets = useMemo(() => {
     const buckets = new Map();
-    countryRows.forEach((row) => {
+    countryRows.filter((row) => row.group).forEach((row) => {
       const list = buckets.get(row.group) || [];
       list.push(row);
       buckets.set(row.group, list);
@@ -1263,25 +1272,21 @@ function Stats({ players, matches, stats }) {
       });
   }, [countryRows, matches]);
 
+  const outsideFixtureRows = useMemo(
+    () => countryRows.filter((row) => !row.group).sort((a, b) => a.country.localeCompare(b.country)),
+    [countryRows],
+  );
+
   const activeCountryRows = useMemo(
-    () => countryRows.filter((row) => row.active).sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd) || Number(b.gf) - Number(a.gf) || a.country.localeCompare(b.country)),
+    () => countryRows.filter((row) => row.active && row.group).sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd) || Number(b.gf) - Number(a.gf) || a.country.localeCompare(b.country)),
     [countryRows],
   );
 
   const qualifiedRows = useMemo(() => groupBuckets.flatMap((group) => group.rows.filter((row) => row.status === "Advancing")), [groupBuckets]);
   const bracketSeeds = useMemo(() => qualifiedRows.slice(0, 8), [qualifiedRows]);
-  const roundOf16 = useMemo(() => {
-    const seed = bracketSeeds.length ? bracketSeeds : activeCountryRows.slice(0, 8);
-    return [seed.slice(0, 4), seed.slice(4, 8)];
-  }, [activeCountryRows, bracketSeeds]);
-  const quarterFinals = useMemo(() => {
-    const seed = bracketSeeds.length ? bracketSeeds : activeCountryRows.slice(0, 4);
-    return [seed.slice(0, 2), seed.slice(2, 4)];
-  }, [activeCountryRows, bracketSeeds]);
-  const semiFinals = useMemo(() => {
-    const seed = bracketSeeds.length ? bracketSeeds : activeCountryRows.slice(0, 2);
-    return [seed.slice(0, 1), seed.slice(1, 2)];
-  }, [activeCountryRows, bracketSeeds]);
+  const roundOf16 = useMemo(() => bracketSeeds.slice(0, 8), [bracketSeeds]);
+  const quarterFinals = useMemo(() => bracketSeeds.slice(0, 4), [bracketSeeds]);
+  const semiFinals = useMemo(() => bracketSeeds.slice(0, 2), [bracketSeeds]);
 
   const renderOwnerLabel = (item) => {
     if (!item) return null;
@@ -1413,7 +1418,7 @@ function Stats({ players, matches, stats }) {
       <div className="section-head" style={{ marginBottom: 14 }}>
         <div className="section-title"><LayoutGrid />Country qualification</div>
       </div>
-      <div className="modal-sub" style={{ marginTop: 0 }}>Grouped by stage, sorted by points inside each group. Pending groups stay pending until enough matches are completed.</div>
+      <div className="modal-sub" style={{ marginTop: 0 }}>Grouped by stage, sorted by points inside each group. Countries without a group fixture are kept out of the qualification tables instead of being mixed into a fake ranking.</div>
       <div className="group-grid">
         {groupBuckets.map(({ group, rows, completedMatches, totalMatches, finished }) => (
           <article className="group-card" key={group}>
@@ -1449,15 +1454,33 @@ function Stats({ players, matches, stats }) {
           </article>
         ))}
       </div>
+      {outsideFixtureRows.length ? (
+        <div className="panel" style={{ marginTop: 14, padding: 16, background: "var(--surface-soft)" }}>
+          <div className="section-head" style={{ marginBottom: 10 }}>
+            <div className="section-title" style={{ fontSize: 15 }}><Users />Outside fixture set</div>
+          </div>
+          <div className="modal-sub" style={{ marginTop: 0, marginBottom: 10 }}>These countries are still in the pool, but the current fixture feed does not map them to a group stage yet.</div>
+          <div className="country-chips">
+            {outsideFixtureRows.map((row) => (
+              <span className="country-chip" key={`outside-${row.country}-${row.owner}`}>
+                <Flag country={row.country} size={15} round />
+                {row.country}
+                <strong>{row.owner}</strong>
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 
-  const BracketMatch = ({ title, rows, accent }) => (
+  const BracketMatch = ({ title, rows, accent, hint }) => (
     <div className="bracket-match" style={{ "--bracket-tone": accent }}>
       <div className="bracket-match-head">
         <div className="bracket-stage">{title}</div>
         <div className="bracket-line" />
       </div>
+      {hint ? <div className="bracket-hint">{hint}</div> : null}
       <div className="bracket-teams">
         {rows.length ? rows.map((row) => (
           <div className="bracket-team" key={`${title}-${row.country}-${row.owner}`}>
@@ -1473,31 +1496,18 @@ function Stats({ players, matches, stats }) {
       <div className="section-head" style={{ marginBottom: 14 }}>
         <div className="section-title"><Trophy />Knockout bracket</div>
       </div>
-      <div className="modal-sub" style={{ marginTop: 0 }}>Only advancing countries appear in the bracket. If the group stage is still open, later rounds stay as TBD.</div>
-      <div className="bracket-board">
-        <div className="bracket-column">
-          <BracketMatch title="Round of 16" rows={roundOf16.flat()} accent="#8bb8ff" />
-          <BracketMatch title="Quarter-finals" rows={quarterFinals.flat()} accent="#5ee2a4" />
-        </div>
-        <div className="bracket-center">
-          <div className="bracket-final-card">
-            <div className="bracket-final-badge"><Trophy /></div>
-            <div className="bracket-final-title">Final</div>
-            <div className="bracket-final-sub">Champion lane centered here</div>
-            <div className="bracket-final-teams">
-              {semiFinals.flat().slice(0, 2).map((row) => (
-                <span key={`final-${row.country}-${row.owner}`} className="bracket-final-chip">
-                  <Flag country={row.country} size={11} round />
-                  <span>{row.country}</span>
-                  <strong>{row.owner}</strong>
-                </span>
-              ))}
-            </div>
+      <div className="modal-sub" style={{ marginTop: 0 }}>Nothing is projected into the later rounds until the group tables produce completed qualifiers. That keeps the bracket honest and stops the fake finalists from appearing.</div>
+      <div className="bracket-shell">
+        <BracketMatch title="Round of 16" rows={roundOf16} accent="#8bb8ff" hint={roundOf16.length ? "Current advancing seeds" : "Waiting for completed groups"} />
+        <BracketMatch title="Quarter-finals" rows={quarterFinals} accent="#67d7a0" hint={quarterFinals.length ? "Projected from current seeds" : "Waiting for Round of 16 qualifiers"} />
+        <BracketMatch title="Semi-finals" rows={semiFinals} accent="#d98506" hint={semiFinals.length ? "Projected from current seeds" : "Waiting for Quarter-final qualifiers"} />
+        <div className="bracket-final-card">
+          <div className="bracket-final-badge"><Trophy /></div>
+          <div className="bracket-final-title">Final</div>
+          <div className="bracket-final-sub">Champion lane stays empty until the knockout field exists</div>
+          <div className="bracket-final-empty">
+            <div className="bracket-empty">TBD</div>
           </div>
-        </div>
-        <div className="bracket-column">
-          <BracketMatch title="Semi-finals" rows={semiFinals.flat()} accent="#d98506" />
-          <div className="bracket-empty">Final stays centered</div>
         </div>
       </div>
     </section>
