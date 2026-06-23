@@ -1180,19 +1180,17 @@ function Stats({ players, matches, stats }) {
           owner: player.name,
           active: !player.elim.includes(country),
           tone: countryTone(country),
-          ownerPoints: player.pts || 0,
         });
       });
     });
-    return rows.sort((a, b) => Number(b.active) - Number(a.active) || b.ownerPoints - a.ownerPoints || a.country.localeCompare(b.country) || a.owner.localeCompare(b.owner));
+    return rows.sort((a, b) => Number(b.active) - Number(a.active) || a.country.localeCompare(b.country) || a.owner.localeCompare(b.owner));
   }, [players]);
   const activeCountryRows = countryRows.filter((row) => row.active);
-  const countrySeedRows = useMemo(() => [...countryRows].sort((a, b) => b.ownerPoints - a.ownerPoints || a.country.localeCompare(b.country) || a.owner.localeCompare(b.owner)), [countryRows]);
   const knockoutStages = useMemo(() => {
     const pick = (rows, limit) => rows.slice(0, Math.max(1, Math.min(limit, rows.length)));
     const activeCount = activeCountryRows.length;
     return [
-      { key: "groups", title: "Group stage", note: `${countryRows.length} mapped countries`, rows: pick(countrySeedRows, 6), count: countryRows.length, accent: "#8bb8ff" },
+      { key: "groups", title: "Group stage", note: `${countryRows.length} mapped countries`, rows: pick(countryRows, 6), count: countryRows.length, accent: "#8bb8ff" },
       { key: "r32", title: "Round of 32", note: `${Math.min(32, activeCount)} possible qualifiers`, rows: pick(activeCountryRows, 6), count: Math.min(32, activeCount), accent: "#5ee2a4" },
       { key: "r16", title: "Round of 16", note: `${Math.min(16, activeCount)} still alive`, rows: pick(activeCountryRows, 4), count: Math.min(16, activeCount), accent: "#02a25c" },
       { key: "quarters", title: "Quarter-finals", note: `${Math.min(8, activeCount)} chasing the trophy`, rows: pick(activeCountryRows, 4), count: Math.min(8, activeCount), accent: "#d98506" },
@@ -1260,176 +1258,165 @@ function Stats({ players, matches, stats }) {
           </div>
         </div>
       </section>
-      <div className="metric-grid">
-        {renderTop(topGoal, "Top goal scorer", Target)}
-        {renderTop(topAssist, "Top assist maker", Swords)}
-        {renderTop(topPenalty, "Top penalty scorer", Shield)}
-        <Metric icon={CalendarDays} value={stats?.completedMatches ?? matches.filter((match) => match.status === "completed").length} label="Completed matches" note="Only completed games count" />
-      </div>
       <section className="panel pad" style={{ marginBottom: 18 }}>
         <div className="section-head" style={{ marginBottom: 14 }}>
-          <div className="section-title"><LayoutGrid />Tables</div>
+          <div className="section-title"><LayoutGrid />Stats panels</div>
           <div className="chips">
             {panels.map(([id, label, Icon]) => (
               <button type="button" key={id} className={`filter-chip ${panel === id ? "active" : ""}`} onClick={() => setPanel(id)}><Icon />{label}</button>
             ))}
           </div>
         </div>
-        {panel === "qualification" ? (
+        {panel === "scorers" ? (
           <>
-            <div className="modal-sub" style={{ marginTop: 0 }}>Country mapped to DHI owner. This table is separate from scorer trends.</div>
-            <div className="table-wrap">
-              <table className="leader-table">
-                <thead>
-                  <tr><th style={{ width: 72 }}>Rank</th><th>Country</th><th>Owner</th><th className="right">Owner pts</th><th className="right">Status</th></tr>
-                </thead>
-                <tbody>
-                  {countryRows.length ? countryRows.map((row, index) => (
-                    <tr key={`country-${row.country}-${row.owner}`}>
-                      <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span></div></td>
-                      <td>
-                        <div className="player-cell">
-                          {renderCountryChip(row, true)}
-                        </div>
-                      </td>
-                      <td><strong style={{ fontFamily: "var(--font-display)" }}>{row.owner}</strong></td>
-                      <td className="right num">{row.ownerPoints}</td>
-                      <td className="right"><span className={`tag ${row.active ? "done" : "soon"}`}>{row.active ? "Qualified" : "Out"}</span></td>
-                    </tr>
-                  )) : <tr><td colSpan="5"><div className="empty"><LayoutGrid />No country data yet.</div></td></tr>}
-                </tbody>
-              </table>
+            <div className="metric-grid">
+              {renderTop(topGoal, "Top goal scorer", Target)}
+              {renderTop(topAssist, "Top assist maker", Swords)}
+              {renderTop(topPenalty, "Top penalty scorer", Shield)}
+              <Metric icon={CalendarDays} value={stats?.completedMatches ?? matches.filter((match) => match.status === "completed").length} label="Completed matches" note="Only completed games count" />
             </div>
-          </>
-        ) : panel === "knockout" ? (
-          <>
-            <div className="modal-sub" style={{ marginTop: 0 }}>Staging view based on the current office-pool country status. The final sits in the center with the trophy.</div>
-            <div className="knockout-grid">
-              <div className="panel knockout-panel">
-                <div className="knockout-panel-head">
-                  <div>
-                    <div className="knockout-panel-title">Country ranking</div>
-                    <div className="knockout-panel-sub">Qualified countries first, then the rest.</div>
-                  </div>
-                  <span className="tag admin">{activeCountryRows.length} active</span>
-                </div>
-                <div className="table-wrap">
-                  <table className="leader-table knockout-table">
-                    <thead>
-                      <tr><th style={{ width: 72 }}>Rank</th><th>Country</th><th>Owner</th><th className="right">Pts</th></tr>
-                    </thead>
-                    <tbody>
-                      {countrySeedRows.length ? countrySeedRows.map((row, index) => (
-                        <tr key={`knockout-${row.country}-${row.owner}`}>
-                          <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span></div></td>
-                          <td>{renderCountryChip(row, true)}</td>
-                          <td><strong style={{ fontFamily: "var(--font-display)" }}>{row.owner}</strong></td>
-                          <td className="right num">{row.ownerPoints}</td>
-                        </tr>
-                      )) : <tr><td colSpan="4"><div className="empty"><Trophy />No knockout data yet.</div></td></tr>}
-                    </tbody>
-                  </table>
+            <section className="panel pad" style={{ marginBottom: 18 }}>
+              <div className="section-head" style={{ marginBottom: 14 }}>
+                <div className="section-title"><Target />Scorer board</div>
+                <div className="tabs" style={{ marginBottom: 0 }}>
+                  {tabs.map(([id, label, Icon]) => (
+                    <button type="button" key={id} className={`tab-btn ${view === id ? "active" : ""}`} onClick={() => setView(id)}><Icon />{label}</button>
+                  ))}
                 </div>
               </div>
-              <div className="knockout-map panel">
-                <div className="knockout-map-head">
-                  <div className="knockout-panel-title">Knockout path</div>
-                  <div className="knockout-panel-sub">Flow from groups to the final.</div>
-                </div>
-                <div className="knockout-track">
-                  {knockoutStages.map((stage, index) => (
-                    <div className="knockout-node" key={stage.key} style={{ "--stage-tone": stage.accent }}>
-                      <div className="knockout-node-head">
-                        <span className="knockout-step">{index + 1}</span>
-                        <div>
-                          <div className="knockout-stage">{stage.title}</div>
-                          <div className="knockout-note">{stage.note}</div>
+              <div className="modal-sub" style={{ marginTop: 0 }}>Verified from {sourceLabel}{refreshedLabel ? `, refreshed ${refreshedLabel}` : ""}. The scorer board stays separate from country qualification.</div>
+              <div className="table-wrap">
+                <table className="leader-table">
+                  <thead>
+                    <tr><th style={{ width: 72 }}>Rank</th><th>Player</th><th className="right">{currentLabel}</th></tr>
+                  </thead>
+                  <tbody>
+                    {current.length ? current.map((item, index) => {
+                      const player = players.find((entry) => entry.name === item.name);
+                      const mapped = renderOwnerLabel(item);
+                      return (
+                        <tr key={`${view}-${item.name}`}>
+                          <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span>{index === 0 && <Crown size={17} color="var(--gold)" />}{(index === 1 || index === 2) && <Medal size={16} color={index === 1 ? "var(--silver)" : "var(--bronze)"} />}</div></td>
+                          <td>
+                            <div className="player-cell">
+                              <Avatar name={item.name} size={42} img={player?.avatar} />
+                              <div>
+                                <div className="player-name">{item.name}</div>
+                                <div className="player-meta">
+                                  <span className="country-map-chip" style={{ "--country-tone": mapped.tone }}>
+                                    {item.team ? <Flag country={item.team} size={12} round /> : <span className="country-dot" />}
+                                    <span>{mapped.team || item.name}</span>
+                                    {mapped.owner ? <strong>{mapped.owner}</strong> : null}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="right"><strong style={{ fontFamily: "var(--font-display)", fontSize: 24 }}>{item.count}</strong></td>
+                        </tr>
+                      );
+                    }) : <tr><td colSpan="3"><div className="empty"><Target />Waiting for verified ESPN scorer data.</div></td></tr>}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <section className="panel">
+              <PanelHeader icon={CalendarDays} title="Match scorer log" />
+              <div className="match-list">
+                {statMatches
+                  .filter((match) => matchStatList(match, "goals").length || matchStatList(match, "assists").length || matchStatList(match, "penalties").length)
+                  .sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id)))
+                  .slice(0, 10)
+                  .map((match) => (
+                    <div className="match-card" key={`stats-${match.id}`}>
+                      <div className="team"><Flag country={match.a} size={28} /><div className="team-meta"><div className="team-name">{match.a}</div></div></div>
+                      <div className="match-mid">
+                        <StatusTag status={match.status} />
+                        <div className="match-time">{match.stage} - {match.time}</div>
+                        <div className="match-stats">
+                          {matchStatList(match, "goals").length > 0 && <div className="match-stat"><span>Goals</span><b>{statSummary(matchStatList(match, "goals"))}</b></div>}
+                          {matchStatList(match, "assists").length > 0 && <div className="match-stat"><span>Assists</span><b>{statSummary(matchStatList(match, "assists"))}</b></div>}
+                          {matchStatList(match, "penalties").length > 0 && <div className="match-stat"><span>Penalties</span><b>{statSummary(matchStatList(match, "penalties"))}</b></div>}
                         </div>
-                        <div className="knockout-count num">{stage.count}</div>
                       </div>
-                      <div className="knockout-chip-list">
-                        {stage.rows.map((row) => (
-                          <span key={`${stage.key}-${row.country}-${row.owner}`} className="knockout-chip">
-                            <Flag country={row.country} size={11} round />
-                            <span>{row.country}</span>
-                            <strong>{row.owner}</strong>
-                          </span>
-                        ))}
-                      </div>
+                      <div className="team right"><Flag country={match.b} size={28} /><div className="team-meta"><div className="team-name right">{match.b}</div></div></div>
                     </div>
                   ))}
-                  <div className="knockout-final">
-                    <div className="knockout-final-badge"><Trophy /></div>
-                    <div className="knockout-stage">Final</div>
-                    <div className="knockout-note">Champion lane centered here</div>
-                  </div>
-                </div>
               </div>
-            </div>
+            </section>
+          </>
+        ) : panel === "qualification" ? (
+          <>
+            <section className="panel pad" style={{ marginBottom: 18 }}>
+              <div className="section-head" style={{ marginBottom: 14 }}>
+                <div className="section-title"><LayoutGrid />Country qualification</div>
+              </div>
+              <div className="modal-sub" style={{ marginTop: 0 }}>Country first. This tab lists the countries in the pool and whether each one is still alive.</div>
+              <div className="table-wrap">
+                <table className="leader-table">
+                  <thead>
+                    <tr><th style={{ width: 72 }}>Rank</th><th>Country</th><th>Owner</th><th className="right">Status</th></tr>
+                  </thead>
+                  <tbody>
+                    {countryRows.length ? countryRows.map((row, index) => (
+                      <tr key={`country-${row.country}-${row.owner}`}>
+                        <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span></div></td>
+                        <td><div className="player-cell">{renderCountryChip(row, true)}</div></td>
+                        <td><strong style={{ fontFamily: "var(--font-display)" }}>{row.owner}</strong></td>
+                        <td className="right"><span className={`tag ${row.active ? "done" : "soon"}`}>{row.active ? "Qualified" : "Out"}</span></td>
+                      </tr>
+                    )) : <tr><td colSpan="4"><div className="empty"><LayoutGrid />No country data yet.</div></td></tr>}
+                  </tbody>
+                </table>
+              </div>
+            </section>
           </>
         ) : (
           <>
-            <div className="modal-sub" style={{ marginTop: 0 }}>Verified from {sourceLabel}{refreshedLabel ? `, refreshed ${refreshedLabel}` : ""}. The office-pool names stay in the scorer table.</div>
-            <div className="table-wrap">
-              <table className="leader-table">
-                <thead>
-                  <tr><th style={{ width: 72 }}>Rank</th><th>Player</th><th className="right">{currentLabel}</th></tr>
-                </thead>
-                <tbody>
-                  {current.length ? current.map((item, index) => {
-                    const player = players.find((entry) => entry.name === item.name);
-                    const mapped = renderOwnerLabel(item);
-                    return (
-                      <tr key={`${view}-${item.name}`}>
-                        <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span>{index === 0 && <Crown size={17} color="var(--gold)" />}{(index === 1 || index === 2) && <Medal size={16} color={index === 1 ? "var(--silver)" : "var(--bronze)"} />}</div></td>
-                        <td>
-                          <div className="player-cell">
-                            <Avatar name={item.name} size={42} img={player?.avatar} />
-                            <div>
-                              <div className="player-name">{item.name}</div>
-                              <div className="player-meta">
-                                <span className="country-map-chip" style={{ "--country-tone": mapped.tone }}>
-                                  {item.team ? <Flag country={item.team} size={12} round /> : <span className="country-dot" />}
-                                  <span>{mapped.team || item.name}</span>
-                                  {mapped.owner ? <strong>{mapped.owner}</strong> : null}
-                                </span>
-                              </div>
-                            </div>
+            <section className="panel pad" style={{ marginBottom: 18 }}>
+              <div className="section-head" style={{ marginBottom: 14 }}>
+                <div className="section-title"><Trophy />Knockout map</div>
+              </div>
+              <div className="modal-sub" style={{ marginTop: 0 }}>The map shows the path from group stage to the final, with the trophy in the center.</div>
+              <div className="knockout-grid">
+                <div className="knockout-map panel">
+                  <div className="knockout-map-head">
+                    <div className="knockout-panel-title">Knockout path</div>
+                    <div className="knockout-panel-sub">Flow from groups to the final.</div>
+                  </div>
+                  <div className="knockout-track">
+                    {knockoutStages.map((stage, index) => (
+                      <div className="knockout-node" key={stage.key} style={{ "--stage-tone": stage.accent }}>
+                        <div className="knockout-node-head">
+                          <span className="knockout-step">{index + 1}</span>
+                          <div>
+                            <div className="knockout-stage">{stage.title}</div>
+                            <div className="knockout-note">{stage.note}</div>
                           </div>
-                        </td>
-                        <td className="right"><strong style={{ fontFamily: "var(--font-display)", fontSize: 24 }}>{item.count}</strong></td>
-                      </tr>
-                    );
-                  }) : <tr><td colSpan="3"><div className="empty"><Target />Waiting for verified ESPN scorer data.</div></td></tr>}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-      </section>
-      <section className="panel">
-        <PanelHeader icon={CalendarDays} title="Match scorer log" />
-        <div className="match-list">
-          {statMatches
-            .filter((match) => matchStatList(match, "goals").length || matchStatList(match, "assists").length || matchStatList(match, "penalties").length)
-            .sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id)))
-            .slice(0, 10)
-            .map((match) => (
-              <div className="match-card" key={`stats-${match.id}`}>
-                <div className="team"><Flag country={match.a} size={28} /><div className="team-meta"><div className="team-name">{match.a}</div></div></div>
-                <div className="match-mid">
-                  <StatusTag status={match.status} />
-                  <div className="match-time">{match.stage} - {match.time}</div>
-                  <div className="match-stats">
-                    {matchStatList(match, "goals").length > 0 && <div className="match-stat"><span>Goals</span><b>{statSummary(matchStatList(match, "goals"))}</b></div>}
-                    {matchStatList(match, "assists").length > 0 && <div className="match-stat"><span>Assists</span><b>{statSummary(matchStatList(match, "assists"))}</b></div>}
-                    {matchStatList(match, "penalties").length > 0 && <div className="match-stat"><span>Penalties</span><b>{statSummary(matchStatList(match, "penalties"))}</b></div>}
+                          <div className="knockout-count num">{stage.count}</div>
+                        </div>
+                        <div className="knockout-chip-list">
+                          {stage.rows.map((row) => (
+                            <span key={`${stage.key}-${row.country}-${row.owner}`} className="knockout-chip">
+                              <Flag country={row.country} size={11} round />
+                              <span>{row.country}</span>
+                              <strong>{row.owner}</strong>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                    <div className="knockout-final">
+                      <div className="knockout-final-badge"><Trophy /></div>
+                      <div className="knockout-stage">Final</div>
+                      <div className="knockout-note">Champion lane centered here</div>
+                    </div>
                   </div>
                 </div>
-                <div className="team right"><Flag country={match.b} size={28} /><div className="team-meta"><div className="team-name right">{match.b}</div></div></div>
               </div>
-            ))}
-        </div>
+            </section>
+          </>
+        )}
       </section>
     </div>
   );
