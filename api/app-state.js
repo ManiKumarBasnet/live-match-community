@@ -144,6 +144,25 @@ function mergePlayers(currentPlayers = [], incomingPlayers = []) {
   });
 }
 
+function mergeMatches(currentMatches = [], incomingMatches = []) {
+  if (!Array.isArray(incomingMatches)) return currentMatches;
+  const currentById = new Map(currentMatches.map((match) => [String(match.id), match]));
+  const merged = incomingMatches.map((match) => {
+    const current = currentById.get(String(match.id)) || {};
+    return {
+      ...current,
+      ...match,
+      scoring: match.scoring ?? current.scoring,
+      scoringLoaded: match.scoringLoaded ?? current.scoringLoaded,
+    };
+  });
+  const mergedIds = new Set(merged.map((match) => String(match.id)));
+  currentMatches.forEach((match) => {
+    if (!mergedIds.has(String(match.id))) merged.push(match);
+  });
+  return merged;
+}
+
 function mergeVoteBucket(current = {}, incoming = {}) {
   const merged = { ...current, ...incoming };
   const currentByUser = current.byUser || {};
@@ -203,6 +222,7 @@ async function writeState(state) {
   if (current) {
     safeState = {
       ...safeState,
+      matches: Array.isArray(safeState.matches) ? mergeMatches(current.matches || [], safeState.matches) : current.matches,
       players: Array.isArray(safeState.players) ? mergePlayers(current.players || [], safeState.players) : current.players,
       votes: mergeVoteMap(current.votes || {}, safeState.votes || {}),
       pollVotes: mergeVoteMap(current.pollVotes || {}, safeState.pollVotes || {}),

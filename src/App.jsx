@@ -324,6 +324,37 @@ function mergeEspnFixtures(previous, parsed) {
   });
 }
 
+function extractEspnScoring(summary) {
+  const keyEvents = Array.isArray(summary?.keyEvents) ? summary.keyEvents : [];
+  const scoringEvents = keyEvents.filter((event) => event?.scoringPlay);
+  const goals = [];
+  const assists = [];
+  const penalties = [];
+  const timeline = [];
+  scoringEvents.forEach((event) => {
+    const participants = Array.isArray(event.participants) ? event.participants : [];
+    const scorer = sanitizeText(participants[0]?.athlete?.displayName || event.shortText?.replace(/\s*Goal$/, "") || event.text || "").trim();
+    const assist = sanitizeText(participants[1]?.athlete?.displayName || "").trim();
+    const isPenalty = Boolean(event.penaltyKick) || /penalt/i.test(String(event.text || "")) || /penalt/i.test(String(event.shortText || ""));
+    if (scorer) goals.push(scorer);
+    if (assist) assists.push(assist);
+    if (isPenalty && scorer) penalties.push(scorer);
+    timeline.push({
+      scorer,
+      assist,
+      penalty: isPenalty,
+      minute: event.clock?.displayValue || "",
+    });
+  });
+  return { goals, assists, penalties, timeline, loadedAt: Date.now() };
+}
+
+async function fetchEspnScoring(eventId) {
+  const response = await fetch(`/api/espn/apis/site/v2/sports/soccer/fifa.world/summary?event=${eventId}`);
+  if (!response.ok) return null;
+  return extractEspnScoring(await response.json());
+}
+
 // ESPN scoreboard: { events: [{ competitions:[{ competitors:[{homeAway,score,team:{displayName}}] }], status:{type:{state}} }] }
 function parseEspn(events) {
   return events
@@ -409,6 +440,10 @@ function statList(value) {
   return [];
 }
 
+function matchStatList(match, key) {
+  return statList(match?.scoring?.[key] ?? match?.[key]);
+}
+
 function statSummary(value) {
   const list = statList(value);
   if (!list.length) return "";
@@ -421,7 +456,7 @@ function buildStatLeaderboard(matches, field) {
   const counts = new Map();
   matches.forEach((match) => {
     if (match.status !== "completed") return;
-    statList(match[field]).forEach((name) => {
+    matchStatList(match, field).forEach((name) => {
       counts.set(name, (counts.get(name) || 0) + 1);
     });
   });
@@ -772,9 +807,9 @@ function MatchCard({ match, players }) {
   const ownerB = getOwner(match.b, players);
   const clash = ownerA && ownerB && ownerA.id !== ownerB.id;
   const hasScore = match.status !== "upcoming";
-  const goals = statList(match.goals);
-  const assists = statList(match.assists);
-  const penalties = statList(match.penalties);
+  const goals = matchStatList(match, "goals");
+  const assists = matchStatList(match, "assists");
+  const penalties = matchStatList(match, "penalties");
   return (
     <div className={`match-card ${clash ? "clash" : ""} ${match.status === "live" ? "live" : ""}`}>
       <div className="team">
@@ -1009,7 +1044,7 @@ function Stats({ players, matches }) {
             ))}
           </div>
         </div>
-        <div className="modal-sub" style={{ marginTop: 0 }}>Switch between goals, assists, and penalties. Enter the scorers in Admin {"\u003e"} Matches to populate these ranks.</div>
+        <div className="modal-sub" style={{ marginTop: 0 }}>These ranks use the actual World Cup players pulled from ESPN match summaries. The office-pool names stay in the main leaderboard.</div>
         <div className="table-wrap">
           <table className="leader-table">
             <thead>
@@ -1034,7 +1069,7 @@ function Stats({ players, matches }) {
         <PanelHeader icon={CalendarDays} title="Match scorer log" />
         <div className="match-list">
           {matches
-            .filter((match) => statList(match.goals).length || statList(match.assists).length || statList(match.penalties).length)
+            .filter((match) => matchStatList(match, "goals").length || matchStatList(match, "assists").length || matchStatList(match, "penalties").length)
             .sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id)))
             .slice(0, 10)
             .map((match) => (
@@ -1044,9 +1079,9 @@ function Stats({ players, matches }) {
                   <StatusTag status={match.status} />
                   <div className="match-time">{match.stage} - {match.time}</div>
                   <div className="match-stats">
-                    {statList(match.goals).length > 0 && <div className="match-stat"><span>Goals</span><b>{statSummary(match.goals)}</b></div>}
-                    {statList(match.assists).length > 0 && <div className="match-stat"><span>Assists</span><b>{statSummary(match.assists)}</b></div>}
-                    {statList(match.penalties).length > 0 && <div className="match-stat"><span>Penalties</span><b>{statSummary(match.penalties)}</b></div>}
+                    {matchStatList(match, "goals").length > 0 && <div className="match-stat"><span>Goals</span><b>{statSummary(matchStatList(match, "goals"))}</b></div>}
+                    {matchStatList(match, "assists").length > 0 && <div className="match-stat"><span>Assists</span><b>{statSummary(matchStatList(match, "assists"))}</b></div>}
+                    {matchStatList(match, "penalties").length > 0 && <div className="match-stat"><span>Penalties</span><b>{statSummary(matchStatList(match, "penalties"))}</b></div>}
                   </div>
                 </div>
                 <div className="team right"><Flag country={match.b} size={28} /><div className="team-meta"><div className="team-name right">{match.b}</div></div></div>
@@ -1591,12 +1626,12 @@ function Admin({ players, matches, announcements, verificationRequests, analytic
                 <td><div className="flag-row"><input className="score-input" type="number" min="0" value={drafts[match.id]?.sa ?? 0} onChange={(event) => setDrafts((prev) => ({ ...prev, [match.id]: { ...prev[match.id], sa: Number(event.target.value) || 0 } }))} /><span className="num" style={{ color: "var(--faint)", fontWeight: 900 }}>:</span><input className="score-input" type="number" min="0" value={drafts[match.id]?.sb ?? 0} onChange={(event) => setDrafts((prev) => ({ ...prev, [match.id]: { ...prev[match.id], sb: Number(event.target.value) || 0 } }))} /></div></td>
                 <td>
                   <div style={{ display: "grid", gap: 6, minWidth: 240 }}>
-                    <input className="input stat-input" placeholder="Goals: player, player" value={drafts[match.id]?.goals ?? ""} onChange={(event) => setDrafts((prev) => ({ ...prev, [match.id]: { ...prev[match.id], goals: event.target.value } }))} />
-                    <input className="input stat-input" placeholder="Assists: player, player" value={drafts[match.id]?.assists ?? ""} onChange={(event) => setDrafts((prev) => ({ ...prev, [match.id]: { ...prev[match.id], assists: event.target.value } }))} />
-                    <input className="input stat-input" placeholder="Penalty scorers: player, player" value={drafts[match.id]?.penalties ?? ""} onChange={(event) => setDrafts((prev) => ({ ...prev, [match.id]: { ...prev[match.id], penalties: event.target.value } }))} />
+                    <div className="match-stat"><span>Goals</span><b>{statSummary(matchStatList(match, "goals")) || "Waiting for ESPN"}</b></div>
+                    <div className="match-stat"><span>Assists</span><b>{statSummary(matchStatList(match, "assists")) || "Waiting for ESPN"}</b></div>
+                    <div className="match-stat"><span>Penalties</span><b>{statSummary(matchStatList(match, "penalties")) || "Waiting for ESPN"}</b></div>
                   </div>
                 </td>
-                <td className="right"><button type="button" className="btn btn-primary btn-small" onClick={() => onMatch(match.id, { sa: drafts[match.id]?.sa ?? 0, sb: drafts[match.id]?.sb ?? 0, goals: statList(drafts[match.id]?.goals), assists: statList(drafts[match.id]?.assists), penalties: statList(drafts[match.id]?.penalties) })}><Check />Save</button></td>
+                <td className="right"><button type="button" className="btn btn-primary btn-small" onClick={() => onMatch(match.id, { sa: drafts[match.id]?.sa ?? 0, sb: drafts[match.id]?.sb ?? 0 })}><Check />Save</button></td>
               </tr>
             ))}</tbody>
           </table>
@@ -1946,6 +1981,7 @@ export default function App() {
   const analyticsRef = useRef(analytics);
   const visitorIdRef = useRef(loadVisitorId());
   const sessionIdRef = useRef(loadSessionId());
+  const scoringCacheRef = useRef({});
   const fanCommentsRef = useRef(fanComments);
   const stateUpdatedAtRef = useRef(0);
 
@@ -2016,6 +2052,39 @@ export default function App() {
     }, 5000);
     return () => { alive = false; window.clearInterval(interval); };
   }, [applyRemote]);
+
+  useEffect(() => {
+    let alive = true;
+    const targets = matches
+      .filter((match) => match.source === "espn" && match.status !== "upcoming" && !match.scoringLoaded && !scoringCacheRef.current[match.id])
+      .slice(0, 8);
+    if (!targets.length) return undefined;
+    targets.forEach((match) => { scoringCacheRef.current[match.id] = true; });
+    Promise.all(targets.map(async (match) => {
+      const eventId = String(match.id).replace(/^espn-/, "");
+      const scoring = await fetchEspnScoring(eventId);
+      return scoring ? [match.id, scoring] : null;
+    })).then((results) => {
+      if (!alive) return;
+      const nextById = new Map(results.filter(Boolean));
+      if (!nextById.size) return;
+      setMatches((previous) => {
+        let changed = false;
+        const next = previous.map((match) => {
+          const scoring = nextById.get(match.id);
+          if (!scoring) return match;
+          if (sameData(match.scoring, scoring) && match.scoringLoaded) return match;
+          changed = true;
+          return { ...match, scoring, scoringLoaded: true };
+        });
+        if (changed) pushState({ matches: next });
+        return changed ? next : previous;
+      });
+    }).catch(() => {
+      // Leave the match cards in score-only mode if ESPN summary data is unavailable.
+    });
+    return () => { alive = false; };
+  }, [matches, pushState]);
 
   const trackAnalytics = useCallback((event = "heartbeat") => {
     if (!storageAvailable()) return;
