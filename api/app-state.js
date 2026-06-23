@@ -131,6 +131,64 @@ async function normalizeMatches(state) {
   }
 }
 
+function extractSummaryScoring(summary) {
+  const keyEvents = Array.isArray(summary?.keyEvents) ? summary.keyEvents : [];
+  const scoringEvents = keyEvents.filter((event) => event?.scoringPlay);
+  const goals = [];
+  const assists = [];
+  const penalties = [];
+  const timeline = [];
+  scoringEvents.forEach((event) => {
+    const participants = Array.isArray(event.participants) ? event.participants : [];
+    const scorer = String(participants[0]?.athlete?.displayName || event.shortText?.replace(/\s*Goal$/, "") || event.text || "").trim();
+    const assist = String(participants[1]?.athlete?.displayName || "").trim();
+    const isPenalty = Boolean(event.penaltyKick) || /penalt/i.test(String(event.text || "")) || /penalt/i.test(String(event.shortText || ""));
+    if (scorer) goals.push(scorer);
+    if (assist) assists.push(assist);
+    if (isPenalty && scorer) penalties.push(scorer);
+    timeline.push({
+      scorer,
+      assist,
+      penalty: isPenalty,
+      minute: event.clock?.displayValue || "",
+    });
+  });
+  return { goals, assists, penalties, timeline, loadedAt: Date.now() };
+}
+
+async function hydrateScoring(state) {
+  if (!Array.isArray(state.matches)) return { state, changed: false };
+  const missing = state.matches.filter((match) => match.source === "espn" && match.status !== "upcoming" && !match.scoringLoaded);
+  if (!missing.length) return { state, changed: false };
+  let changed = false;
+  const matches = [];
+  for (const match of state.matches) {
+    if (!missing.some((item) => item.id === match.id)) {
+      matches.push(match);
+      continue;
+    }
+    try {
+      const eventId = String(match.id).replace(/^espn-/, "");
+      const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event=${eventId}`);
+      if (!response.ok) {
+        matches.push(match);
+        continue;
+      }
+      const summary = await response.json();
+      const scoring = extractSummaryScoring(summary);
+      if (scoring?.goals?.length || scoring?.assists?.length || scoring?.penalties?.length) {
+        matches.push({ ...match, scoring, scoringLoaded: true });
+        changed = true;
+      } else {
+        matches.push(match);
+      }
+    } catch {
+      matches.push(match);
+    }
+  }
+  return { state: { ...state, matches }, changed };
+}
+
 function mergePlayers(currentPlayers = [], incomingPlayers = []) {
   if (!Array.isArray(incomingPlayers)) return currentPlayers;
   const currentById = new Map(currentPlayers.map((player) => [String(player.id), player]));
@@ -240,6 +298,9 @@ async function writeState(state) {
     safeState.matches = current.matches;
   }
 
+  const hydrated = await hydrateScoring(safeState);
+  safeState = hydrated.state;
+
   await put(PATHNAME, JSON.stringify({ ...safeState, updatedAt: Date.now() }), {
     access: "private",
     allowOverwrite: true,
@@ -250,7 +311,18 @@ async function writeState(state) {
 export default async function handler(req, res) {
   try {
     if (req.method === "GET") {
-      return json(res, 200, await readState());
+      const current = await readState();
+      if (!current) return json(res, 200, null);
+      const normalized = await normalizeMatches({ ...current });
+      const hydrated = await hydrateScoring(normalized);
+      if (hydrated.changed) {
+        await put(PATHNAME, JSON.stringify({ ...hydrated.state, updatedAt: Date.now() }), {
+          access: "private",
+          allowOverwrite: true,
+          contentType: "application/json",
+        });
+      }
+      return json(res, 200, hydrated.state);
     }
 
     if (req.method === "POST") {
