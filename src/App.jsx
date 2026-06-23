@@ -76,8 +76,8 @@ const CSS = `
 .day{margin-bottom:24px}.day-header{display:flex;align-items:center;gap:13px;margin-bottom:12px}.day-pill{display:flex;align-items:center;gap:8px;border-radius:999px;background:#fff;border:1px solid var(--line);padding:8px 14px;font-size:13px;font-weight:900;box-shadow:var(--shadow-xs)}.day-pill svg{width:15px;height:15px;color:var(--green)}.day-line{height:1px;background:var(--line-strong);flex:1}.day-count{font-size:11px;color:var(--faint);font-weight:900}.filter-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}.chips{display:flex;gap:8px;flex-wrap:wrap}.filter-chip{border:1px solid var(--line-strong);background:#fff;color:var(--muted);border-radius:999px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:900}.filter-chip.active{background:var(--green-soft);border-color:var(--green-line);color:var(--green-dark)}.search{position:relative;min-width:260px}.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--faint)}.input,.select,.textarea{width:100%;border:1.5px solid var(--line-strong);border-radius:14px;background:#fff;color:var(--ink);outline:0;transition:.14s}.input{padding:12px 14px}.search .input{padding-left:39px}.select{padding:9px 12px;font-weight:800}.textarea{padding:12px 14px;resize:vertical;min-height:96px}.input:focus,.select:focus,.textarea:focus{border-color:var(--green);box-shadow:var(--ring)}.field{margin-bottom:15px}.field label{display:block;font-size:11px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
 .player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(286px,1fr));gap:16px}.player-card{background:rgba(255,255,255,.9);border:1px solid rgba(211,219,230,.8);border-radius:24px;box-shadow:var(--shadow-sm);overflow:hidden;cursor:pointer;transition:.18s}.player-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}.player-card-top{padding:20px;display:flex;align-items:center;gap:14px;position:relative}.rank-badge{position:absolute;top:14px;right:14px;padding:4px 10px;border-radius:999px;background:var(--surface-soft);border:1px solid var(--line);color:var(--faint);font-size:12px;font-weight:950;font-family:var(--font-display)}.card-name{font-size:20px;font-weight:950;letter-spacing:-.04em}.card-points{display:flex;align-items:baseline;gap:5px;margin-top:5px}.card-points strong{font-family:var(--font-display);font-size:27px;color:var(--green);line-height:1}.card-points span{font-size:11px;color:var(--faint);font-weight:950;text-transform:uppercase}.country-chips{display:flex;flex-wrap:wrap;gap:7px;padding:12px 20px;border-top:1px solid var(--line)}.country-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);background:var(--surface-soft);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}.country-chip.out{opacity:.45;text-decoration:line-through}.wdl-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}.wdl-box{padding:13px;text-align:center}.wdl-box+.wdl-box{border-left:1px solid var(--line)}.wdl-value{font-family:var(--font-display);font-size:18px;font-weight:800}.wdl-value.w{color:var(--green)}.wdl-value.d{color:var(--amber)}.wdl-value.l{color:var(--red)}.wdl-label{font-size:9.5px;color:var(--faint);font-weight:950;text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
 .vote-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(355px,1fr));gap:16px;margin-bottom:30px}.vote-card,.poll-card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-sm);overflow:hidden}.vote-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);background:var(--surface-soft)}.vote-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:950;min-width:0}.vote-date{font-size:11px;color:var(--faint);font-weight:900;white-space:nowrap}.vote-body{padding:17px 18px}.vote-options{display:grid;grid-template-columns:1fr .8fr 1fr;gap:8px;margin-bottom:16px}.vote-option{border:1.5px solid var(--line-strong);border-radius:14px;background:#fff;color:var(--muted);padding:10px 8px;cursor:pointer;font-size:12px;font-weight:950;transition:.14s;overflow:hidden;text-overflow:ellipsis}.vote-option:hover{border-color:var(--green);color:var(--green-dark)}.vote-option.active{background:var(--green-soft);border-color:var(--green);color:var(--green-dark)}.vote-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}.vote-row-label{width:58px;font-size:12px;color:var(--muted);font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vote-track{height:9px;background:var(--line);border-radius:999px;overflow:hidden;flex:1}.vote-fill{height:100%;border-radius:999px;transition:width .42s cubic-bezier(.16,1,.3,1)}.vote-pct{width:38px;text-align:right;font-family:var(--font-display);font-size:12px;font-weight:800;color:var(--muted)}.vote-meta{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);font-weight:800;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.vote-meta svg{width:13px;height:13px;color:var(--green)}.poll-card{padding:18px;margin-bottom:15px}.poll-question{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:950;margin-bottom:14px}.poll-question svg{width:17px;height:17px;color:var(--green)}.poll-option{border:0;background:transparent;padding:0;width:100%;display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer}.poll-bar{position:relative;min-height:40px;border-radius:15px;background:var(--surface-soft);border:1.5px solid var(--line-strong);overflow:hidden;flex:1}.poll-option:hover .poll-bar{border-color:var(--green)}.poll-option.active .poll-bar{border-color:var(--green)}.poll-fill{position:absolute;inset:0 auto 0 0;background:var(--green-soft);transition:width .42s cubic-bezier(.16,1,.3,1)}.poll-text{position:relative;z-index:1;min-height:40px;display:flex;align-items:center;gap:9px;padding:0 14px;font-size:13px;font-weight:850}.poll-pct{margin-left:auto;font-family:var(--font-display);font-weight:800;color:var(--muted);font-size:12px}.check-bubble{width:20px;height:20px;display:grid;place-items:center;border-radius:999px;background:var(--green);color:#fff}.check-bubble svg{width:12px;height:12px}
-.admin-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:17px 20px;border-radius:22px;border:1px solid var(--line);box-shadow:var(--shadow-xs);margin-bottom:20px;background:#fff}.admin-banner.ok{background:var(--green-soft);border-color:var(--green-line)}.admin-banner.warn{background:var(--amber-soft);border-color:#efd49e}.admin-left{display:flex;align-items:center;gap:13px}.admin-left svg{width:22px}.admin-title{font-size:14px;font-weight:950}.admin-copy{font-size:12px;color:var(--muted);font-weight:650;line-height:1.45;max-width:760px;margin-top:2px}.tabs{display:flex;gap:5px;flex-wrap:wrap;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:17px;padding:5px;width:100%;max-width:max-content;margin-bottom:20px}.tab-btn{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:13px;padding:10px 15px;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;font-weight:950;min-width:0}.tab-btn svg{width:16px;height:16px;flex:0 0 auto}.tab-btn.active{background:#fff;color:var(--green-dark);box-shadow:var(--shadow-xs)}.score-input{width:48px;text-align:center;border:1.5px solid var(--line-strong);border-radius:12px;padding:7px 5px;font-family:var(--font-display);font-weight:800;outline:0}.score-input:focus{border-color:var(--green);box-shadow:var(--ring)}.admin-table td{font-size:13px}.eliminate-chip{border:0;background:transparent;display:inline-flex;align-items:center;gap:5px;margin:3px 7px 3px 0;cursor:pointer;font-size:12px;font-weight:850}.eliminate-chip.out{opacity:.42;text-decoration:line-through}.empty{display:grid;place-items:center;text-align:center;padding:58px 20px;color:var(--faint);font-weight:800}.empty svg{width:42px;height:42px;margin-bottom:12px;opacity:.6}.overlay{position:fixed;inset:0;background:rgba(7,16,29,.46);backdrop-filter:blur(8px);z-index:200;display:grid;place-items:center;padding:20px}.modal{width:min(470px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:28px;box-shadow:0 32px 85px rgba(0,0,0,.25);padding:28px}.modal-title{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:950;letter-spacing:-.04em;margin-bottom:6px}.modal-title svg{width:22px;color:var(--green)}.modal-sub{color:var(--muted);font-size:13px;line-height:1.5;font-weight:650;margin-bottom:22px}.profile-head{display:flex;align-items:center;gap:18px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:18px}.profile-name{font-size:25px;font-weight:950;letter-spacing:-.045em}.profile-points{font-family:var(--font-display);font-size:37px;font-weight:800;color:var(--green);line-height:1;margin-top:5px}.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:18px}.profile-stat{padding:14px;text-align:center}.profile-stat+.profile-stat{border-left:1px solid var(--line)}.checkbox{display:flex;align-items:center;gap:10px;margin-bottom:15px;color:var(--muted);font-weight:850;font-size:13px}.checkbox input{width:18px;height:18px;accent-color:var(--green)}.mobile-nav{display:none}.knockout-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}.knockout-panel,.knockout-map{padding:18px}.knockout-panel-head,.knockout-map-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.knockout-panel-title{font-size:18px;font-weight:950;letter-spacing:-.03em}.knockout-panel-sub{font-size:12px;color:var(--muted);font-weight:750;margin-top:4px}.knockout-table{min-width:760px}.knockout-map{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,rgba(246,248,251,.96))}.knockout-map::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 12%,rgba(2,162,92,.08),transparent 30%),radial-gradient(circle at 50% 88%,rgba(216,162,0,.09),transparent 28%);pointer-events:none}.knockout-track{position:relative;display:grid;gap:12px;padding:4px 2px 2px}.knockout-track::before{content:"";position:absolute;left:27px;top:22px;bottom:84px;width:2px;background:linear-gradient(180deg,rgba(2,162,92,.0),rgba(2,162,92,.26),rgba(216,162,0,.22));}.knockout-node{position:relative;padding:15px 16px 15px 46px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-xs);overflow:hidden}.knockout-node::before{content:"";position:absolute;left:19px;top:18px;width:16px;height:16px;border-radius:999px;background:var(--stage-tone,#0f766e);box-shadow:0 0 0 4px color-mix(in srgb, var(--stage-tone, #0f766e) 16%, transparent)}.knockout-node-head{display:flex;align-items:flex-start;gap:11px}.knockout-step{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:color-mix(in srgb, var(--stage-tone, #0f766e) 12%, #fff);border:1px solid color-mix(in srgb, var(--stage-tone, #0f766e) 24%, #fff);font-size:11px;font-weight:950;color:var(--stage-tone, #0f766e);flex:0 0 auto}.knockout-stage{font-size:15px;font-weight:950;letter-spacing:-.02em}.knockout-note{font-size:12px;color:var(--muted);font-weight:750;margin-top:3px}.knockout-count{margin-left:auto;font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--ink);line-height:1}.knockout-chip-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.knockout-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:6px 9px;border-radius:999px;background:var(--surface-soft);border:1px solid var(--line);font-size:11px;font-weight:850;color:var(--muted)}.knockout-chip strong{color:var(--ink);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.knockout-chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.knockout-final{position:relative;margin-top:2px;padding:16px 18px 18px;border-radius:22px;background:linear-gradient(135deg,rgba(2,162,92,.1),rgba(216,162,0,.12));border:1px solid color-mix(in srgb, var(--gold) 28%, #fff);display:grid;place-items:center;text-align:center;gap:7px;min-height:140px}.knockout-final-badge{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f5d46f);color:#1c1300;box-shadow:0 18px 34px rgba(216,162,0,.22)}.knockout-final-badge svg{width:28px;height:28px}.knockout-final .knockout-stage{font-size:20px}.knockout-final .knockout-note{max-width:220px}
-@media(max-width:1200px){.hero-content{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:1fr}.stand-sticky{position:static}.metric-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:900px){:root{--side:260px}.hero h1{font-size:34px}.hero-metrics{grid-template-columns:repeat(2,1fr)}.vote-grid{grid-template-columns:1fr}.topbar{padding:0 18px}.page{padding:22px 18px 86px}.sidebar{transform:translateX(-100%);transition:.22s ease}.sidebar.open{transform:translateX(0)}.side-footer{padding-bottom:calc(92px + env(safe-area-inset-bottom))}.main{margin-left:0}.mobile-menu{display:grid}.top-actions .signin-top{display:none}.mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:7px 4px 9px;box-shadow:0 -14px 34px rgba(9,17,32,.08)}.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;color:var(--faint);font-size:9.5px;font-weight:950;cursor:pointer}.mobile-nav-item svg{width:21px;height:21px}.mobile-nav-item.active{color:var(--green)}}@media(max-width:640px){.top-title{font-size:19px}.top-subtitle{display:none}.sync{padding:8px 10px}.sync span:not(.status-dot){display:none}.hero{padding:22px;border-radius:25px}.hero h1{font-size:30px}.hero-copy{font-size:14px}.hero-content{gap:16px}.metric-grid{grid-template-columns:1fr}.match-card{grid-template-columns:1fr;gap:12px}.team.right{flex-direction:row}.team-name.right{text-align:left}.team-owner.right{flex-direction:row}.match-mid{order:-1;align-items:flex-start;min-width:0}.player-grid{grid-template-columns:1fr}.search{min-width:100%;width:100%}.filter-row{align-items:stretch}.vote-options{grid-template-columns:1fr}.panel-head,.section-head{align-items:flex-start;flex-direction:column}.hero-mini-value{font-size:21px}}
+.admin-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:17px 20px;border-radius:22px;border:1px solid var(--line);box-shadow:var(--shadow-xs);margin-bottom:20px;background:#fff}.admin-banner.ok{background:var(--green-soft);border-color:var(--green-line)}.admin-banner.warn{background:var(--amber-soft);border-color:#efd49e}.admin-left{display:flex;align-items:center;gap:13px}.admin-left svg{width:22px}.admin-title{font-size:14px;font-weight:950}.admin-copy{font-size:12px;color:var(--muted);font-weight:650;line-height:1.45;max-width:760px;margin-top:2px}.tabs{display:flex;gap:5px;flex-wrap:wrap;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:17px;padding:5px;width:100%;max-width:max-content;margin-bottom:20px}.tab-btn{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:13px;padding:10px 15px;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;font-weight:950;min-width:0}.tab-btn svg{width:16px;height:16px;flex:0 0 auto}.tab-btn.active{background:#fff;color:var(--green-dark);box-shadow:var(--shadow-xs)}.score-input{width:48px;text-align:center;border:1.5px solid var(--line-strong);border-radius:12px;padding:7px 5px;font-family:var(--font-display);font-weight:800;outline:0}.score-input:focus{border-color:var(--green);box-shadow:var(--ring)}.admin-table td{font-size:13px}.eliminate-chip{border:0;background:transparent;display:inline-flex;align-items:center;gap:5px;margin:3px 7px 3px 0;cursor:pointer;font-size:12px;font-weight:850}.eliminate-chip.out{opacity:.42;text-decoration:line-through}.empty{display:grid;place-items:center;text-align:center;padding:58px 20px;color:var(--faint);font-weight:800}.empty svg{width:42px;height:42px;margin-bottom:12px;opacity:.6}.overlay{position:fixed;inset:0;background:rgba(7,16,29,.46);backdrop-filter:blur(8px);z-index:200;display:grid;place-items:center;padding:20px}.modal{width:min(470px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:28px;box-shadow:0 32px 85px rgba(0,0,0,.25);padding:28px}.modal-title{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:950;letter-spacing:-.04em;margin-bottom:6px}.modal-title svg{width:22px;color:var(--green)}.modal-sub{color:var(--muted);font-size:13px;line-height:1.5;font-weight:650;margin-bottom:22px}.profile-head{display:flex;align-items:center;gap:18px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:18px}.profile-name{font-size:25px;font-weight:950;letter-spacing:-.045em}.profile-points{font-family:var(--font-display);font-size:37px;font-weight:800;color:var(--green);line-height:1;margin-top:5px}.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:18px}.profile-stat{padding:14px;text-align:center}.profile-stat+.profile-stat{border-left:1px solid var(--line)}.checkbox{display:flex;align-items:center;gap:10px;margin-bottom:15px;color:var(--muted);font-weight:850;font-size:13px}.checkbox input{width:18px;height:18px;accent-color:var(--green)}.mobile-nav{display:none}.group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.group-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-xs)}.group-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,rgba(247,249,252,.85))}.group-title{font-size:16px;font-weight:950;letter-spacing:-.03em}.group-sub{font-size:12px;color:var(--muted);font-weight:750;margin-top:4px}.group-table{min-width:0}.bracket-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.8fr) minmax(0,1fr);gap:16px;align-items:stretch}.bracket-column{display:grid;gap:14px}.bracket-match{position:relative;padding:16px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-xs);overflow:hidden}.bracket-match::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--bracket-tone,#0f766e)}.bracket-match-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.bracket-stage{font-size:13px;font-weight:950;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.bracket-line{flex:1;height:1px;background:var(--line-strong)}.bracket-teams{display:grid;gap:8px}.bracket-team{display:flex}.bracket-empty{display:grid;place-items:center;min-height:68px;color:var(--faint);font-weight:850;background:var(--surface-soft);border:1px dashed var(--line-strong);border-radius:14px}.bracket-center{display:grid;align-items:center}.bracket-final-card{height:100%;display:grid;place-items:center;text-align:center;padding:24px;border-radius:24px;background:linear-gradient(135deg,rgba(2,162,92,.1),rgba(216,162,0,.12));border:1px solid color-mix(in srgb, var(--gold) 26%, #fff);box-shadow:var(--shadow-sm)}.bracket-final-badge{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f5d46f);color:#1c1300;box-shadow:0 18px 34px rgba(216,162,0,.22);margin-bottom:14px}.bracket-final-badge svg{width:30px;height:30px}.bracket-final-title{font-size:20px;font-weight:950;letter-spacing:-.03em}.bracket-final-sub{font-size:12px;color:var(--muted);font-weight:750;margin-top:4px}.bracket-final-teams{display:grid;gap:8px;margin-top:16px;width:100%}.bracket-final-chip{display:inline-flex;align-items:center;gap:6px;justify-content:center;padding:7px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:11px;font-weight:850;color:var(--muted)}.bracket-final-chip strong{color:var(--ink);font-weight:900}
+@media(max-width:1200px){.hero-content{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:1fr}.stand-sticky{position:static}.metric-grid{grid-template-columns:repeat(2,1fr)}.group-grid{grid-template-columns:1fr}.bracket-board{grid-template-columns:1fr}.bracket-center{order:-1}}@media(max-width:900px){:root{--side:260px}.hero h1{font-size:34px}.hero-metrics{grid-template-columns:repeat(2,1fr)}.vote-grid{grid-template-columns:1fr}.topbar{padding:0 18px}.page{padding:22px 18px 86px}.sidebar{transform:translateX(-100%);transition:.22s ease}.sidebar.open{transform:translateX(0)}.side-footer{padding-bottom:calc(92px + env(safe-area-inset-bottom))}.main{margin-left:0}.mobile-menu{display:grid}.top-actions .signin-top{display:none}.mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:7px 4px 9px;box-shadow:0 -14px 34px rgba(9,17,32,.08)}.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;color:var(--faint);font-size:9.5px;font-weight:950;cursor:pointer}.mobile-nav-item svg{width:21px;height:21px}.mobile-nav-item.active{color:var(--green)}}@media(max-width:640px){.top-title{font-size:19px}.top-subtitle{display:none}.sync{padding:8px 10px}.sync span:not(.status-dot){display:none}.hero{padding:22px;border-radius:25px}.hero h1{font-size:30px}.hero-copy{font-size:14px}.hero-content{gap:16px}.metric-grid{grid-template-columns:1fr}.match-card{grid-template-columns:1fr;gap:12px}.team.right{flex-direction:row}.team-name.right{text-align:left}.team-owner.right{flex-direction:row}.match-mid{order:-1;align-items:flex-start;min-width:0}.player-grid{grid-template-columns:1fr}.search{min-width:100%;width:100%}.filter-row{align-items:stretch}.vote-options{grid-template-columns:1fr}.panel-head,.section-head{align-items:flex-start;flex-direction:column}.hero-mini-value{font-size:21px}.group-card-head,.bracket-final-card{padding:16px}.bracket-final-card{padding:18px}.bracket-final-badge{width:54px;height:54px}.group-grid{grid-template-columns:1fr}}
 @media(max-width:640px){.tabs{max-width:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.tab-btn{padding:10px 8px;font-size:12px}}
 .knockout-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}.knockout-panel,.knockout-map{padding:18px}.knockout-panel-head,.knockout-map-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.knockout-panel-title{font-size:18px;font-weight:950;letter-spacing:-.03em}.knockout-panel-sub{font-size:12px;color:var(--muted);font-weight:750;margin-top:4px}.knockout-table{min-width:760px}.knockout-map{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,rgba(246,248,251,.96))}.knockout-map::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 12%,rgba(2,162,92,.08),transparent 30%),radial-gradient(circle at 50% 88%,rgba(216,162,0,.09),transparent 28%);pointer-events:none}.knockout-track{position:relative;display:grid;gap:12px;padding:4px 2px 2px}.knockout-track::before{content:"";position:absolute;left:27px;top:22px;bottom:84px;width:2px;background:linear-gradient(180deg,rgba(2,162,92,.0),rgba(2,162,92,.26),rgba(216,162,0,.22));}.knockout-node{position:relative;padding:15px 16px 15px 46px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-xs);overflow:hidden}.knockout-node::before{content:"";position:absolute;left:19px;top:18px;width:16px;height:16px;border-radius:999px;background:var(--stage-tone,#0f766e);box-shadow:0 0 0 4px color-mix(in srgb, var(--stage-tone, #0f766e) 16%, transparent)}.knockout-node-head{display:flex;align-items:flex-start;gap:11px}.knockout-step{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:color-mix(in srgb, var(--stage-tone, #0f766e) 12%, #fff);border:1px solid color-mix(in srgb, var(--stage-tone, #0f766e) 24%, #fff);font-size:11px;font-weight:950;color:var(--stage-tone, #0f766e);flex:0 0 auto}.knockout-stage{font-size:15px;font-weight:950;letter-spacing:-.02em}.knockout-note{font-size:12px;color:var(--muted);font-weight:750;margin-top:3px}.knockout-count{margin-left:auto;font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--ink);line-height:1}.knockout-chip-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.knockout-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:6px 9px;border-radius:999px;background:var(--surface-soft);border:1px solid var(--line);font-size:11px;font-weight:850;color:var(--muted)}.knockout-chip strong{color:var(--ink);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.knockout-chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.knockout-final{position:relative;margin-top:2px;padding:16px 18px 18px;border-radius:22px;background:linear-gradient(135deg,rgba(2,162,92,.1),rgba(216,162,0,.12));border:1px solid color-mix(in srgb, var(--gold) 28%, #fff);display:grid;place-items:center;text-align:center;gap:7px;min-height:140px}.knockout-final-badge{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f5d46f);color:#1c1300;box-shadow:0 18px 34px rgba(216,162,0,.22)}.knockout-final-badge svg{width:28px;height:28px}.knockout-final .knockout-stage{font-size:20px}.knockout-final .knockout-note{max-width:220px}
 @media(max-width:900px){.knockout-grid{grid-template-columns:1fr}.knockout-table{min-width:920px}.knockout-track::before{left:22px}.knockout-node{padding-left:44px}}
@@ -1154,9 +1154,9 @@ function Stats({ players, matches, stats }) {
     ["penalties", "Penalty goals", Shield],
   ];
   const panels = [
-    ["scorers", "Scorer trends", Target],
+    ["scorers", "Scorer board", Target],
     ["qualification", "Country qualification", LayoutGrid],
-    ["knockout", "Knockout map", Trophy],
+    ["knockout", "Knockout bracket", Trophy],
   ];
   const boards = stats ? {
     goals: stats.goals || [],
@@ -1171,33 +1171,57 @@ function Stats({ players, matches, stats }) {
   const topPenalty = boards.penalties[0];
   const sourceLabel = stats?.source || "waiting for live ESPN sync";
   const refreshedLabel = stats?.updatedAt ? new Date(stats.updatedAt).toLocaleString() : null;
+
   const countryRows = useMemo(() => {
     const rows = [];
     players.forEach((player) => {
       player.countries.forEach((country) => {
+        const groupMatch = matches.find((match) => match.stage?.startsWith("Group") && (match.a === country || match.b === country));
         rows.push({
           country,
           owner: player.name,
+          ownerPts: player.pts || 0,
+          group: groupMatch?.stage || "Ungrouped",
           active: !player.elim.includes(country),
           tone: countryTone(country),
         });
       });
     });
-    return rows.sort((a, b) => Number(b.active) - Number(a.active) || a.country.localeCompare(b.country) || a.owner.localeCompare(b.owner));
-  }, [players]);
-  const activeCountryRows = countryRows.filter((row) => row.active);
-  const knockoutStages = useMemo(() => {
-    const pick = (rows, limit) => rows.slice(0, Math.max(1, Math.min(limit, rows.length)));
-    const activeCount = activeCountryRows.length;
-    return [
-      { key: "groups", title: "Group stage", note: `${countryRows.length} mapped countries`, rows: pick(countryRows, 6), count: countryRows.length, accent: "#8bb8ff" },
-      { key: "r32", title: "Round of 32", note: `${Math.min(32, activeCount)} possible qualifiers`, rows: pick(activeCountryRows, 6), count: Math.min(32, activeCount), accent: "#5ee2a4" },
-      { key: "r16", title: "Round of 16", note: `${Math.min(16, activeCount)} still alive`, rows: pick(activeCountryRows, 4), count: Math.min(16, activeCount), accent: "#02a25c" },
-      { key: "quarters", title: "Quarter-finals", note: `${Math.min(8, activeCount)} chasing the trophy`, rows: pick(activeCountryRows, 4), count: Math.min(8, activeCount), accent: "#d98506" },
-      { key: "semis", title: "Semi-finals", note: `${Math.min(4, activeCount)} final four`, rows: pick(activeCountryRows, 2), count: Math.min(4, activeCount), accent: "#dc2626" },
-      { key: "final", title: "Final", note: `${Math.min(2, activeCount)} in the last step`, rows: pick(activeCountryRows, 2), count: Math.min(2, activeCount), accent: "#d8a200" },
-    ];
-  }, [activeCountryRows, countryRows, countrySeedRows]);
+    const groupRank = (name) => {
+      const match = String(name || "").match(/^Group ([A-Z])$/);
+      return match ? match[1].charCodeAt(0) - 65 : 99;
+    };
+    return rows.sort((a, b) => groupRank(a.group) - groupRank(b.group) || Number(b.active) - Number(a.active) || b.ownerPts - a.ownerPts || a.country.localeCompare(b.country) || a.owner.localeCompare(b.owner));
+  }, [matches, players]);
+
+  const groupBuckets = useMemo(() => {
+    const buckets = new Map();
+    countryRows.forEach((row) => {
+      const list = buckets.get(row.group) || [];
+      list.push(row);
+      buckets.set(row.group, list);
+    });
+    const groupRank = (name) => {
+      const match = String(name || "").match(/^Group ([A-Z])$/);
+      return match ? match[1].charCodeAt(0) - 65 : 99;
+    };
+    return [...buckets.entries()]
+      .sort((a, b) => groupRank(a[0]) - groupRank(b[0]) || a[0].localeCompare(b[0]))
+      .map(([group, rows]) => [group, rows.sort((a, b) => Number(b.active) - Number(a.active) || b.ownerPts - a.ownerPts || a.country.localeCompare(b.country) || a.owner.localeCompare(b.owner))]);
+  }, [countryRows]);
+
+  const activeCountryRows = useMemo(() => [...countryRows].filter((row) => row.active).sort((a, b) => b.ownerPts - a.ownerPts || a.country.localeCompare(b.country) || a.owner.localeCompare(b.owner)), [countryRows]);
+
+  const bracketSeeds = useMemo(() => activeCountryRows.slice(0, 8), [activeCountryRows]);
+  const leftBracket = useMemo(() => [
+    { title: "Quarter-final 1", rows: bracketSeeds.slice(0, 2) },
+    { title: "Quarter-final 2", rows: bracketSeeds.slice(2, 4) },
+  ], [bracketSeeds]);
+  const rightBracket = useMemo(() => [
+    { title: "Quarter-final 3", rows: bracketSeeds.slice(4, 6) },
+    { title: "Quarter-final 4", rows: bracketSeeds.slice(6, 8) },
+  ], [bracketSeeds]);
+
   const renderOwnerLabel = (item) => {
     if (!item) return null;
     const owner = getOwner(item.team, players);
@@ -1207,6 +1231,7 @@ function Stats({ players, matches, stats }) {
       tone: countryTone(item.team || item.name),
     };
   };
+
   const renderCountryChip = (row, compact = false) => (
     <span className="country-map-chip" style={{ "--country-tone": row.tone }}>
       <Flag country={row.country} size={compact ? 12 : 13} round />
@@ -1242,6 +1267,175 @@ function Stats({ players, matches, stats }) {
     );
   };
 
+  const renderScorers = () => (
+    <>
+      <div className="metric-grid">
+        {renderTop(topGoal, "Top goal scorer", Target)}
+        {renderTop(topAssist, "Top assist maker", Swords)}
+        {renderTop(topPenalty, "Top penalty scorer", Shield)}
+        <Metric icon={CalendarDays} value={stats?.completedMatches ?? matches.filter((match) => match.status === "completed").length} label="Completed matches" note="Only completed games count" />
+      </div>
+      <section className="panel pad" style={{ marginBottom: 18 }}>
+        <div className="section-head" style={{ marginBottom: 14 }}>
+          <div className="section-title"><Target />Scorer board</div>
+          <div className="tabs" style={{ marginBottom: 0 }}>
+            {tabs.map(([id, label, Icon]) => (
+              <button type="button" key={id} className={`tab-btn ${view === id ? "active" : ""}`} onClick={() => setView(id)}><Icon />{label}</button>
+            ))}
+          </div>
+        </div>
+        <div className="modal-sub" style={{ marginTop: 0 }}>Verified from {sourceLabel}{refreshedLabel ? `, refreshed ${refreshedLabel}` : ""}. This view stays on goals, assists and penalties only.</div>
+        <div className="table-wrap">
+          <table className="leader-table">
+            <thead>
+              <tr><th style={{ width: 72 }}>Rank</th><th>Player</th><th className="right">{currentLabel}</th></tr>
+            </thead>
+            <tbody>
+              {current.length ? current.map((item, index) => {
+                const player = players.find((entry) => entry.name === item.name);
+                const mapped = renderOwnerLabel(item);
+                return (
+                  <tr key={`${view}-${item.name}`}>
+                    <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span>{index === 0 && <Crown size={17} color="var(--gold)" />}{(index === 1 || index === 2) && <Medal size={16} color={index === 1 ? "var(--silver)" : "var(--bronze)"} />}</div></td>
+                    <td>
+                      <div className="player-cell">
+                        <Avatar name={item.name} size={42} img={player?.avatar} />
+                        <div>
+                          <div className="player-name">{item.name}</div>
+                          <div className="player-meta">
+                            <span className="country-map-chip" style={{ "--country-tone": mapped.tone }}>
+                              {item.team ? <Flag country={item.team} size={12} round /> : <span className="country-dot" />}
+                              <span>{mapped.team || item.name}</span>
+                              {mapped.owner ? <strong>{mapped.owner}</strong> : null}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="right"><strong style={{ fontFamily: "var(--font-display)", fontSize: 24 }}>{item.count}</strong></td>
+                  </tr>
+                );
+              }) : <tr><td colSpan="3"><div className="empty"><Target />Waiting for verified ESPN scorer data.</div></td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section className="panel">
+        <PanelHeader icon={CalendarDays} title="Match scorer log" />
+        <div className="match-list">
+          {statMatches
+            .filter((match) => matchStatList(match, "goals").length || matchStatList(match, "assists").length || matchStatList(match, "penalties").length)
+            .sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id)))
+            .slice(0, 10)
+            .map((match) => (
+              <div className="match-card" key={`stats-${match.id}`}>
+                <div className="team"><Flag country={match.a} size={28} /><div className="team-meta"><div className="team-name">{match.a}</div></div></div>
+                <div className="match-mid">
+                  <StatusTag status={match.status} />
+                  <div className="match-time">{match.stage} - {match.time}</div>
+                  <div className="match-stats">
+                    {matchStatList(match, "goals").length > 0 && <div className="match-stat"><span>Goals</span><b>{statSummary(matchStatList(match, "goals"))}</b></div>}
+                    {matchStatList(match, "assists").length > 0 && <div className="match-stat"><span>Assists</span><b>{statSummary(matchStatList(match, "assists"))}</b></div>}
+                    {matchStatList(match, "penalties").length > 0 && <div className="match-stat"><span>Penalties</span><b>{statSummary(matchStatList(match, "penalties"))}</b></div>}
+                  </div>
+                </div>
+                <div className="team right"><Flag country={match.b} size={28} /><div className="team-meta"><div className="team-name right">{match.b}</div></div></div>
+              </div>
+            ))}
+        </div>
+      </section>
+    </>
+  );
+
+  const renderQualification = () => (
+    <section className="panel pad" style={{ marginBottom: 18 }}>
+      <div className="section-head" style={{ marginBottom: 14 }}>
+        <div className="section-title"><LayoutGrid />Country qualification</div>
+      </div>
+      <div className="modal-sub" style={{ marginTop: 0 }}>Grouped by stage, sorted by live pool position inside each group. This is country-first, not scorer-first.</div>
+      <div className="group-grid">
+        {groupBuckets.map(([group, rows]) => (
+          <article className="group-card" key={group}>
+            <div className="group-card-head">
+              <div>
+                <div className="group-title">{group}</div>
+                <div className="group-sub">{rows.length} countries</div>
+              </div>
+              <span className="tag admin">{rows.filter((row) => row.active).length} alive</span>
+            </div>
+            <div className="table-wrap">
+              <table className="leader-table group-table">
+                <thead>
+                  <tr><th style={{ width: 60 }}>Rk</th><th>Country</th><th>Owner</th><th className="right">Pts</th><th className="right">Status</th></tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, index) => (
+                    <tr key={`${group}-${row.country}-${row.owner}`}>
+                      <td><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span></td>
+                      <td>{renderCountryChip(row, true)}</td>
+                      <td><strong style={{ fontFamily: "var(--font-display)" }}>{row.owner}</strong></td>
+                      <td className="right num">{row.ownerPts}</td>
+                      <td className="right"><span className={`tag ${row.active ? "done" : "soon"}`}>{row.active ? "Alive" : "Out"}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+
+  const BracketMatch = ({ title, rows, accent }) => (
+    <div className="bracket-match" style={{ "--bracket-tone": accent }}>
+      <div className="bracket-match-head">
+        <div className="bracket-stage">{title}</div>
+        <div className="bracket-line" />
+      </div>
+      <div className="bracket-teams">
+        {rows.length ? rows.map((row) => (
+          <div className="bracket-team" key={`${title}-${row.country}-${row.owner}`}>
+            {renderCountryChip(row, true)}
+          </div>
+        )) : <div className="bracket-empty">Waiting</div>}
+      </div>
+    </div>
+  );
+
+  const renderKnockout = () => (
+    <section className="panel pad" style={{ marginBottom: 18 }}>
+      <div className="section-head" style={{ marginBottom: 14 }}>
+        <div className="section-title"><Trophy />Knockout bracket</div>
+      </div>
+      <div className="modal-sub" style={{ marginTop: 0 }}>A single bracket view from the active countries into the final.</div>
+      <div className="bracket-board">
+        <div className="bracket-column">
+          {leftBracket.map((match, index) => <BracketMatch key={`left-${match.title}`} title={match.title} rows={match.rows} accent={index === 0 ? "#8bb8ff" : "#5ee2a4"} />)}
+        </div>
+        <div className="bracket-center">
+          <div className="bracket-final-card">
+            <div className="bracket-final-badge"><Trophy /></div>
+            <div className="bracket-final-title">Final</div>
+            <div className="bracket-final-sub">Champion lane centered here</div>
+            <div className="bracket-final-teams">
+              {bracketSeeds.slice(0, 2).map((row) => (
+                <span key={`final-${row.country}-${row.owner}`} className="bracket-final-chip">
+                  <Flag country={row.country} size={11} round />
+                  <span>{row.country}</span>
+                  <strong>{row.owner}</strong>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="bracket-column">
+          {rightBracket.map((match, index) => <BracketMatch key={`right-${match.title}`} title={match.title} rows={match.rows} accent={index === 0 ? "#d98506" : "#dc2626"} />)}
+        </div>
+      </div>
+    </section>
+  );
+
   return (
     <div className="rise">
       <section className="stats-hero panel">
@@ -1249,7 +1443,7 @@ function Stats({ players, matches, stats }) {
           <div>
             <div className="stats-eyebrow"><Target />Verified scoring</div>
             <h2>Goals, assists and penalties</h2>
-            <div className="stats-copy">Live ESPN match summaries drive the scorer table, and each country is tied back to the DHI owner.</div>
+            <div className="stats-copy">Live ESPN match summaries drive the scorer board; the country views sit in separate tabs.</div>
           </div>
           <div className="stats-badges">
             <span className="stats-badge"><span className="stats-mini-icon"><Target size={12} /></span>{topGoal ? `${topGoal.name} · ${topGoal.count}` : "Waiting for sync"}</span>
@@ -1267,156 +1461,7 @@ function Stats({ players, matches, stats }) {
             ))}
           </div>
         </div>
-        {panel === "scorers" ? (
-          <>
-            <div className="metric-grid">
-              {renderTop(topGoal, "Top goal scorer", Target)}
-              {renderTop(topAssist, "Top assist maker", Swords)}
-              {renderTop(topPenalty, "Top penalty scorer", Shield)}
-              <Metric icon={CalendarDays} value={stats?.completedMatches ?? matches.filter((match) => match.status === "completed").length} label="Completed matches" note="Only completed games count" />
-            </div>
-            <section className="panel pad" style={{ marginBottom: 18 }}>
-              <div className="section-head" style={{ marginBottom: 14 }}>
-                <div className="section-title"><Target />Scorer board</div>
-                <div className="tabs" style={{ marginBottom: 0 }}>
-                  {tabs.map(([id, label, Icon]) => (
-                    <button type="button" key={id} className={`tab-btn ${view === id ? "active" : ""}`} onClick={() => setView(id)}><Icon />{label}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="modal-sub" style={{ marginTop: 0 }}>Verified from {sourceLabel}{refreshedLabel ? `, refreshed ${refreshedLabel}` : ""}. The scorer board stays separate from country qualification.</div>
-              <div className="table-wrap">
-                <table className="leader-table">
-                  <thead>
-                    <tr><th style={{ width: 72 }}>Rank</th><th>Player</th><th className="right">{currentLabel}</th></tr>
-                  </thead>
-                  <tbody>
-                    {current.length ? current.map((item, index) => {
-                      const player = players.find((entry) => entry.name === item.name);
-                      const mapped = renderOwnerLabel(item);
-                      return (
-                        <tr key={`${view}-${item.name}`}>
-                          <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span>{index === 0 && <Crown size={17} color="var(--gold)" />}{(index === 1 || index === 2) && <Medal size={16} color={index === 1 ? "var(--silver)" : "var(--bronze)"} />}</div></td>
-                          <td>
-                            <div className="player-cell">
-                              <Avatar name={item.name} size={42} img={player?.avatar} />
-                              <div>
-                                <div className="player-name">{item.name}</div>
-                                <div className="player-meta">
-                                  <span className="country-map-chip" style={{ "--country-tone": mapped.tone }}>
-                                    {item.team ? <Flag country={item.team} size={12} round /> : <span className="country-dot" />}
-                                    <span>{mapped.team || item.name}</span>
-                                    {mapped.owner ? <strong>{mapped.owner}</strong> : null}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="right"><strong style={{ fontFamily: "var(--font-display)", fontSize: 24 }}>{item.count}</strong></td>
-                        </tr>
-                      );
-                    }) : <tr><td colSpan="3"><div className="empty"><Target />Waiting for verified ESPN scorer data.</div></td></tr>}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-            <section className="panel">
-              <PanelHeader icon={CalendarDays} title="Match scorer log" />
-              <div className="match-list">
-                {statMatches
-                  .filter((match) => matchStatList(match, "goals").length || matchStatList(match, "assists").length || matchStatList(match, "penalties").length)
-                  .sort((a, b) => safeDate(b.date) - safeDate(a.date) || String(b.id).localeCompare(String(a.id)))
-                  .slice(0, 10)
-                  .map((match) => (
-                    <div className="match-card" key={`stats-${match.id}`}>
-                      <div className="team"><Flag country={match.a} size={28} /><div className="team-meta"><div className="team-name">{match.a}</div></div></div>
-                      <div className="match-mid">
-                        <StatusTag status={match.status} />
-                        <div className="match-time">{match.stage} - {match.time}</div>
-                        <div className="match-stats">
-                          {matchStatList(match, "goals").length > 0 && <div className="match-stat"><span>Goals</span><b>{statSummary(matchStatList(match, "goals"))}</b></div>}
-                          {matchStatList(match, "assists").length > 0 && <div className="match-stat"><span>Assists</span><b>{statSummary(matchStatList(match, "assists"))}</b></div>}
-                          {matchStatList(match, "penalties").length > 0 && <div className="match-stat"><span>Penalties</span><b>{statSummary(matchStatList(match, "penalties"))}</b></div>}
-                        </div>
-                      </div>
-                      <div className="team right"><Flag country={match.b} size={28} /><div className="team-meta"><div className="team-name right">{match.b}</div></div></div>
-                    </div>
-                  ))}
-              </div>
-            </section>
-          </>
-        ) : panel === "qualification" ? (
-          <>
-            <section className="panel pad" style={{ marginBottom: 18 }}>
-              <div className="section-head" style={{ marginBottom: 14 }}>
-                <div className="section-title"><LayoutGrid />Country qualification</div>
-              </div>
-              <div className="modal-sub" style={{ marginTop: 0 }}>Country first. This tab lists the countries in the pool and whether each one is still alive.</div>
-              <div className="table-wrap">
-                <table className="leader-table">
-                  <thead>
-                    <tr><th style={{ width: 72 }}>Rank</th><th>Country</th><th>Owner</th><th className="right">Status</th></tr>
-                  </thead>
-                  <tbody>
-                    {countryRows.length ? countryRows.map((row, index) => (
-                      <tr key={`country-${row.country}-${row.owner}`}>
-                        <td><div className="player-cell"><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span></div></td>
-                        <td><div className="player-cell">{renderCountryChip(row, true)}</div></td>
-                        <td><strong style={{ fontFamily: "var(--font-display)" }}>{row.owner}</strong></td>
-                        <td className="right"><span className={`tag ${row.active ? "done" : "soon"}`}>{row.active ? "Qualified" : "Out"}</span></td>
-                      </tr>
-                    )) : <tr><td colSpan="4"><div className="empty"><LayoutGrid />No country data yet.</div></td></tr>}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          </>
-        ) : (
-          <>
-            <section className="panel pad" style={{ marginBottom: 18 }}>
-              <div className="section-head" style={{ marginBottom: 14 }}>
-                <div className="section-title"><Trophy />Knockout map</div>
-              </div>
-              <div className="modal-sub" style={{ marginTop: 0 }}>The map shows the path from group stage to the final, with the trophy in the center.</div>
-              <div className="knockout-grid">
-                <div className="knockout-map panel">
-                  <div className="knockout-map-head">
-                    <div className="knockout-panel-title">Knockout path</div>
-                    <div className="knockout-panel-sub">Flow from groups to the final.</div>
-                  </div>
-                  <div className="knockout-track">
-                    {knockoutStages.map((stage, index) => (
-                      <div className="knockout-node" key={stage.key} style={{ "--stage-tone": stage.accent }}>
-                        <div className="knockout-node-head">
-                          <span className="knockout-step">{index + 1}</span>
-                          <div>
-                            <div className="knockout-stage">{stage.title}</div>
-                            <div className="knockout-note">{stage.note}</div>
-                          </div>
-                          <div className="knockout-count num">{stage.count}</div>
-                        </div>
-                        <div className="knockout-chip-list">
-                          {stage.rows.map((row) => (
-                            <span key={`${stage.key}-${row.country}-${row.owner}`} className="knockout-chip">
-                              <Flag country={row.country} size={11} round />
-                              <span>{row.country}</span>
-                              <strong>{row.owner}</strong>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                    <div className="knockout-final">
-                      <div className="knockout-final-badge"><Trophy /></div>
-                      <div className="knockout-stage">Final</div>
-                      <div className="knockout-note">Champion lane centered here</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </>
-        )}
+        {panel === "scorers" ? renderScorers() : panel === "qualification" ? renderQualification() : renderKnockout()}
       </section>
     </div>
   );
