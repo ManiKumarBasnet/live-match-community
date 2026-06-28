@@ -146,6 +146,24 @@ const CSS = `
 .kcol.kfinal{flex:0 0 244px;justify-content:center;align-items:stretch;gap:12px;padding:0 8px}.kfinal-head{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:950;letter-spacing:.04em;text-transform:uppercase;color:var(--amber)}.kfinal-head svg{width:18px;height:18px}.kcol.kfinal .kitem{flex:0 0 auto;min-height:0}.kfinal-third{border:1px dashed var(--line-strong);border-radius:14px;padding:8px;background:var(--surface-soft)}.kfinal-third-label{font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);text-align:center;margin-bottom:6px}.kfinal-third .kmatch{border-left-color:var(--silver)}
 .kbracket-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.kbracket-legend-key{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:850;color:var(--muted)}.kbracket-legend-key i{width:11px;height:11px;border-radius:3px;flex:0 0 auto}
 @media(max-width:640px){.qteam-owner{display:none}.kchamp-team{font-size:18px}}
+/* ---- Player survival board ---- */
+.surv-panel{margin-bottom:20px}.surv-legend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}.surv-key{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:850;color:var(--muted)}.surv-key svg{width:11px;height:11px;color:var(--green-dark)}.surv-dot{width:10px;height:10px;border-radius:3px;flex:0 0 auto}.surv-dot.in{background:var(--green)}.surv-dot.q{background:var(--green-dark)}.surv-dot.out{background:var(--red)}
+.surv-tiers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.surv-tier{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff;box-shadow:var(--shadow-xs)}
+.surv-tier-head{display:flex;align-items:center;gap:11px;padding:13px 15px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,rgba(247,249,252,.7))}
+.surv-tier-icon{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto}.surv-tier-icon svg{width:17px;height:17px}.surv-tier-label{font-size:14px;font-weight:950;letter-spacing:-.02em}.surv-tier-note{font-size:11px;font-weight:800;color:var(--faint);margin-top:2px}.surv-tier-count{margin-left:auto;font-family:var(--font-display);font-size:24px;font-weight:800;line-height:1}
+.surv-tier.t3 .surv-tier-icon{background:var(--green-soft);color:var(--green-dark)}.surv-tier.t3{border-color:var(--green-line)}.surv-tier.t3 .surv-tier-count{color:var(--green-dark)}
+.surv-tier.t2 .surv-tier-icon{background:var(--blue-soft);color:var(--blue)}.surv-tier.t2 .surv-tier-count{color:var(--blue)}
+.surv-tier.t1 .surv-tier-icon{background:var(--amber-soft);color:var(--amber)}.surv-tier.t1 .surv-tier-count{color:var(--amber)}
+.surv-tier.t0 .surv-tier-icon{background:var(--red-soft);color:var(--red)}.surv-tier.t0{border-color:#f3c9d2}.surv-tier.t0 .surv-tier-count{color:var(--red)}
+.surv-list{display:flex;flex-direction:column;padding:6px}.surv-row{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:13px;background:transparent;cursor:pointer;text-align:left;transition:.14s;width:100%}.surv-row:hover{background:var(--surface-soft)}.surv-row+.surv-row{border-top:1px solid var(--line)}
+.surv-row-meta{min-width:0;flex:1;display:flex;flex-direction:column;gap:1px}.surv-row-name{font-size:14px;font-weight:900;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.surv-row-sub{font-size:11px;font-weight:800;color:var(--muted)}
+.surv-flags{display:flex;gap:5px;flex:0 0 auto}.surv-flag{position:relative;display:grid;place-items:center}.surv-flag .flag{box-shadow:0 1px 3px rgba(9,17,32,.18)}.surv-flag.out{opacity:.32;filter:grayscale(1)}.surv-flag.out::after{content:"";position:absolute;left:-1px;right:-1px;top:50%;height:2px;background:var(--red);transform:rotate(-18deg)}.surv-tick{position:absolute;right:-4px;bottom:-4px;width:13px;height:13px;border-radius:999px;background:var(--green-dark);color:#fff;display:grid;place-items:center;box-shadow:0 0 0 2px #fff}.surv-tick svg{width:8px;height:8px}
+.surv-tier.t0 .surv-row-name{color:var(--muted)}
+.surv-empty{padding:16px;text-align:center;font-size:12px;font-weight:800;color:var(--faint)}
+.surv-badge{position:absolute;top:14px;left:14px;padding:4px 9px;border-radius:999px;font-size:10.5px;font-weight:950;letter-spacing:.02em}.surv-badge.a3{background:var(--green-soft);color:var(--green-dark)}.surv-badge.a2{background:var(--blue-soft);color:var(--blue)}.surv-badge.a1{background:var(--amber-soft);color:var(--amber)}.surv-badge.a0{background:var(--red-soft);color:var(--red)}
+.player-card-top{position:relative}
+@media(max-width:760px){.surv-tiers{grid-template-columns:1fr}}
 `;
 
 const APPROVED = ["Sangay", "Advanced", "Tandin", "Roshan", "Chirag", "Mani", "Kyunchab", "Lhendup", "Buddy", "Manish", "Khorlo", "Cheche", "Zig", "Nirpa", "Lambu", "Tashi"];
@@ -869,6 +887,70 @@ function resolveBracket(groupBuckets, matches, players) {
   makeMatch(THIRD_PLACE_MATCH.m, "3rd", { type: "feeder", from: THIRD_PLACE_MATCH.top }, loserOf(THIRD_PLACE_MATCH.top), { type: "feeder", from: THIRD_PLACE_MATCH.bottom }, loserOf(THIRD_PLACE_MATCH.bottom));
 
   return { byNum: resolved, champion: resolved[104]?.winner || null };
+}
+
+// Per-country survival: who is still alive in the tournament vs knocked out,
+// derived from real results (group qualification + knockout losses). Used to
+// tell which owners still have a live team and who is out of the running.
+function computeSurvival(matches, players) {
+  const countries = [...new Set(players.flatMap((player) => player.countries))];
+  const rows = new Map();
+  countries.forEach((country) => rows.set(country, {
+    country, group: GROUP_ASSIGNMENTS[country] || null,
+    w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, played: 0,
+  }));
+  const knockoutLosers = new Set();
+  const knockoutWinners = new Set();
+
+  matches.forEach((match) => {
+    if (match.status !== "completed" || match.sa == null || match.sb == null) return;
+    const ga = GROUP_ASSIGNMENTS[match.a];
+    const gb = GROUP_ASSIGNMENTS[match.b];
+    if (ga && gb && ga === gb) {
+      const A = rows.get(match.a);
+      const B = rows.get(match.b);
+      if (A) { A.played += 1; A.gf += match.sa; A.ga += match.sb; }
+      if (B) { B.played += 1; B.gf += match.sb; B.ga += match.sa; }
+      if (match.sa > match.sb) { if (A) { A.w += 1; A.pts += 3; } if (B) B.l += 1; }
+      else if (match.sb > match.sa) { if (B) { B.w += 1; B.pts += 3; } if (A) A.l += 1; }
+      else { if (A) { A.d += 1; A.pts += 1; } if (B) { B.d += 1; B.pts += 1; } }
+    } else {
+      const winner = knockoutWinner(match);
+      if (winner) { knockoutWinners.add(winner); knockoutLosers.add(winner === match.a ? match.b : match.a); }
+    }
+  });
+  rows.forEach((row) => { row.gd = row.gf - row.ga; });
+
+  const groups = {};
+  rows.forEach((row) => { if (row.group) (groups[row.group] = groups[row.group] || []).push(row); });
+  const qualified = new Set();
+  const groupFinished = {};
+  const thirds = [];
+  const rankSort = (a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd) || Number(b.gf) - Number(a.gf) || a.country.localeCompare(b.country);
+  Object.entries(groups).forEach(([group, list]) => {
+    const sorted = [...list].sort(rankSort);
+    const finished = sorted.length >= 4 && sorted.every((row) => row.played >= 3);
+    groupFinished[group] = finished;
+    if (finished) {
+      qualified.add(sorted[0].country);
+      qualified.add(sorted[1].country);
+      if (sorted[2]) thirds.push(sorted[2]);
+    }
+  });
+  thirds.sort(rankSort).slice(0, 8).forEach((row) => qualified.add(row.country));
+
+  const status = new Map();
+  countries.forEach((country) => {
+    const row = rows.get(country);
+    let alive = true;
+    let reason = row.played > 0 ? "Still in the group stage" : "Yet to kick off";
+    if (knockoutLosers.has(country)) { alive = false; reason = "Knocked out"; }
+    else if (row.group && groupFinished[row.group] && !qualified.has(country)) { alive = false; reason = "Out in the group stage"; }
+    else if (knockoutWinners.has(country)) { reason = "Winning in the knockouts"; }
+    else if (qualified.has(country)) { reason = "Through to the Round of 32"; }
+    status.set(country, { alive, reason, qualified: qualified.has(country) });
+  });
+  return status;
 }
 
 function storageAvailable() {
@@ -1932,12 +2014,32 @@ function Schedule({ matches, players }) {
   );
 }
 
-function PlayersView({ players, me, onAvatar }) {
+function PlayersView({ players, matches = [], me, onAvatar }) {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  const survival = useMemo(() => computeSurvival(matches, players), [matches, players]);
+  const statusOf = (country) => survival.get(country) || { alive: true, reason: "", qualified: false };
+
+  // Decorate every player with their live survival picture, then rank by how
+  // many teams are still standing, then points.
+  const ranked = useMemo(() => players.map((player) => {
+    const teams = player.countries.map((country) => ({ country, ...statusOf(country) }));
+    const aliveCount = teams.filter((team) => team.alive).length;
+    const qualifiedCount = teams.filter((team) => team.qualified).length;
+    return { ...player, teams, aliveCount, qualifiedCount };
+  }).sort((a, b) => b.aliveCount - a.aliveCount || b.qualifiedCount - a.qualifiedCount || comparePlayers(a, b)), [players, survival]);
+
   const sorted = useMemo(() => [...players].sort(comparePlayers), [players]);
-  const visible = useMemo(() => players.filter((player) => player.name.toLowerCase().includes(query.trim().toLowerCase()) || player.countries.join(" ").toLowerCase().includes(query.trim().toLowerCase())), [players, query]);
-  const selected = selectedId ? players.find((player) => player.id === selectedId) : null;
+  const visible = useMemo(() => ranked.filter((player) => player.name.toLowerCase().includes(query.trim().toLowerCase()) || player.countries.join(" ").toLowerCase().includes(query.trim().toLowerCase())), [ranked, query]);
+  const selected = selectedId ? ranked.find((player) => player.id === selectedId) : null;
+
+  const TIERS = [
+    { key: 3, label: "All three still in", note: "Every team alive", cls: "t3", Icon: Flame },
+    { key: 2, label: "Two teams left", note: "Still well in it", cls: "t2", Icon: Shield },
+    { key: 1, label: "Down to one", note: "Hanging by a thread", cls: "t1", Icon: Activity },
+    { key: 0, label: "Out of hope", note: "No teams left", cls: "t0", Icon: WifiOff },
+  ];
+  const anyResults = matches.some((match) => match.status === "completed");
 
   const uploadAvatar = async (event, id) => {
     const file = event.target.files?.[0];
@@ -1947,12 +2049,66 @@ function PlayersView({ players, me, onAvatar }) {
     event.target.value = "";
   };
 
+  const teamFlags = (teams, size = 16) => (
+    <div className="surv-flags">
+      {teams.map((team) => (
+        <span key={team.country} className={`surv-flag ${team.alive ? "" : "out"}`} title={`${team.country} — ${team.reason}`}>
+          <Flag country={team.country} size={size} round />
+          {team.alive && team.qualified ? <span className="surv-tick"><Check /></span> : null}
+        </span>
+      ))}
+    </div>
+  );
+
   return (
     <div className="rise">
       <div className="section-head">
         <div className="section-title"><Users />{players.length} participants</div>
         <div className="search"><Search /><input className="input" placeholder="Search player or country..." value={query} onChange={(e) => setQuery(e.target.value)} /></div>
       </div>
+
+      {anyResults ? (
+        <section className="panel pad surv-panel">
+          <div className="section-head" style={{ marginBottom: 6 }}>
+            <div className="section-title"><Trophy />Who's still alive</div>
+            <div className="surv-legend">
+              <span className="surv-key"><i className="surv-dot in" />Team alive</span>
+              <span className="surv-key"><i className="surv-dot q" /><Check />Through to R32</span>
+              <span className="surv-key"><i className="surv-dot out" />Knocked out</span>
+            </div>
+          </div>
+          <div className="modal-sub" style={{ marginTop: 0 }}>Ranked by how many of each owner's three teams are still in the tournament. Updates automatically as results land.</div>
+          <div className="surv-tiers">
+            {TIERS.map(({ key, label, note, cls, Icon }) => {
+              const group = ranked.filter((player) => player.aliveCount === key);
+              return (
+                <div className={`surv-tier ${cls}`} key={key}>
+                  <div className="surv-tier-head">
+                    <span className="surv-tier-icon"><Icon /></span>
+                    <div><div className="surv-tier-label">{label}</div><div className="surv-tier-note">{note}</div></div>
+                    <span className="surv-tier-count">{group.length}</span>
+                  </div>
+                  {group.length ? (
+                    <div className="surv-list">
+                      {group.map((player) => (
+                        <button type="button" className="surv-row" key={player.id} onClick={() => setSelectedId(player.id)}>
+                          <Avatar name={player.name} size={34} img={player.avatar} />
+                          <div className="surv-row-meta">
+                            <span className="surv-row-name">{player.name}</span>
+                            <span className="surv-row-sub">{player.pts} pts · {player.qualifiedCount} through</span>
+                          </div>
+                          {teamFlags(player.teams, 15)}
+                        </button>
+                      ))}
+                    </div>
+                  ) : <div className="surv-empty">No one here</div>}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
+
       <div className="player-grid">
         {visible.map((player) => {
           const rank = sorted.findIndex((item) => item.id === player.id) + 1;
@@ -1962,8 +2118,9 @@ function PlayersView({ players, me, onAvatar }) {
                 <span className="rank-badge">#{rank}</span>
                 <Avatar name={player.name} size={58} img={player.avatar} />
                 <div style={{ textAlign: "left" }}><div className="card-name">{player.name}</div><div className="card-points"><strong>{player.pts}</strong><span>pts</span></div></div>
+                {anyResults ? <span className={`surv-badge a${player.aliveCount}`}>{player.aliveCount === 0 ? "Out" : `${player.aliveCount}/3 in`}</span> : null}
               </div>
-              <div className="country-chips">{player.countries.map((country) => <span key={country} className={`country-chip ${player.elim.includes(country) ? "out" : ""}`}><Flag country={country} size={15} round />{country}</span>)}</div>
+              <div className="country-chips">{player.teams.map((team) => <span key={team.country} className={`country-chip ${team.alive ? "" : "out"}`}><Flag country={team.country} size={15} round />{team.country}</span>)}</div>
               <div className="wdl-grid">{[["w", player.w, "Won"], ["d", player.d, "Draw"], ["l", player.l, "Lost"]].map(([key, value, label]) => <div className="wdl-box" key={key}><div className={`wdl-value ${key}`}>{value}</div><div className="wdl-label">{label}</div></div>)}</div>
             </button>
           );
@@ -1977,7 +2134,7 @@ function PlayersView({ players, me, onAvatar }) {
               <div><div className="profile-name">{selected.name}</div><div className="profile-points">{selected.pts}</div><div className="wdl-label">total points</div></div>
             </div>
             <div className="profile-stats">{[["w", selected.w, "Won"], ["d", selected.d, "Draw"], ["l", selected.l, "Lost"]].map(([key, value, label]) => <div className="profile-stat" key={key}><div className={`wdl-value ${key}`} style={{ fontSize: 22 }}>{value}</div><div className="wdl-label">{label}</div></div>)}</div>
-            <div className="field"><label>Countries</label><div className="country-chips" style={{ padding: 0, borderTop: 0 }}>{selected.countries.map((country) => <span key={country} className={`country-chip ${selected.elim.includes(country) ? "out" : ""}`}><Flag country={country} size={16} round />{country}</span>)}</div></div>
+            <div className="field"><label>Countries</label><div className="country-chips" style={{ padding: 0, borderTop: 0 }}>{(selected.teams || selected.countries.map((country) => ({ country, alive: true, reason: "" }))).map((team) => <span key={team.country} className={`country-chip ${team.alive ? "" : "out"}`} title={team.reason}><Flag country={team.country} size={16} round />{team.country}</span>)}</div></div>
             {me?.name === selected.name && <div className="field"><label>Update your photo</label><button type="button" className="btn btn-soft" onClick={() => document.getElementById(`avatar-${selected.id}`)?.click()}><Upload />Upload profile image</button><input id={`avatar-${selected.id}`} type="file" accept="image/*" onChange={(event) => uploadAvatar(event, selected.id)} style={{ display: "none" }} /></div>}
             <button type="button" className="btn btn-primary" style={{ width: "100%" }} onClick={() => setSelectedId(null)}>Done</button>
           </div>
@@ -3272,7 +3429,7 @@ export default function App() {
               : tab === "leaderboard" ? <Leaderboard players={standings} />
               : tab === "stats" ? <Stats players={standings} matches={matches} stats={tournamentStats} />
               : tab === "schedule" ? <Schedule matches={matches} players={standings} />
-              : tab === "players" ? <PlayersView players={standings} me={me} onAvatar={onAvatar} />
+              : tab === "players" ? <PlayersView players={standings} matches={matches} me={me} onAvatar={onAvatar} />
               : tab === "voting" ? <Voting matches={matches} players={standings} votes={votes} myVotes={myVotes} me={me} onVote={onVote} polls={SEED_POLLS} customPolls={customPolls} pollVotes={pollVotes} myPoll={myPoll} onPoll={onPoll} onPollCreate={onPollCreate} onVoteFor={onVoteFor} onPollFor={onPollFor} />
               : tab === "fanzone" ? <FanZone matches={matches} players={standings} me={me} comments={fanComments} onCommentAdd={onCommentAdd} onCommentDelete={onCommentDelete} />
               : tab === "admin" ? <Admin players={standings} matches={matches} announcements={announcements} verificationRequests={verificationRequests} analytics={analytics} onVerifyRequest={onVerifyRequest} onMatch={onMatch} onPlayer={onPlayer} onAvatar={onAvatar} onAnnAdd={onAnnAdd} onAnnDel={onAnnDel} live={live} autoMode={autoMode} setAutoMode={setAutoMode} storeOn={storeOn} />
