@@ -245,7 +245,7 @@ const GROUP_ASSIGNMENTS = {
   Germany: "Group E", Curacao: "Group E", "Ivory Coast": "Group E", Ecuador: "Group E",
   Netherlands: "Group F", Japan: "Group F", Sweden: "Group F", Tunisia: "Group F",
   Belgium: "Group G", Egypt: "Group G", Iran: "Group G", "New Zealand": "Group G",
-  Spain: "Group H", "Cape Verde": "Group H", "Saudi Arabia": "Group H", Uruguay: "Group H",
+  Spain: "Group H", "Cabo Verde": "Group H", "Saudi Arabia": "Group H", Uruguay: "Group H",
   France: "Group I", Senegal: "Group I", Iraq: "Group I", Norway: "Group I",
   Argentina: "Group J", Algeria: "Group J", Austria: "Group J", Jordan: "Group J",
   Portugal: "Group K", Congo: "Group K", Uzbekistan: "Group K", Colombia: "Group K",
