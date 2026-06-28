@@ -120,6 +120,32 @@ const CSS = `
 .live-dots{display:flex;gap:10px}.live-dot{height:6px;width:30px;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden;position:relative}.live-dot.on::after{content:"";position:absolute;inset:0;background:#27e08c;transform-origin:left;animation:dotfill var(--scene-ms,10000ms) linear both}@keyframes dotfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .live-foot-label{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#6f8ba1}.live-meta{margin-left:auto;display:flex;gap:20px;font-size:13px;font-weight:700;color:#7fa0b8;font-variant-numeric:tabular-nums}.live-meta b{color:#cfe0ec}
 @media(max-width:760px){.fan-grid{display:flex;flex-direction:column}.fan-room{order:-1;min-height:0}.fan-feed{max-height:280px}.fan-match-list{max-height:260px;overflow:auto}.fan-send{grid-template-columns:1fr}.lv-match{grid-template-columns:1fr;gap:14px;text-align:center}.lv-team,.lv-team.right{flex-direction:column;text-align:center}.lv-mid{order:-1}.live-meta{display:none}}
+/* ---- Qualification standings ---- */
+.qual-legend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}.qual-key{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:850;color:var(--muted)}.qual-key .qdot{width:10px;height:10px;border-radius:3px;flex:0 0 auto}.qdot.win{background:var(--green)}.qdot.third{background:var(--amber)}.qdot.out{background:var(--line-strong)}
+.qual-table{min-width:0}.qual-table th{padding:11px 8px;font-size:10px}.qual-table th:nth-child(2){padding-left:14px}.qual-table td{padding:9px 8px;border-bottom:1px solid var(--line)}.qual-table td:nth-child(2){padding-left:14px}.qual-table th.qnum-h{width:30px;text-align:center;padding-left:10px}
+.qual-table tbody tr.qrow{position:relative}.qrow td:first-child{position:relative}.qrow::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}.qrow.win::after{background:var(--green)}.qrow.third::after{background:var(--amber)}.qrow.out::after{background:transparent}
+.qrow.win{background:linear-gradient(90deg,rgba(2,162,92,.07),transparent 60%)}.qrow.third{background:linear-gradient(90deg,rgba(217,133,6,.07),transparent 60%)}.qrow.out{color:var(--muted)}
+.qpos{display:grid;place-items:center;width:22px;height:22px;border-radius:8px;margin:0 auto;font-family:var(--font-display);font-size:12px;font-weight:800;color:#fff}.qpos.win{background:var(--green)}.qpos.third{background:var(--amber)}.qpos.out{background:var(--line-strong);color:var(--faint)}
+.qteam{display:flex;align-items:center;gap:10px;min-width:0}.qteam .flag{width:24px;height:18px;border-radius:4px}.qteam-meta{min-width:0;display:flex;flex-direction:column;gap:1px}.qteam-name{font-size:13.5px;font-weight:900;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.qteam-owner{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;color:var(--faint)}.qteam-owner svg{width:11px;height:11px}
+.qpts{font-family:var(--font-display);font-size:17px;font-weight:800}.qual-table td.num{font-size:12.5px;color:var(--ink);font-weight:700}.qrow.out td.num{color:var(--muted)}
+/* ---- Knockout bracket tree ---- */
+.kchamp{display:flex;align-items:center;gap:16px;margin:14px 0 4px;padding:16px 18px;border-radius:20px;background:linear-gradient(135deg,rgba(216,162,0,.16),rgba(2,162,92,.1));border:1px solid color-mix(in srgb,var(--gold) 34%,#fff)}.kchamp-badge{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f5d46f);color:#1c1300;box-shadow:0 14px 30px rgba(216,162,0,.28);flex:0 0 auto}.kchamp-badge svg{width:26px;height:26px}.kchamp-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:var(--amber)}.kchamp-team{display:flex;align-items:center;gap:9px;font-size:22px;font-weight:950;letter-spacing:-.03em;margin-top:3px}.kchamp-owner{font-size:13px;font-weight:850;color:var(--muted)}
+.kbracket-scroll{overflow-x:auto;padding:6px 2px 4px;margin-top:12px}.kbracket{display:flex;align-items:stretch;min-width:1500px;min-height:880px}
+.kcol{display:flex;flex-direction:column;flex:1 1 0;min-width:182px}.kcol+.kcol{margin-left:26px}
+.kitem{flex:1 1 0;display:flex;align-items:center;position:relative;min-height:62px}
+.kmatch{position:relative;width:100%;background:#fff;border:1px solid var(--line-strong);border-radius:14px;box-shadow:var(--shadow-xs);overflow:hidden;border-left:3px solid var(--ktone,#3068ec)}
+.kmatch.live{box-shadow:0 0 0 1px rgba(226,51,79,.3),var(--shadow-xs)}
+.kmatch-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 10px;background:var(--surface-soft);border-bottom:1px solid var(--line)}.kmatch-no{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.kmatch-state{font-size:9px;font-weight:900;color:var(--muted);white-space:nowrap;flex:0 0 auto}.kmatch-state.live{color:var(--red)}.kmatch-state.completed{color:var(--green-dark)}
+.kteam{display:flex;align-items:center;gap:8px;padding:7px 10px;min-width:0}.kteam+.kteam{border-top:1px solid var(--line)}.kteam .flag{width:21px;height:15px;border-radius:3px;flex:0 0 auto}.kteam-dot{width:21px;height:15px;border-radius:3px;background:var(--surface-soft);border:1px dashed var(--line-strong);flex:0 0 auto}.kteam-name{font-size:12.5px;font-weight:850;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}.kteam.tbd .kteam-name{color:var(--faint);font-weight:800;font-size:11px}.kteam-owner{font-size:10px;font-weight:850;color:var(--faint);white-space:nowrap;flex:0 0 auto;max-width:74px;overflow:hidden;text-overflow:ellipsis}.kteam-score{font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--muted);min-width:14px;text-align:right;flex:0 0 auto}.kteam.win .kteam-name{color:var(--ink);font-weight:950}.kteam.win .kteam-score{color:var(--green-dark)}.kteam.win{background:linear-gradient(90deg,rgba(2,162,92,.09),transparent 70%)}
+.kmatch-final{border-left-width:0;border:1px solid color-mix(in srgb,var(--gold) 30%,#fff);box-shadow:0 16px 36px rgba(216,162,0,.16)}.kmatch-final .kmatch-top{background:linear-gradient(135deg,rgba(216,162,0,.14),rgba(216,162,0,.05))}.kmatch-final .kmatch-no{color:var(--amber)}
+/* connectors */
+.kcol.link>.kitem::after,.kcol.stub>.kitem::after{content:"";position:absolute;top:50%;width:26px;height:2px;background:var(--line-strong)}
+.kcol.flow-r>.kitem::after{left:100%}.kcol.flow-l>.kitem::after{right:100%}
+.kcol.link>.kitem:nth-child(odd)::before{content:"";position:absolute;top:50%;height:100%;width:2px;background:var(--line-strong)}
+.kcol.flow-r.link>.kitem:nth-child(odd)::before{left:calc(100% + 26px)}.kcol.flow-l.link>.kitem:nth-child(odd)::before{right:calc(100% + 26px)}
+.kcol.kfinal{flex:0 0 244px;justify-content:center;align-items:stretch;gap:12px;padding:0 8px}.kfinal-head{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:950;letter-spacing:.04em;text-transform:uppercase;color:var(--amber)}.kfinal-head svg{width:18px;height:18px}.kcol.kfinal .kitem{flex:0 0 auto;min-height:0}.kfinal-third{border:1px dashed var(--line-strong);border-radius:14px;padding:8px;background:var(--surface-soft)}.kfinal-third-label{font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);text-align:center;margin-bottom:6px}.kfinal-third .kmatch{border-left-color:var(--silver)}
+.kbracket-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.kbracket-legend-key{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:850;color:var(--muted)}.kbracket-legend-key i{width:11px;height:11px;border-radius:3px;flex:0 0 auto}
+@media(max-width:640px){.qteam-owner{display:none}.kchamp-team{font-size:18px}}
 `;
 
 const APPROVED = ["Sangay", "Advanced", "Tandin", "Roshan", "Chirag", "Mani", "Kyunchab", "Lhendup", "Buddy", "Manish", "Khorlo", "Cheche", "Zig", "Nirpa", "Lambu", "Tashi"];
@@ -208,6 +234,58 @@ const GROUP_ASSIGNMENTS = {
   England: "Group L", Croatia: "Group L", Ghana: "Group L", Panama: "Group L",
 };
 
+// ---------------------------------------------------------------------------
+// Official FIFA World Cup 2026 knockout bracket (match numbers 73-104).
+// Source: FIFA / Wikipedia "2026 FIFA World Cup knockout stage". This is the
+// fixed, published bracket - no redraws - so the whole tree is deterministic.
+// R32 slots reference group standings; later rounds reference feeder matches.
+// ---------------------------------------------------------------------------
+const R32_BRACKET = [
+  { m: 73, top: { type: "runner", group: "A" }, bottom: { type: "runner", group: "B" } },
+  { m: 74, top: { type: "winner", group: "E" }, bottom: { type: "third", pool: ["A", "B", "C", "D", "F"] } },
+  { m: 75, top: { type: "winner", group: "F" }, bottom: { type: "runner", group: "C" } },
+  { m: 76, top: { type: "winner", group: "C" }, bottom: { type: "runner", group: "F" } },
+  { m: 77, top: { type: "winner", group: "I" }, bottom: { type: "third", pool: ["C", "D", "F", "G", "H"] } },
+  { m: 78, top: { type: "runner", group: "E" }, bottom: { type: "runner", group: "I" } },
+  { m: 79, top: { type: "winner", group: "A" }, bottom: { type: "third", pool: ["C", "E", "F", "H", "I"] } },
+  { m: 80, top: { type: "winner", group: "L" }, bottom: { type: "third", pool: ["E", "H", "I", "J", "K"] } },
+  { m: 81, top: { type: "winner", group: "D" }, bottom: { type: "third", pool: ["B", "E", "F", "I", "J"] } },
+  { m: 82, top: { type: "winner", group: "G" }, bottom: { type: "third", pool: ["A", "E", "H", "I", "J"] } },
+  { m: 83, top: { type: "runner", group: "K" }, bottom: { type: "runner", group: "L" } },
+  { m: 84, top: { type: "winner", group: "H" }, bottom: { type: "runner", group: "J" } },
+  { m: 85, top: { type: "winner", group: "B" }, bottom: { type: "third", pool: ["E", "F", "G", "I", "J"] } },
+  { m: 86, top: { type: "winner", group: "J" }, bottom: { type: "runner", group: "H" } },
+  { m: 87, top: { type: "winner", group: "K" }, bottom: { type: "third", pool: ["D", "E", "I", "J", "L"] } },
+  { m: 88, top: { type: "runner", group: "D" }, bottom: { type: "runner", group: "G" } },
+];
+const R16_BRACKET = [
+  { m: 89, top: 74, bottom: 77 }, { m: 90, top: 73, bottom: 75 },
+  { m: 91, top: 76, bottom: 78 }, { m: 92, top: 79, bottom: 80 },
+  { m: 93, top: 83, bottom: 84 }, { m: 94, top: 81, bottom: 82 },
+  { m: 95, top: 86, bottom: 88 }, { m: 96, top: 85, bottom: 87 },
+];
+const QF_BRACKET = [
+  { m: 97, top: 89, bottom: 90 }, { m: 98, top: 93, bottom: 94 },
+  { m: 99, top: 91, bottom: 92 }, { m: 100, top: 95, bottom: 96 },
+];
+const SF_BRACKET = [
+  { m: 101, top: 97, bottom: 98 },
+  { m: 102, top: 99, bottom: 100 },
+];
+const FINAL_MATCH = { m: 104, top: 101, bottom: 102 };
+const THIRD_PLACE_MATCH = { m: 103, top: 101, bottom: 102 };
+// Visual top-to-bottom ordering of each half so connectors line up into pairs.
+const BRACKET_LEFT = { r32: [73, 75, 74, 77, 81, 82, 83, 84], r16: [90, 89, 94, 93], qf: [97, 98], sf: 101 };
+const BRACKET_RIGHT = { r32: [76, 78, 79, 80, 86, 88, 85, 87], r16: [91, 92, 95, 96], qf: [99, 100], sf: 102 };
+const ROUND_META = {
+  R32: { label: "Round of 32", tone: "#3068ec" },
+  R16: { label: "Round of 16", tone: "#7c3aed" },
+  QF: { label: "Quarter-final", tone: "#d98506" },
+  SF: { label: "Semi-final", tone: "#0a8a52" },
+  Final: { label: "Final", tone: "#d8a200" },
+  "3rd": { label: "Third place", tone: "#9aa6b2" },
+};
+
 const SEED_POLLS = [];
 
 const SCORING = [["Group Win", "3"], ["Draw", "1"], ["Round of 32", "3"], ["Round of 16", "5"], ["Quarter-final", "8"], ["Semi-final", "12"], ["Final", "18"], ["Champion", "25"]];
@@ -262,7 +340,10 @@ const NAME_MAP = {
 const normalizeName = (name) => {
   if (!name) return "";
   const trimmed = sanitizeText(String(name)).trim();
-  return NAME_MAP[trimmed] || trimmed;
+  // Strip diacritics so accented feeds (e.g. "Türkiye", "Côte d'Ivoire") still
+  // match our ASCII map/group keys instead of silently dropping the team.
+  const stripped = trimmed.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+  return NAME_MAP[trimmed] || NAME_MAP[stripped] || stripped;
 };
 
 function sanitizeText(value) {
@@ -620,6 +701,174 @@ function computePlayers(players, matches) {
     });
     return { ...player, w, d, l, pts: pts + (Number(player._bonus) || 0) };
   });
+}
+
+function groupLetterOf(group) {
+  const match = String(group || "").match(/Group ([A-Z])/);
+  return match ? match[1] : null;
+}
+
+// Winner of a single knockout fixture (handles a penalty shootout decider).
+function knockoutWinner(match) {
+  if (!match || match.status !== "completed" || match.sa == null || match.sb == null) return null;
+  if (match.sa > match.sb) return match.a;
+  if (match.sb > match.sa) return match.b;
+  const pa = match.pensA ?? match.shootoutA ?? match.scoring?.pensA;
+  const pb = match.pensB ?? match.shootoutB ?? match.scoring?.pensB;
+  if (pa != null && pb != null) return Number(pa) > Number(pb) ? match.a : match.b;
+  return null;
+}
+
+// Rank the 12 third-placed teams; the best 8 advance (FIFA: points, then GD, GF).
+function rankThirdPlaced(groupBuckets) {
+  const thirds = groupBuckets
+    .map((bucket) => {
+      const finished = bucket.rows.length >= 4 && bucket.rows.every((row) => (row.played || 0) >= 3);
+      const row = bucket.rows[2];
+      if (!finished || !row) return null;
+      return { ...row, groupLetter: groupLetterOf(bucket.group) };
+    })
+    .filter(Boolean)
+    .sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd) || Number(b.gf) - Number(a.gf) || a.country.localeCompare(b.country));
+  return thirds.map((row, index) => ({ ...row, qualified: index < 8, seed: index + 1 }));
+}
+
+// Build the entire knockout tree from live group standings + real ESPN
+// knockout fixtures. Slots resolve to real teams as groups finish; scores and
+// winners come straight from the fixtures, so the bracket updates on its own.
+function resolveBracket(groupBuckets, matches, players) {
+  const stand = {};
+  groupBuckets.forEach((bucket) => {
+    const letter = groupLetterOf(bucket.group);
+    if (!letter) return;
+    const finished = bucket.rows.length >= 4 && bucket.rows.every((row) => (row.played || 0) >= 3);
+    stand[letter] = { winner: bucket.rows[0], runner: bucket.rows[1], third: bucket.rows[2], finished };
+  });
+
+  const isKnockoutFixture = (match) => {
+    if (!match.a || !match.b) return false;
+    const ga = GROUP_ASSIGNMENTS[match.a];
+    const gb = GROUP_ASSIGNMENTS[match.b];
+    if (ga && gb) return ga !== gb;
+    return !/group/i.test(match.stage || "");
+  };
+  const pool = matches
+    .filter(isKnockoutFixture)
+    .slice()
+    .sort((a, b) => safeDate(a.date) - safeDate(b.date) || String(a.id).localeCompare(String(b.id)));
+  const used = new Set();
+  const findFixture = (names) => {
+    const wanted = names.filter(Boolean);
+    if (!wanted.length) return null;
+    for (const match of pool) {
+      if (used.has(match.id)) continue;
+      const teams = [match.a, match.b];
+      if (wanted.every((name) => teams.includes(name))) {
+        used.add(match.id);
+        return match;
+      }
+    }
+    return null;
+  };
+
+  const slotLabel = (slot) => {
+    if (!slot) return "TBD";
+    if (slot.type === "winner") return `Winner ${slot.group}`;
+    if (slot.type === "runner") return `Runner-up ${slot.group}`;
+    if (slot.type === "third") return `3rd ${slot.pool.join("/")}`;
+    if (slot.type === "feeder") return `Winner M${slot.from}`;
+    return "TBD";
+  };
+  const concreteFromSlot = (slot) => {
+    if (slot.type === "winner" || slot.type === "runner") {
+      const group = stand[slot.group];
+      if (group && group.finished) {
+        const row = slot.type === "winner" ? group.winner : group.runner;
+        if (row) return row.country;
+      }
+    }
+    return null;
+  };
+  const buildSide = (slot, team) => ({
+    team: team || null,
+    label: team ? null : slotLabel(slot),
+    owner: team ? getOwner(team, players)?.name || "" : "",
+    tone: team ? countryTone(team) : "#9aa4b2",
+    score: null,
+    isWinner: false,
+  });
+
+  const resolved = {};
+  const makeMatch = (num, round, topSlot, topTeam, bottomSlot, bottomTeam, forcedFixture = null) => {
+    let topName = topTeam;
+    let bottomName = bottomTeam;
+    const fixture = forcedFixture || findFixture([topName, bottomName].filter(Boolean));
+    if (fixture) {
+      const teams = [fixture.a, fixture.b];
+      if (topName && !bottomName) bottomName = teams.find((team) => team !== topName) || null;
+      else if (!topName && bottomName) topName = teams.find((team) => team !== bottomName) || null;
+      else if (!topName && !bottomName) { topName = fixture.a; bottomName = fixture.b; }
+    }
+    const home = buildSide(topSlot, topName);
+    const away = buildSide(bottomSlot, bottomName);
+    let status = "upcoming";
+    let winner = null;
+    if (fixture) {
+      status = fixture.status || "upcoming";
+      winner = knockoutWinner(fixture);
+      // Only surface a scoreline once the game is actually under way.
+      if (status !== "upcoming") {
+        const aIsHome = fixture.a === home.team;
+        home.score = aIsHome ? fixture.sa : fixture.sb;
+        away.score = aIsHome ? fixture.sb : fixture.sa;
+      }
+      home.isWinner = Boolean(winner) && winner === home.team;
+      away.isWinner = Boolean(winner) && winner === away.team;
+    }
+    resolved[num] = { num, round, home, away, status, winner, hasFixture: Boolean(fixture), date: fixture?.date || null, time: fixture?.time || null };
+    return resolved[num];
+  };
+
+  // Pass 1: resolve each R32 tie from known group winners/runners and their fixtures.
+  const r32Pending = [];
+  R32_BRACKET.forEach(({ m, top, bottom }) => {
+    const match = makeMatch(m, "R32", top, concreteFromSlot(top), bottom, concreteFromSlot(bottom));
+    if (!match.hasFixture && (!match.home.team || !match.away.team)) r32Pending.push({ m, top, bottom });
+  });
+  // Pass 2: any tie still missing a team claims its real game from the remaining
+  // Round-of-32 fixtures (the earliest 16 knockout games), so a scheduled match
+  // never renders blank even when the standings can't name the slot yet.
+  const r32Fixtures = pool.slice(0, 16);
+  const groupOf = (team) => groupLetterOf(GROUP_ASSIGNMENTS[team]);
+  r32Pending.forEach(({ m, top, bottom }) => {
+    const fixture = r32Fixtures.find((fx) => !used.has(fx.id));
+    if (!fixture) return;
+    used.add(fixture.id);
+    const topGroup = top.type === "winner" || top.type === "runner" ? top.group : null;
+    const bottomGroup = bottom.type === "winner" || bottom.type === "runner" ? bottom.group : null;
+    let topName = fixture.a;
+    let bottomName = fixture.b;
+    if (topGroup && groupOf(fixture.b) === topGroup) { topName = fixture.b; bottomName = fixture.a; }
+    else if (bottomGroup && groupOf(fixture.a) === bottomGroup) { topName = fixture.b; bottomName = fixture.a; }
+    makeMatch(m, "R32", top, topName, bottom, bottomName, fixture);
+  });
+  const processLinked = (bracket, round) => {
+    bracket.forEach(({ m, top, bottom }) => {
+      makeMatch(m, round, { type: "feeder", from: top }, resolved[top]?.winner || null, { type: "feeder", from: bottom }, resolved[bottom]?.winner || null);
+    });
+  };
+  processLinked(R16_BRACKET, "R16");
+  processLinked(QF_BRACKET, "QF");
+  processLinked(SF_BRACKET, "SF");
+  makeMatch(FINAL_MATCH.m, "Final", { type: "feeder", from: FINAL_MATCH.top }, resolved[FINAL_MATCH.top]?.winner || null, { type: "feeder", from: FINAL_MATCH.bottom }, resolved[FINAL_MATCH.bottom]?.winner || null);
+  const loserOf = (num) => {
+    const result = resolved[num];
+    if (!result || !result.winner) return null;
+    return result.home.team === result.winner ? result.away.team : result.home.team;
+  };
+  makeMatch(THIRD_PLACE_MATCH.m, "3rd", { type: "feeder", from: THIRD_PLACE_MATCH.top }, loserOf(THIRD_PLACE_MATCH.top), { type: "feeder", from: THIRD_PLACE_MATCH.bottom }, loserOf(THIRD_PLACE_MATCH.bottom));
+
+  return { byNum: resolved, champion: resolved[104]?.winner || null };
 }
 
 function storageAvailable() {
@@ -1264,23 +1513,34 @@ function Stats({ players, matches, stats }) {
     return ordered
       .sort((a, b) => groupRank(a[0]) - groupRank(b[0]) || a[0].localeCompare(b[0]))
       .map(([group, rows]) => {
-        const totalMatches = matches.filter((match) => match.stage === group).length;
-        const completedMatches = matches.filter((match) => match.stage === group && match.status === "completed").length;
-        const finished = totalMatches > 0 && completedMatches === totalMatches;
+        // Count a fixture as this group's when both teams belong to the group;
+        // this is independent of how the ESPN feed labels the stage string.
+        const inGroup = (match) => countryGroupMap.get(match.a) === group && countryGroupMap.get(match.b) === group;
+        const groupMatches = matches.filter(inGroup);
+        const completedMatches = groupMatches.filter((match) => match.status === "completed").length;
+        const totalMatches = groupMatches.length || rows.length * 3 / 2;
         const sorted = [...rows].sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd) || Number(b.gf) - Number(a.gf) || a.country.localeCompare(b.country));
-        const advancing = new Set(finished ? sorted.slice(0, 2).map((row) => row.country) : []);
+        // A group is decided once every team has played its three matches.
+        const finished = sorted.length >= 4 && sorted.every((row) => (row.played || 0) >= 3);
         return {
           group,
-          rows: sorted.map((row) => ({
+          rows: sorted.map((row, index) => ({
             ...row,
-            status: finished ? (advancing.has(row.country) ? "Advancing" : "Out") : completedMatches > 0 ? "In progress" : "Pending",
+            seed: index + 1,
+            // Live qualification position: 1st/2nd advance, 3rd to best-third race, 4th out.
+            qualify: index === 0 ? "win" : index === 1 ? "qualify" : index === 2 ? "third" : "out",
+            status: finished ? (index < 2 ? "Advancing" : index === 2 ? "3rd place" : "Out") : completedMatches > 0 ? "In progress" : "Pending",
           })),
           totalMatches,
           completedMatches,
           finished,
         };
       });
-  }, [countryRows, matches]);
+  }, [countryRows, countryGroupMap, matches]);
+
+  const thirdPlaceTable = useMemo(() => rankThirdPlaced(groupBuckets), [groupBuckets]);
+  const bracket = useMemo(() => resolveBracket(groupBuckets, matches, players), [groupBuckets, matches, players]);
+  const qualifiedThird = useMemo(() => new Set(thirdPlaceTable.filter((row) => row.qualified).map((row) => row.country)), [thirdPlaceTable]);
 
   const renderOwnerLabel = (item) => {
     if (!item) return null;
@@ -1407,51 +1667,30 @@ function Stats({ players, matches, stats }) {
     </>
   );
 
+  const qualRow = (row, big = false) => (
+    <div className="qteam">
+      <Flag country={row.country} size={big ? 22 : 20} />
+      <div className="qteam-meta">
+        <span className="qteam-name">{row.country}</span>
+        {row.owner ? <span className="qteam-owner"><Users />{row.owner}</span> : null}
+      </div>
+    </div>
+  );
+  const fmtGd = (value) => (value > 0 ? `+${value}` : `${value}`);
+  const qualifiedThirdCount = thirdPlaceTable.filter((row) => row.qualified).length;
+
   const renderQualification = () => (
     <section className="panel pad" style={{ marginBottom: 18 }}>
-      <div className="section-head" style={{ marginBottom: 14 }}>
-        <div className="section-title"><LayoutGrid />Country qualification</div>
+      <div className="section-head" style={{ marginBottom: 8 }}>
+        <div className="section-title"><LayoutGrid />Group standings</div>
+        <div className="qual-legend">
+          <span className="qual-key"><i className="qdot win" />Top 2 advance</span>
+          <span className="qual-key"><i className="qdot third" />3rd · best 8 advance</span>
+          <span className="qual-key"><i className="qdot out" />Eliminated</span>
+        </div>
       </div>
-      <div className="modal-sub" style={{ marginTop: 0 }}>Grouped by stage and ranked only inside each group using points, goal difference and goals for. No cross-group ranking is shown here.</div>
-      <div className="group-card" style={{ marginBottom: 14 }}>
-        <div className="group-card-head">
-          <div>
-            <div className="group-title">Qualified for next stage</div>
-            <div className="group-sub">Only completed groups appear here. No group is projected early.</div>
-          </div>
-          <span className="tag soon">{groupBuckets.filter(({ finished }) => finished).length ? "Locked" : "Waiting"}</span>
-        </div>
-        <div style={{ padding: 16 }}>
-          {groupBuckets.some(({ finished }) => finished) ? (
-            <div style={{ display: "grid", gap: 12 }}>
-              {groupBuckets.filter(({ finished }) => finished).map(({ group, rows }) => {
-                const advancing = rows.filter((row) => row.status === "Advancing");
-                return (
-                  <div key={`qualified-${group}`} style={{ display: "grid", gap: 8 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-                      <strong style={{ fontSize: 13, fontWeight: 950 }}>{group}</strong>
-                      <span className="tag done">{advancing.length} qualified</span>
-                    </div>
-                    <div className="country-chips" style={{ padding: 0, borderTop: 0 }}>
-                      {advancing.map((row) => (
-                        <span key={`qualified-chip-${group}-${row.country}-${row.owner}`} className="country-chip">
-                          <Flag country={row.country} size={15} round />
-                          {row.country}
-                          <strong>{row.owner}</strong>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="empty" style={{ padding: "28px 20px" }}>
-              <LayoutGrid />
-              No group has qualified yet.
-            </div>
-          )}
-        </div>
+      <div className="modal-sub" style={{ marginTop: 0 }}>
+        48 teams · 12 groups of four. The top two in every group reach the Round of 32, joined by the eight best third-placed teams. Live from {sourceLabel || "ESPN"} — the table updates automatically as results land.
       </div>
       <div className="group-grid">
         {groupBuckets.map(({ group, rows, completedMatches, totalMatches, finished }) => (
@@ -1459,195 +1698,172 @@ function Stats({ players, matches, stats }) {
             <div className="group-card-head">
               <div>
                 <div className="group-title">{group}</div>
-                <div className="group-sub">{rows.length} countries · {completedMatches}/{totalMatches || rows.length} matches</div>
+                <div className="group-sub">{completedMatches}/{Math.round(totalMatches) || 6} matches played</div>
               </div>
-              <span className={`tag ${finished ? "done" : "soon"}`}>{finished ? "Completed" : completedMatches > 0 ? "In progress" : "Pending"}</span>
+              <span className={`tag ${finished ? "done" : completedMatches > 0 ? "live" : "soon"}`}>{finished ? "Final" : completedMatches > 0 ? "In play" : "Upcoming"}</span>
             </div>
             <div className="table-wrap">
-              <table className="leader-table group-table">
+              <table className="leader-table qual-table">
                 <thead>
-                  <tr><th style={{ width: 60 }}>Rk</th><th>Country</th><th>Owner</th><th className="right">W</th><th className="right">D</th><th className="right">L</th><th className="right">GD</th><th className="right">Pts</th><th className="right">Status</th></tr>
+                  <tr>
+                    <th className="qnum-h">#</th><th>Team</th>
+                    <th className="right">P</th><th className="right">W</th><th className="right">D</th><th className="right">L</th>
+                    <th className="right">GF</th><th className="right">GA</th><th className="right">GD</th><th className="right">Pts</th>
+                  </tr>
                 </thead>
                 <tbody>
-                  {rows.map((row, index) => (
-                    <tr key={`${group}-${row.country}-${row.owner}`}>
-                      <td><span className={`rank ${index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : ""}`}>{index + 1}</span></td>
-                      <td>{renderCountryChip(row, true)}</td>
-                      <td><strong style={{ fontFamily: "var(--font-display)" }}>{row.owner}</strong></td>
-                      <td className="right num">{row.w}</td>
-                      <td className="right num">{row.d}</td>
-                      <td className="right num">{row.l}</td>
-                      <td className="right num">{row.gd}</td>
-                      <td className="right num">{row.pts}</td>
-                      <td className="right"><span className={`tag ${row.status === "Advancing" ? "done" : "soon"}`}>{row.status}</span></td>
-                    </tr>
-                  ))}
+                  {rows.map((row) => {
+                    const tone = row.qualify === "win" || row.qualify === "qualify" ? "win" : row.qualify === "third" ? (qualifiedThird.has(row.country) ? "win" : "third") : "out";
+                    return (
+                      <tr key={`${group}-${row.country}-${row.owner}`} className={`qrow ${tone}`}>
+                        <td><span className={`qpos ${tone}`}>{row.seed}</span></td>
+                        <td>{qualRow(row)}</td>
+                        <td className="right num">{row.played}</td>
+                        <td className="right num">{row.w}</td>
+                        <td className="right num">{row.d}</td>
+                        <td className="right num">{row.l}</td>
+                        <td className="right num">{row.gf}</td>
+                        <td className="right num">{row.ga}</td>
+                        <td className="right num">{fmtGd(row.gd)}</td>
+                        <td className="right"><strong className="qpts">{row.pts}</strong></td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           </article>
         ))}
       </div>
+
+      <article className="group-card" style={{ marginTop: 16 }}>
+        <div className="group-card-head">
+          <div>
+            <div className="group-title">Best third-placed teams</div>
+            <div className="group-sub">All 12 groups ranked together · the top eight join the Round of 32</div>
+          </div>
+          <span className={`tag ${qualifiedThirdCount >= 8 ? "done" : "soon"}`}>{qualifiedThirdCount}/8 secured</span>
+        </div>
+        <div className="table-wrap">
+          {thirdPlaceTable.length ? (
+            <table className="leader-table qual-table">
+              <thead>
+                <tr>
+                  <th className="qnum-h">#</th><th>Team</th><th className="right">Grp</th>
+                  <th className="right">P</th><th className="right">W</th><th className="right">D</th><th className="right">L</th>
+                  <th className="right">GD</th><th className="right">Pts</th><th className="right">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {thirdPlaceTable.map((row) => (
+                  <tr key={`third-${row.country}`} className={`qrow ${row.qualified ? "win" : "out"}`}>
+                    <td><span className={`qpos ${row.qualified ? "win" : "out"}`}>{row.seed}</span></td>
+                    <td>{qualRow(row)}</td>
+                    <td className="right num">{row.groupLetter}</td>
+                    <td className="right num">{row.played}</td>
+                    <td className="right num">{row.w}</td>
+                    <td className="right num">{row.d}</td>
+                    <td className="right num">{row.l}</td>
+                    <td className="right num">{fmtGd(row.gd)}</td>
+                    <td className="right num">{row.pts}</td>
+                    <td className="right"><span className={`tag ${row.qualified ? "done" : "soon"}`}>{row.qualified ? "Advances" : "Out"}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div className="empty" style={{ padding: "28px 20px" }}><LayoutGrid />Third-place standings appear once groups are decided.</div>
+          )}
+        </div>
+      </article>
     </section>
   );
 
-  const BracketMatch = ({ title, rows, accent, hint }) => (
-    <div className="bracket-match" style={{ "--bracket-tone": accent }}>
-      <div className="bracket-match-head">
-        <div className="bracket-stage">{title}</div>
-        <div className="bracket-line" />
-      </div>
-      {hint ? <div className="bracket-hint">{hint}</div> : null}
-      <div className="bracket-teams">
-        {rows.length ? rows.map((row) => (
-          <div className="bracket-team" key={`${title}-${row.country}-${row.owner}`}>
-            {renderCountryChip(row, true)}
-          </div>
-        )) : <div className="bracket-empty">TBD</div>}
-      </div>
+  const BracketSide = ({ side }) => (
+    <div className={`kteam ${side.isWinner ? "win" : ""} ${side.team ? "" : "tbd"}`}>
+      {side.team ? <Flag country={side.team} size={17} /> : <span className="kteam-dot" />}
+      <span className="kteam-name">{side.team || side.label}</span>
+      {side.owner ? <span className="kteam-owner">{side.owner}</span> : null}
+      <span className="kteam-score">{side.score == null ? "" : side.score}</span>
     </div>
   );
 
-  const roundOf32Matches = [
-    { match: 73, home: "Runner-up Group A", away: "Runner-up Group B", tone: "#8bb8ff" },
-    { match: 74, home: "Winner Group E", away: "Best 3rd A/B/C/D/F", tone: "#67d7a0" },
-    { match: 75, home: "Winner Group F", away: "Runner-up Group C", tone: "#d98506" },
-    { match: 76, home: "Winner Group C", away: "Runner-up Group F", tone: "#8bb8ff" },
-    { match: 77, home: "Winner Group I", away: "Best 3rd C/D/F/G/H", tone: "#67d7a0" },
-    { match: 78, home: "Runner-up Group E", away: "Runner-up Group I", tone: "#d98506" },
-    { match: 79, home: "Winner Group A", away: "Best 3rd C/E/F/H/I", tone: "#8bb8ff" },
-    { match: 80, home: "Winner Group L", away: "Best 3rd E/H/I/J/K", tone: "#67d7a0" },
-    { match: 81, home: "Winner Group D", away: "Best 3rd B/E/F/I/J", tone: "#d98506" },
-    { match: 82, home: "Winner Group G", away: "Best 3rd A/E/H/I/J", tone: "#8bb8ff" },
-    { match: 83, home: "Runner-up Group K", away: "Runner-up Group L", tone: "#67d7a0" },
-    { match: 84, home: "Winner Group H", away: "Runner-up Group J", tone: "#d98506" },
-    { match: 85, home: "Winner Group B", away: "Best 3rd E/F/G/I/J", tone: "#8bb8ff" },
-    { match: 86, home: "Winner Group J", away: "Runner-up Group H", tone: "#67d7a0" },
-    { match: 87, home: "Winner Group K", away: "Best 3rd D/E/I/J/L", tone: "#d98506" },
-    { match: 88, home: "Runner-up Group D", away: "Runner-up Group G", tone: "#8bb8ff" },
-  ];
-  const leftBracketMatches = roundOf32Matches.slice(0, 8);
-  const rightBracketMatches = roundOf32Matches.slice(8);
+  const BracketCard = ({ num, final }) => {
+    const game = bracket.byNum[num];
+    if (!game) return null;
+    const meta = ROUND_META[game.round] || {};
+    const state = game.status === "live" ? "LIVE" : game.status === "completed" ? "FT" : (game.time ? game.time.replace(/ BTT$/, "") : "—");
+    return (
+      <div className={`kmatch ${game.status} ${final ? "kmatch-final" : ""} ${game.winner ? "decided" : ""}`} style={{ "--ktone": meta.tone }}>
+        <div className="kmatch-top">
+          <span className="kmatch-no">{meta.label} · M{num}</span>
+          <span className={`kmatch-state ${game.status}`}>{state}</span>
+        </div>
+        <BracketSide side={game.home} />
+        <BracketSide side={game.away} />
+      </div>
+    );
+  };
+
+  const renderColumn = (nums, flow, kind) => (
+    <div className={`kcol ${flow} ${kind}`}>
+      {nums.map((num) => (
+        <div className="kitem" key={`kitem-${num}`}><BracketCard num={num} /></div>
+      ))}
+    </div>
+  );
+
+  const r32Done = R32_BRACKET.filter(({ m }) => bracket.byNum[m]?.status === "completed").length;
+  const champion = bracket.champion;
 
   const renderKnockout = () => (
     <section className="panel pad" style={{ marginBottom: 18 }}>
-      <div className="section-head" style={{ marginBottom: 14 }}>
+      <div className="section-head" style={{ marginBottom: 8 }}>
         <div className="section-title"><Trophy />Knockout bracket</div>
+        <span className={`tag ${r32Done ? "live" : "soon"}`}>{r32Done}/16 R32 played</span>
       </div>
-      <div className="modal-sub" style={{ marginTop: 0 }}>This is the World Cup path from the group stage to the final. Only the round-of-32 structure is shown with names now; later rounds stay empty until qualifiers exist.</div>
-      <div className="knockout-roadmap">
-        <div className="knockout-stage-column">
-          <div className="knockout-stage-title">Group stage</div>
-          <div className="knockout-stage-note">Ranked inside each group using points, goal difference and goals scored.</div>
-          <div className="knockout-group-list">
-            {groupBuckets.map(({ group, rows, finished }) => (
-              <div className="knockout-group-card" key={`road-${group}`}>
-                <div className="knockout-group-head">
-                  <strong>{group}</strong>
-                  <span className={`tag ${finished ? "done" : "soon"}`}>{finished ? "Locked" : "Open"}</span>
-                </div>
-                <div className="knockout-group-body">
-                  {rows.slice(0, 2).map((row, index) => (
-                    <div key={`road-${group}-${row.country}-${row.owner}`} className="knockout-group-line">
-                      <span className={`knockout-rank ${index === 0 ? "gold" : "silver"}`}>{index + 1}</span>
-                      <span className="country-map-chip" style={{ "--country-tone": row.tone }}>
-                        <Flag country={row.country} size={12} round />
-                        <span>{row.country}</span>
-                        <strong>{row.owner}</strong>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="qualified-summary">
-            <div className="qualified-summary-head">
-              <strong>Qualified for next stage</strong>
-              <span className="qualified-count">{groupBuckets.filter(({ finished }) => finished).length} groups locked</span>
-            </div>
-            <div className="qualified-summary-body">
-              {groupBuckets.filter(({ finished }) => finished).length ? groupBuckets.filter(({ finished }) => finished).map(({ group, rows }) => (
-                <div key={`qualified-${group}`} className="qualified-row">
-                  <span className="qualified-group">{group}</span>
-                  <div className="qualified-chips">
-                    {rows.filter((row) => row.status === "Advancing").map((row) => (
-                      <span key={`qualified-${group}-${row.country}`} className="country-chip">
-                        <Flag country={row.country} size={14} round />
-                        {row.country}
-                        <strong>{row.owner}</strong>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )) : <div className="empty" style={{ padding: "18px 14px" }}><LayoutGrid />No group is locked yet.</div>}
-            </div>
+      <div className="modal-sub" style={{ marginTop: 0 }}>
+        The official FIFA 2026 bracket — 32 teams, single elimination to the final. Match-ups, scores and winners fill in automatically from {sourceLabel || "ESPN"} as games finish.
+      </div>
+
+      {champion ? (
+        <div className="kchamp">
+          <div className="kchamp-badge"><Trophy /></div>
+          <div>
+            <div className="kchamp-label">World Champions</div>
+            <div className="kchamp-team"><Flag country={champion} size={26} /> {champion}{getOwner(champion, players)?.name ? <span className="kchamp-owner">· {getOwner(champion, players).name}</span> : null}</div>
           </div>
         </div>
-        <div className="knockout-bracket-column">
-          <div className="knockout-bracket-tree">
-            <div className="knockout-side-panel left">
-              <div className="knockout-stage-title">Round of 32</div>
-              <div className="knockout-stage-note">Left side of the FIFA bracket. Cards stay compact and connect inward.</div>
-              <div className="knockout-side-grid">
-                {leftBracketMatches.map((item) => (
-                  <div className="round32-card side-card" key={`r32-left-${item.match}`} style={{ "--tone": item.tone }}>
-                    <div className="round32-top">
-                      <span className="round32-match">Match {item.match}</span>
-                      <span className="round32-round">R32</span>
-                    </div>
-                    <div className="round32-slot"><span>{item.home}</span></div>
-                    <div className="round32-vs">vs</div>
-                    <div className="round32-slot"><span>{item.away}</span></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="knockout-future-panel">
-              <div className="knockout-stage-title">Later rounds</div>
-              <div className="knockout-stage-note">Only Round of 32 is populated. Everything after that stays empty until qualifiers exist.</div>
-              <div className="future-bracket">
-                <div className="future-node">
-                  <span className="future-label">Round of 16</span>
-                  <strong>TBD</strong>
-                </div>
-                <div className="future-connector" />
-                <div className="future-node">
-                  <span className="future-label">Quarter-finals</span>
-                  <strong>TBD</strong>
-                </div>
-                <div className="future-connector" />
-                <div className="future-node">
-                  <span className="future-label">Semi-finals</span>
-                  <strong>TBD</strong>
-                </div>
-                <div className="future-connector" />
-                <div className="future-node knockout-final-card">
-                  <div className="bracket-final-badge"><Trophy /></div>
-                  <span className="future-label">Final</span>
-                  <strong>TBD</strong>
-                </div>
-              </div>
-            </div>
-            <div className="knockout-side-panel right">
-              <div className="knockout-stage-title">Round of 32</div>
-              <div className="knockout-stage-note">Right side mirror of the FIFA bracket.</div>
-              <div className="knockout-side-grid">
-                {rightBracketMatches.map((item) => (
-                  <div className="round32-card side-card" key={`r32-right-${item.match}`} style={{ "--tone": item.tone }}>
-                    <div className="round32-top">
-                      <span className="round32-match">Match {item.match}</span>
-                      <span className="round32-round">R32</span>
-                    </div>
-                    <div className="round32-slot"><span>{item.home}</span></div>
-                    <div className="round32-vs">vs</div>
-                    <div className="round32-slot"><span>{item.away}</span></div>
-                  </div>
-                ))}
-              </div>
+      ) : null}
+
+      <div className="kbracket-scroll">
+        <div className="kbracket">
+          {renderColumn(BRACKET_LEFT.r32, "flow-r", "link")}
+          {renderColumn(BRACKET_LEFT.r16, "flow-r", "link")}
+          {renderColumn(BRACKET_LEFT.qf, "flow-r", "link")}
+          {renderColumn([BRACKET_LEFT.sf], "flow-r", "stub")}
+
+          <div className="kcol kfinal">
+            <div className="kfinal-head"><Trophy /><span>Final</span></div>
+            <div className="kitem"><BracketCard num={104} final /></div>
+            <div className="kfinal-third">
+              <div className="kfinal-third-label">Third-place play-off · M103</div>
+              <BracketCard num={103} />
             </div>
           </div>
+
+          {renderColumn([BRACKET_RIGHT.sf], "flow-l", "stub")}
+          {renderColumn(BRACKET_RIGHT.qf, "flow-l", "link")}
+          {renderColumn(BRACKET_RIGHT.r16, "flow-l", "link")}
+          {renderColumn(BRACKET_RIGHT.r32, "flow-l", "link")}
         </div>
+      </div>
+      <div className="kbracket-legend">
+        <span className="kbracket-legend-key"><i style={{ background: ROUND_META.R32.tone }} />Round of 32</span>
+        <span className="kbracket-legend-key"><i style={{ background: ROUND_META.R16.tone }} />Round of 16</span>
+        <span className="kbracket-legend-key"><i style={{ background: ROUND_META.QF.tone }} />Quarter-final</span>
+        <span className="kbracket-legend-key"><i style={{ background: ROUND_META.SF.tone }} />Semi-final</span>
+        <span className="kbracket-legend-key"><i style={{ background: ROUND_META.Final.tone }} />Final</span>
       </div>
     </section>
   );
