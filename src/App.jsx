@@ -627,7 +627,8 @@ function getOwner(country, players) {
 }
 
 function getActiveCountries(player) {
-  return player.countries.filter((country) => !player.elim.includes(country));
+  const eliminated = Array.isArray(player.elim) ? player.elim : [];
+  return player.countries.filter((country) => !eliminated.includes(country));
 }
 
 function comparePlayers(a, b) {
@@ -894,6 +895,7 @@ function resolveBracket(groupBuckets, matches, players) {
 // tell which owners still have a live team and who is out of the running.
 function computeSurvival(matches, players) {
   const countries = [...new Set(players.flatMap((player) => player.countries))];
+  const manualEliminated = new Set(players.flatMap((player) => Array.isArray(player.elim) ? player.elim : []));
   const rows = new Map();
   countries.forEach((country) => rows.set(country, {
     country, group: GROUP_ASSIGNMENTS[country] || null,
@@ -944,7 +946,8 @@ function computeSurvival(matches, players) {
     const row = rows.get(country);
     let alive = true;
     let reason = row.played > 0 ? "Still in the group stage" : "Yet to kick off";
-    if (knockoutLosers.has(country)) { alive = false; reason = "Knocked out"; }
+    if (manualEliminated.has(country)) { alive = false; reason = "Marked out by organizer"; }
+    else if (knockoutLosers.has(country)) { alive = false; reason = "Knocked out"; }
     else if (row.group && groupFinished[row.group] && !qualified.has(country)) { alive = false; reason = "Out in the group stage"; }
     else if (knockoutWinners.has(country)) { reason = "Winning in the knockouts"; }
     else if (qualified.has(country)) { reason = "Through to the Round of 32"; }
