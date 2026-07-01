@@ -205,6 +205,12 @@ const SEED_PLAYERS = [
   { id: 16, name: "Tashi", countries: ["USA", "Norway", "Bosnia"] },
 ].map((p) => ({ ...p, pts: 0, w: 0, d: 0, l: 0, elim: [], avatar: null, _bonus: 0 }));
 
+const VERIFIED_ELIMINATED_COUNTRIES = new Set([
+  "Czechia", "South Korea", "Qatar", "Haiti", "Scotland", "Turkey", "Curacao", "Tunisia",
+  "New Zealand", "Iran", "Uruguay", "Saudi Arabia", "Iraq", "Jordan", "Uzbekistan", "Panama",
+  "South Africa", "Japan", "Germany", "Netherlands", "Ivory Coast", "Sweden", "Ecuador",
+]);
+
 const SEED_MATCHES = [
   { id: 1, a: "Mexico", b: "South Africa", date: "2026-06-11", time: "15:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group A" },
   { id: 2, a: "South Korea", b: "Czechia", date: "2026-06-11", time: "22:00 ET", status: "upcoming", sa: null, sb: null, stage: "Group A" },
@@ -895,7 +901,10 @@ function resolveBracket(groupBuckets, matches, players) {
 // tell which owners still have a live team and who is out of the running.
 function computeSurvival(matches, players) {
   const countries = [...new Set(players.flatMap((player) => player.countries))];
-  const manualEliminated = new Set(players.flatMap((player) => Array.isArray(player.elim) ? player.elim : []));
+  const manualEliminated = new Set([
+    ...VERIFIED_ELIMINATED_COUNTRIES,
+    ...players.flatMap((player) => Array.isArray(player.elim) ? player.elim : []),
+  ]);
   const rows = new Map();
   countries.forEach((country) => rows.set(country, {
     country, group: GROUP_ASSIGNMENTS[country] || null,
